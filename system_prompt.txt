@@ -17,6 +17,7 @@ Include natural points for relevant images by making the sections concrete and t
 For image references, prefer direct Wikimedia or Wikipedia image URLs when possible:
 - If you know a likely direct URL, include `<!-- IMAGE_URL: https://... -->` immediately after the relevant heading.
 - Prefer Wikimedia URLs in this format when possible: `https://commons.wikimedia.org/wiki/Special:FilePath/<Filename>`.
+- Do not hallucinate urls, make sure they exist as valid image files before including them!
 - You may also include standard Markdown image tags like `![Caption](https://...)` for likely real Wikimedia/Wikipedia image URLs.
 - If a direct URL is not known, include concise hidden search queries using `<!-- IMAGE: ... -->`.
 - Keep search queries short and concrete (names, teams, tournaments, years, stadiums, trophies), not long descriptive sentences.
