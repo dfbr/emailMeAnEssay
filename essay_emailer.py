@@ -49,6 +49,7 @@ from pathlib import Path
 from typing import Any
 
 import markdown
+import httpx
 import requests
 from dotenv import load_dotenv
 from ebooklib import epub
@@ -127,8 +128,18 @@ def _log_essay_run(
 # Essay generation
 # ---------------------------------------------------------------------------
 
+def _build_openai_client(api_key: str) -> OpenAI:
+    http_client = httpx.Client(
+        http2=False,
+        trust_env=False,
+        timeout=httpx.Timeout(120.0, connect=30.0),
+        limits=httpx.Limits(max_connections=10, max_keepalive_connections=0),
+    )
+    return OpenAI(api_key=api_key, timeout=120.0, max_retries=0, http_client=http_client)
+
+
 def generate_essay(
-    client: OpenAI,
+    api_key: str,
     system_prompt: str,
     user_prompt: str,
     text_model: str,
@@ -136,18 +147,34 @@ def generate_essay(
     """Call the OpenAI Responses API and return *(title, markdown_content)*."""
     print(f"Generating essay with OpenAI using {text_model}…")
     response = _retry_openai_call(
-        lambda: client.responses.create(
-            model=text_model,
-            instructions=system_prompt,
-            input=user_prompt,
-            reasoning={"effort": "low"},
-            text={"verbosity": "medium"},
+        lambda: _generate_essay_once(
+            api_key=api_key,
+            system_prompt=system_prompt,
+            user_prompt=user_prompt,
+            text_model=text_model,
         ),
         action_name="essay generation",
     )
     content = response.output_text or ""
     title = _extract_title(content)
     return title, content
+
+
+def _generate_essay_once(
+    *,
+    api_key: str,
+    system_prompt: str,
+    user_prompt: str,
+    text_model: str,
+):
+    with _build_openai_client(api_key) as client:
+        return client.responses.create(
+            model=text_model,
+            instructions=system_prompt,
+            input=user_prompt,
+            reasoning={"effort": "low"},
+            text={"verbosity": "medium"},
+        )
 
 
 def _retry_openai_call(callable_fn, *, action_name: str, attempts: int = 4) -> Any:
@@ -348,7 +375,7 @@ def _to_jpeg(raw: bytes) -> bytes | None:
 # Cover image
 # ---------------------------------------------------------------------------
 
-def generate_cover_image(client: OpenAI, title: str, image_model: str) -> bytes:
+def generate_cover_image(api_key: str, title: str, image_model: str) -> bytes:
     """Generate a cover via the GPT image API, falling back to a Pillow-drawn cover."""
     print(f"Generating cover image with {image_model}…")
     try:
@@ -357,12 +384,7 @@ def generate_cover_image(client: OpenAI, title: str, image_model: str) -> bytes:
             "Elegant design with thematically relevant imagery, no text."
         )
         resp = _retry_openai_call(
-            lambda: client.images.generate(
-                model=image_model,
-                prompt=prompt,
-                size="1024x1024",
-                quality="high",
-            ),
+            lambda: _generate_cover_once(api_key=api_key, prompt=prompt, image_model=image_model),
             action_name="cover generation",
         )
         raw = _extract_generated_image_bytes(resp)
@@ -372,6 +394,16 @@ def generate_cover_image(client: OpenAI, title: str, image_model: str) -> bytes:
         print(f"  Warning: cover generation failed – {exc}")
 
     return _make_fallback_cover(title)
+
+
+def _generate_cover_once(*, api_key: str, prompt: str, image_model: str):
+    with _build_openai_client(api_key) as client:
+        return client.images.generate(
+            model=image_model,
+            prompt=prompt,
+            size="1024x1024",
+            quality="high",
+        )
 
 
 def _extract_generated_image_bytes(response) -> bytes | None:
@@ -794,7 +826,6 @@ def main() -> None:
         smtp_password = _require_env("SMTP_PASSWORD")
         from_email = os.getenv("FROM_EMAIL") or smtp_user
 
-    client = OpenAI(api_key=openai_key, timeout=120.0, max_retries=0)
     print(
         f"Using text model {args.text_model} and image model {args.image_model}. "
         "If the API is slow, the script will retry transient connection failures."
@@ -815,7 +846,7 @@ def main() -> None:
     # 1 – Generate essay
     try:
         title, content_md = generate_essay(
-            client,
+            openai_key,
             args.system_prompt,
             args.user_prompt,
             args.text_model,
@@ -850,7 +881,7 @@ def main() -> None:
     if args.no_cover:
         cover_bytes = _make_fallback_cover(title)
     else:
-        cover_bytes = generate_cover_image(client, title, args.image_model)
+        cover_bytes = generate_cover_image(openai_key, title, args.image_model)
 
     # 4 – Build EPUB
     epub_bytes = create_epub(
