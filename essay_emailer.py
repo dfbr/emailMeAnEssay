@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """
 emailMeAnEssay – Generate an essay with OpenAI, bundle it as an EPUB
-(with a DALL-E cover and relevant Wikimedia Commons images), then email
-it to a recipient – ideal for sending directly to a Kindle address.
+(with a GPT-generated cover or Pillow fallback and relevant image
+placements), save the output locally, then email it to a recipient –
+ideal for sending directly to a Kindle address.
 
 Usage:
     python essay_emailer.py --user-prompt "Write an essay about stoicism" \
@@ -16,6 +17,13 @@ Environment variables (or .env file):
     SMTP_PASSWORD    – required
     FROM_EMAIL       – optional, defaults to SMTP_USER
     TO_EMAIL         – optional, recipient email address
+
+Runtime notes:
+    - The essay body is generated with GPT-5.5 via the Responses API.
+    - The run prompt is logged to output/logs/essay_runs.jsonl.
+    - The generated EPUB metadata includes the user prompt.
+    - Content images prefer model-provided image suggestions, then fall
+      back to rate-limited Wikimedia Commons lookups.
 """
 
 from __future__ import annotations
@@ -83,7 +91,13 @@ def _load_default_system_prompt() -> str:
         sys.exit(1)
 
 
-def _log_essay_run(title: str, user_prompt: str, output_path: str | None) -> Path:
+def _log_essay_run(
+    title: str,
+    user_prompt: str,
+    output_path: str | None,
+    text_model: str,
+    image_model: str,
+) -> Path:
     log_path = Path("output") / "logs" / "essay_runs.jsonl"
     log_path.parent.mkdir(parents=True, exist_ok=True)
     entry = {
@@ -91,7 +105,8 @@ def _log_essay_run(title: str, user_prompt: str, output_path: str | None) -> Pat
         "title": title,
         "user_prompt": user_prompt,
         "output_path": output_path,
-        "model": "gpt-5.5",
+        "text_model": text_model,
+        "image_model": image_model,
     }
     with log_path.open("a", encoding="utf-8") as handle:
         handle.write(json.dumps(entry, ensure_ascii=False) + "\n")
@@ -102,12 +117,17 @@ def _log_essay_run(title: str, user_prompt: str, output_path: str | None) -> Pat
 # Essay generation
 # ---------------------------------------------------------------------------
 
-def generate_essay(client: OpenAI, system_prompt: str, user_prompt: str) -> tuple[str, str]:
+def generate_essay(
+    client: OpenAI,
+    system_prompt: str,
+    user_prompt: str,
+    text_model: str,
+) -> tuple[str, str]:
     """Call the OpenAI Responses API and return *(title, markdown_content)*."""
     print("Generating essay with OpenAI…")
     response = _retry_openai_call(
         lambda: client.responses.create(
-            model="gpt-5.5",
+            model=text_model,
             instructions=system_prompt,
             input=user_prompt,
             reasoning={"effort": "medium"},
@@ -321,6 +341,13 @@ def _to_jpeg(raw: bytes) -> bytes | None:
 def generate_cover_image(client: OpenAI, title: str) -> bytes:
     """Generate a cover via the GPT image API, falling back to a Pillow-drawn cover."""
     print("Generating cover image…")
+
+    raise NotImplementedError
+
+
+def generate_cover_image(client: OpenAI, title: str, image_model: str) -> bytes:
+    """Generate a cover via the GPT image API, falling back to a Pillow-drawn cover."""
+    print("Generating cover image…")
     try:
         prompt = (
             f"Professional book cover art for an essay titled '{title}'. "
@@ -328,7 +355,7 @@ def generate_cover_image(client: OpenAI, title: str) -> bytes:
         )
         resp = _retry_openai_call(
             lambda: client.images.generate(
-                model="gpt-image-2",
+                model=image_model,
                 prompt=prompt,
                 size="1024x1024",
                 quality="high",
@@ -443,6 +470,8 @@ def create_epub(
     cover_bytes: bytes,
     content_images: list[dict],
     user_prompt: str,
+    text_model: str,
+    image_model: str,
 ) -> bytes:
     """Build an EPUB and return the raw file bytes."""
     print("Creating EPUB…")
@@ -458,6 +487,8 @@ def create_epub(
         "An AI-generated essay produced by emailMeAnEssay.",
     )
     book.add_metadata("DC", "description", f"User prompt: {user_prompt}")
+    book.add_metadata("DC", "description", f"Text model: {text_model}")
+    book.add_metadata("DC", "description", f"Image model: {image_model}")
     book.add_metadata("DC", "publisher", "OpenAI")
     book.add_metadata("DC", "subject", "Essay")
 
@@ -692,6 +723,18 @@ def build_arg_parser() -> argparse.ArgumentParser:
         epilog=__doc__,
     )
     p.add_argument(
+        "--text-model",
+        default="gpt-5.5",
+        metavar="NAME",
+        help="Text generation model (default: gpt-5.5)",
+    )
+    p.add_argument(
+        "--image-model",
+        default="gpt-image-2",
+        metavar="NAME",
+        help="Cover image model (default: gpt-image-2)",
+    )
+    p.add_argument(
         "--system-prompt",
         default=default_system_prompt,
         metavar="TEXT",
@@ -751,7 +794,12 @@ def main() -> None:
     client = OpenAI(api_key=openai_key)
 
     # 1 – Generate essay
-    title, content_md = generate_essay(client, args.system_prompt, args.user_prompt)
+    title, content_md = generate_essay(
+        client,
+        args.system_prompt,
+        args.user_prompt,
+        args.text_model,
+    )
     print(f'Title: "{title}"')
 
     # 2 – Fetch content images
@@ -766,14 +814,28 @@ def main() -> None:
     if args.no_cover:
         cover_bytes = _make_fallback_cover(title)
     else:
-        cover_bytes = generate_cover_image(client, title)
+        cover_bytes = generate_cover_image(client, title, args.image_model)
 
     # 4 – Build EPUB
-    epub_bytes = create_epub(title, content_md, cover_bytes, content_images, args.user_prompt)
+    epub_bytes = create_epub(
+        title,
+        content_md,
+        cover_bytes,
+        content_images,
+        args.user_prompt,
+        args.text_model,
+        args.image_model,
+    )
 
     # 5 – Save locally
     _save_outputs(title, epub_bytes, content_md, args.output)
-    prompt_log_path = _log_essay_run(title, args.user_prompt, args.output)
+    prompt_log_path = _log_essay_run(
+        title,
+        args.user_prompt,
+        args.output,
+        args.text_model,
+        args.image_model,
+    )
     print(f"Essay prompt logged to: {prompt_log_path}")
 
     # 6 – Email
