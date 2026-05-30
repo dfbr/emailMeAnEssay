@@ -67,7 +67,7 @@ python essay_emailer.py \
     --user-prompt "The history of the printing press" \
     --email unused@example.com \
     --no-email \
-    --output stoicism.epub
+    --output printing_press.epub
 
 # Skip images (faster / no network calls to Wikimedia)
 python essay_emailer.py \
