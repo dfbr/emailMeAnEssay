@@ -42,7 +42,7 @@ import markdown
 import requests
 from dotenv import load_dotenv
 from ebooklib import epub
-from openai import OpenAI
+from openai import APIConnectionError, APITimeoutError, OpenAI
 from PIL import Image, ImageDraw, ImageFont
 
 # ---------------------------------------------------------------------------
@@ -105,16 +105,42 @@ def _log_essay_run(title: str, user_prompt: str, output_path: str | None) -> Pat
 def generate_essay(client: OpenAI, system_prompt: str, user_prompt: str) -> tuple[str, str]:
     """Call the OpenAI Responses API and return *(title, markdown_content)*."""
     print("Generating essay with OpenAI…")
-    response = client.responses.create(
-        model="gpt-5.5",
-        instructions=system_prompt,
-        input=user_prompt,
-        reasoning={"effort": "medium"},
-        text={"verbosity": "medium"},
+    response = _retry_openai_call(
+        lambda: client.responses.create(
+            model="gpt-5.5",
+            instructions=system_prompt,
+            input=user_prompt,
+            reasoning={"effort": "medium"},
+            text={"verbosity": "medium"},
+        ),
+        action_name="essay generation",
     )
     content = response.output_text or ""
     title = _extract_title(content)
     return title, content
+
+
+def _retry_openai_call(callable_fn, *, action_name: str, attempts: int = 4) -> Any:
+    delay_seconds = 1.0
+    for attempt in range(1, attempts + 1):
+        try:
+            return callable_fn()
+        except (APIConnectionError, APITimeoutError) as exc:
+            if attempt == attempts:
+                raise
+            print(
+                f"  Warning: {action_name} failed ({exc.__class__.__name__}); retrying in {delay_seconds:.1f}s…"
+            )
+        except Exception as exc:
+            status_code = getattr(exc, "status_code", None)
+            if status_code not in {429, 500, 502, 503, 504} or attempt == attempts:
+                raise
+            print(
+                f"  Warning: {action_name} got HTTP {status_code}; retrying in {delay_seconds:.1f}s…"
+            )
+
+        time.sleep(delay_seconds)
+        delay_seconds = min(delay_seconds * 2, 8.0)
 
 
 def _extract_title(content: str) -> str:
@@ -300,11 +326,14 @@ def generate_cover_image(client: OpenAI, title: str) -> bytes:
             f"Professional book cover art for an essay titled '{title}'. "
             "Elegant design with thematically relevant imagery, no text."
         )
-        resp = client.images.generate(
-            model="gpt-image-2",
-            prompt=prompt,
-            size="1024x1024",
-            quality="high",
+        resp = _retry_openai_call(
+            lambda: client.images.generate(
+                model="gpt-image-2",
+                prompt=prompt,
+                size="1024x1024",
+                quality="high",
+            ),
+            action_name="cover generation",
         )
         raw = _extract_generated_image_bytes(resp)
         if raw:
