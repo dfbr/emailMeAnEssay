@@ -94,22 +94,30 @@ def _load_default_system_prompt() -> str:
 
 
 def _log_essay_run(
-    title: str,
+    *,
+    status: str,
+    run_id: str,
+    title: str | None,
     user_prompt: str,
     output_path: str | None,
     text_model: str,
     image_model: str,
+    error: str | None = None,
 ) -> Path:
     log_path = Path("output") / "logs" / "essay_runs.jsonl"
     log_path.parent.mkdir(parents=True, exist_ok=True)
     entry = {
         "timestamp_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+        "run_id": run_id,
+        "status": status,
         "title": title,
         "user_prompt": user_prompt,
         "output_path": output_path,
         "text_model": text_model,
         "image_model": image_model,
     }
+    if error:
+        entry["error"] = error
     with log_path.open("a", encoding="utf-8") as handle:
         handle.write(json.dumps(entry, ensure_ascii=False) + "\n")
     return log_path
@@ -126,13 +134,13 @@ def generate_essay(
     text_model: str,
 ) -> tuple[str, str]:
     """Call the OpenAI Responses API and return *(title, markdown_content)*."""
-    print("Generating essay with OpenAI…")
+    print(f"Generating essay with OpenAI using {text_model}…")
     response = _retry_openai_call(
         lambda: client.responses.create(
             model=text_model,
             instructions=system_prompt,
             input=user_prompt,
-            reasoning={"effort": "medium"},
+            reasoning={"effort": "low"},
             text={"verbosity": "medium"},
         ),
         action_name="essay generation",
@@ -342,7 +350,7 @@ def _to_jpeg(raw: bytes) -> bytes | None:
 
 def generate_cover_image(client: OpenAI, title: str, image_model: str) -> bytes:
     """Generate a cover via the GPT image API, falling back to a Pillow-drawn cover."""
-    print("Generating cover image…")
+    print(f"Generating cover image with {image_model}…")
     try:
         prompt = (
             f"Professional book cover art for an essay titled '{title}'. "
@@ -786,15 +794,48 @@ def main() -> None:
         smtp_password = _require_env("SMTP_PASSWORD")
         from_email = os.getenv("FROM_EMAIL") or smtp_user
 
-    client = OpenAI(api_key=openai_key)
+    client = OpenAI(api_key=openai_key, timeout=120.0, max_retries=0)
+    print(
+        f"Using text model {args.text_model} and image model {args.image_model}. "
+        "If the API is slow, the script will retry transient connection failures."
+    )
+
+    run_id = str(uuid.uuid4())
+    prompt_log_path = _log_essay_run(
+        status="started",
+        run_id=run_id,
+        title=None,
+        user_prompt=args.user_prompt,
+        output_path=args.output,
+        text_model=args.text_model,
+        image_model=args.image_model,
+    )
+    print(f"Essay prompt logged to: {prompt_log_path}")
 
     # 1 – Generate essay
-    title, content_md = generate_essay(
-        client,
-        args.system_prompt,
-        args.user_prompt,
-        args.text_model,
-    )
+    try:
+        title, content_md = generate_essay(
+            client,
+            args.system_prompt,
+            args.user_prompt,
+            args.text_model,
+        )
+    except Exception as exc:
+        _log_essay_run(
+            status="failed",
+            run_id=run_id,
+            title=None,
+            user_prompt=args.user_prompt,
+            output_path=args.output,
+            text_model=args.text_model,
+            image_model=args.image_model,
+            error=str(exc),
+        )
+        print(
+            "Error: essay generation failed after retries. The prompt was logged and you can rerun safely.",
+            file=sys.stderr,
+        )
+        sys.exit(1)
     print(f'Title: "{title}"')
 
     # 2 – Fetch content images
@@ -824,14 +865,15 @@ def main() -> None:
 
     # 5 – Save locally
     _save_outputs(title, epub_bytes, content_md, args.output)
-    prompt_log_path = _log_essay_run(
-        title,
-        args.user_prompt,
-        args.output,
-        args.text_model,
-        args.image_model,
+    _log_essay_run(
+        status="completed",
+        run_id=run_id,
+        title=title,
+        user_prompt=args.user_prompt,
+        output_path=args.output,
+        text_model=args.text_model,
+        image_model=args.image_model,
     )
-    print(f"Essay prompt logged to: {prompt_log_path}")
 
     # 6 – Email
     if not args.no_email:

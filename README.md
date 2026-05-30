@@ -16,7 +16,7 @@ Kindle's personal-document address.
 | **Cover image** | GPT Image, configurable with `--image-model`; falls back to a styled Pillow image if unavailable |
 | **Content images** | Model-suggested image hints first, then rate-limited Wikimedia Commons fallback |
 | **EPUB output** | Valid EPUB 3 with embedded CSS, cover, images, and prompt metadata |
-| **Run logging** | Appends each user prompt and run metadata, including chosen models, to `output/logs/essay_runs.jsonl` |
+| **Run logging** | Records started/completed/failed runs with prompt, models, and metadata in `output/logs/essay_runs.jsonl` |
 | **Email delivery** | SMTP with STARTTLS (port 587) or SSL (port 465) |
 | **Kindle-ready** | Attach the EPUB directly to a Kindle email address |
 
@@ -137,6 +137,9 @@ optional arguments:
 Images are inserted after section headings so they sit naturally within the
 text flow. The EPUB has embedded CSS for comfortable reading on all e-readers,
 and the prompt used to generate the essay is included in the EPUB metadata.
+The script logs the run before generation starts so prompts are captured even
+if the OpenAI request fails, then logs a completion record after the EPUB is
+saved.
 
 ---
 
@@ -151,5 +154,6 @@ and the prompt used to generate the essay is included in the EPUB metadata.
 * **Images:** model-generated image hints are preferred. Wikimedia Commons
   images are freely licensed but attribution requirements vary, and lookups
   are rate-limited with retries. The image title/caption is embedded in the EPUB.
-* **Logging:** each run appends the title, user prompt, output path, and model
-  to `output/logs/essay_runs.jsonl`.
+* **Logging:** each run records a started event before generation and a
+  completed or failed event afterwards, with the title when available, the user
+  prompt, output path, and chosen models in `output/logs/essay_runs.jsonl`.
