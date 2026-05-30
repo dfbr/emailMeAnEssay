@@ -23,6 +23,10 @@ Runtime notes:
         - The text and image models can be overridden with --text-model and
             --image-model; their defaults are gpt-5.5 and gpt-image-2.
     - The run prompt is logged to output/logs/essay_runs.jsonl.
+        - Detailed script events, retries, and outcomes are logged to
+            output/logs/script_events.jsonl.
+        - OpenAI response IDs, token usage, and elapsed time are captured in
+            both logs when available.
     - The generated EPUB metadata includes the user prompt.
     - Content images prefer model-provided image suggestions, then fall
       back to rate-limited Wikimedia Commons lookups.
@@ -103,6 +107,9 @@ def _log_essay_run(
     output_path: str | None,
     text_model: str,
     image_model: str,
+    response_id: str | None = None,
+    usage: dict[str, Any] | None = None,
+    elapsed_seconds: float | None = None,
     error: str | None = None,
 ) -> Path:
     log_path = Path("output") / "logs" / "essay_runs.jsonl"
@@ -117,6 +124,12 @@ def _log_essay_run(
         "text_model": text_model,
         "image_model": image_model,
     }
+    if response_id is not None:
+        entry["response_id"] = response_id
+    if usage is not None:
+        entry["usage"] = usage
+    if elapsed_seconds is not None:
+        entry["elapsed_seconds"] = round(elapsed_seconds, 3)
     if error:
         entry["error"] = error
     with log_path.open("a", encoding="utf-8") as handle:
@@ -124,18 +137,86 @@ def _log_essay_run(
     return log_path
 
 
+def _log_script_event(run_id: str, event: str, **details: Any) -> Path:
+    log_path = Path("output") / "logs" / "script_events.jsonl"
+    log_path.parent.mkdir(parents=True, exist_ok=True)
+    entry = {
+        "timestamp_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+        "run_id": run_id,
+        "event": event,
+        **details,
+    }
+    with log_path.open("a", encoding="utf-8") as handle:
+        handle.write(json.dumps(entry, ensure_ascii=False) + "\n")
+    return log_path
+
+
+def _usage_summary(usage: Any) -> dict[str, Any] | None:
+    if usage is None:
+        return None
+    if hasattr(usage, "model_dump"):
+        dumped = usage.model_dump()
+    elif isinstance(usage, dict):
+        dumped = usage
+    else:
+        dumped = {
+            name: getattr(usage, name)
+            for name in (
+                "input_tokens",
+                "output_tokens",
+                "total_tokens",
+                "input_tokens_details",
+                "output_tokens_details",
+            )
+            if hasattr(usage, name)
+        }
+
+    summary: dict[str, Any] = {}
+    for key in ("input_tokens", "output_tokens", "total_tokens", "input_tokens_details", "output_tokens_details"):
+        if key in dumped and dumped[key] is not None:
+            summary[key] = dumped[key]
+    return summary or None
+
+
+def _is_insufficient_quota_error(exc: Exception) -> bool:
+    if getattr(exc, "status_code", None) != 429:
+        return False
+    if getattr(exc, "code", None) == "insufficient_quota":
+        return True
+    if getattr(exc, "type", None) == "insufficient_quota":
+        return True
+    message = str(exc)
+    return "insufficient_quota" in message or "exceeded your current quota" in message
+
+
 # ---------------------------------------------------------------------------
 # Essay generation
 # ---------------------------------------------------------------------------
 
-def _build_openai_client(api_key: str) -> OpenAI:
+def _responses_timeout(text_model: str) -> float:
+    if text_model.startswith("gpt-5"):
+        return 600.0
+    return 120.0
+
+
+def _build_openai_client(api_key: str, text_model: str) -> OpenAI:
+    request_timeout = _responses_timeout(text_model)
     http_client = httpx.Client(
         http2=False,
         trust_env=False,
-        timeout=httpx.Timeout(120.0, connect=30.0),
+        timeout=httpx.Timeout(request_timeout, connect=30.0),
         limits=httpx.Limits(max_connections=10, max_keepalive_connections=0),
     )
-    return OpenAI(api_key=api_key, timeout=120.0, max_retries=0, http_client=http_client)
+    return OpenAI(api_key=api_key, timeout=request_timeout, max_retries=0, http_client=http_client)
+
+
+def _responses_request_kwargs(text_model: str) -> dict[str, Any]:
+    request_kwargs: dict[str, Any] = {
+        "text": {"verbosity": "medium"},
+    }
+    if text_model.startswith("gpt-5"):
+        request_kwargs["reasoning"] = {"effort": "low"}
+    return request_kwargs
 
 
 def generate_essay(
@@ -143,9 +224,17 @@ def generate_essay(
     system_prompt: str,
     user_prompt: str,
     text_model: str,
-) -> tuple[str, str]:
+    run_id: str,
+) -> tuple[str, str, dict[str, Any]]:
     """Call the OpenAI Responses API and return *(title, markdown_content)*."""
     print(f"Generating essay with OpenAI using {text_model}…")
+    _log_script_event(
+        run_id,
+        "essay_generation_start",
+        text_model=text_model,
+        prompt_length=len(user_prompt),
+    )
+    started_at = time.monotonic()
     response = _retry_openai_call(
         lambda: _generate_essay_once(
             api_key=api_key,
@@ -154,10 +243,28 @@ def generate_essay(
             text_model=text_model,
         ),
         action_name="essay generation",
+        run_id=run_id,
     )
     content = response.output_text or ""
     title = _extract_title(content)
-    return title, content
+    usage = _usage_summary(getattr(response, "usage", None))
+    elapsed_seconds = time.monotonic() - started_at
+    response_id = getattr(response, "id", None)
+    _log_script_event(
+        run_id,
+        "essay_generation_success",
+        text_model=text_model,
+        title=title,
+        output_chars=len(content),
+        response_id=response_id,
+        usage=usage,
+        elapsed_seconds=round(elapsed_seconds, 3),
+    )
+    return title, content, {
+        "response_id": response_id,
+        "usage": usage,
+        "elapsed_seconds": elapsed_seconds,
+    }
 
 
 def _generate_essay_once(
@@ -167,17 +274,22 @@ def _generate_essay_once(
     user_prompt: str,
     text_model: str,
 ):
-    with _build_openai_client(api_key) as client:
+    with _build_openai_client(api_key, text_model) as client:
         return client.responses.create(
             model=text_model,
             instructions=system_prompt,
             input=user_prompt,
-            reasoning={"effort": "low"},
-            text={"verbosity": "medium"},
+            **_responses_request_kwargs(text_model),
         )
 
 
-def _retry_openai_call(callable_fn, *, action_name: str, attempts: int = 4) -> Any:
+def _retry_openai_call(
+    callable_fn,
+    *,
+    action_name: str,
+    run_id: str | None = None,
+    attempts: int = 4,
+) -> Any:
     delay_seconds = 1.0
     for attempt in range(1, attempts + 1):
         try:
@@ -188,13 +300,40 @@ def _retry_openai_call(callable_fn, *, action_name: str, attempts: int = 4) -> A
             print(
                 f"  Warning: {action_name} failed ({exc.__class__.__name__}); retrying in {delay_seconds:.1f}s…"
             )
+            if run_id:
+                _log_script_event(
+                    run_id,
+                    f"{action_name.replace(' ', '_')}_retry",
+                    attempt=attempt,
+                    delay_seconds=delay_seconds,
+                    error_type=exc.__class__.__name__,
+                    error_message=str(exc),
+                )
         except Exception as exc:
+            if _is_insufficient_quota_error(exc):
+                if run_id:
+                    _log_script_event(
+                        run_id,
+                        f"{action_name.replace(' ', '_')}_quota_exceeded",
+                        status_code=getattr(exc, "status_code", 429),
+                        error_message=str(exc),
+                    )
+                raise
             status_code = getattr(exc, "status_code", None)
             if status_code not in {429, 500, 502, 503, 504} or attempt == attempts:
                 raise
             print(
                 f"  Warning: {action_name} got HTTP {status_code}; retrying in {delay_seconds:.1f}s…"
             )
+            if run_id:
+                _log_script_event(
+                    run_id,
+                    f"{action_name.replace(' ', '_')}_retry",
+                    attempt=attempt,
+                    delay_seconds=delay_seconds,
+                    status_code=status_code,
+                    error_message=str(exc),
+                )
 
         time.sleep(delay_seconds)
         delay_seconds = min(delay_seconds * 2, 8.0)
@@ -330,9 +469,15 @@ def _download_bytes(url: str) -> bytes | None:
     return None
 
 
-def fetch_content_images(image_queries: list[str], fallback_topics: list[str]) -> list[dict]:
+def fetch_content_images(image_queries: list[str], fallback_topics: list[str], run_id: str) -> list[dict]:
     """Download one image per query, preferring model-provided image suggestions."""
     print("Fetching content images…")
+    _log_script_event(
+        run_id,
+        "content_image_search_start",
+        suggested_queries=image_queries,
+        fallback_topics=fallback_topics,
+    )
     images: list[dict] = []
     queries = _unique_preserving_order(image_queries + fallback_topics)
     for query in queries:
@@ -345,6 +490,7 @@ def fetch_content_images(image_queries: list[str], fallback_topics: list[str]) -
                     break  # one image per query
         if len(images) >= 5:
             break
+    _log_script_event(run_id, "content_image_search_complete", image_count=len(images), query_count=len(queries))
     return images
 
 
@@ -375,9 +521,11 @@ def _to_jpeg(raw: bytes) -> bytes | None:
 # Cover image
 # ---------------------------------------------------------------------------
 
-def generate_cover_image(api_key: str, title: str, image_model: str) -> bytes:
+def generate_cover_image(api_key: str, title: str, image_model: str, run_id: str) -> bytes:
     """Generate a cover via the GPT image API, falling back to a Pillow-drawn cover."""
     print(f"Generating cover image with {image_model}…")
+    _log_script_event(run_id, "cover_generation_start", image_model=image_model, title=title)
+    started_at = time.monotonic()
     try:
         prompt = (
             f"Professional book cover art for an essay titled '{title}'. "
@@ -386,13 +534,25 @@ def generate_cover_image(api_key: str, title: str, image_model: str) -> bytes:
         resp = _retry_openai_call(
             lambda: _generate_cover_once(api_key=api_key, prompt=prompt, image_model=image_model),
             action_name="cover generation",
+            run_id=run_id,
         )
         raw = _extract_generated_image_bytes(resp)
         if raw:
+            elapsed_seconds = time.monotonic() - started_at
+            _log_script_event(
+                run_id,
+                "cover_generation_success",
+                image_model=image_model,
+                bytes=len(raw),
+                elapsed_seconds=round(elapsed_seconds, 3),
+                response_id=getattr(resp, "id", None),
+            )
             return raw
     except Exception as exc:
         print(f"  Warning: cover generation failed – {exc}")
+        _log_script_event(run_id, "cover_generation_failed", image_model=image_model, error=str(exc))
 
+    _log_script_event(run_id, "cover_generation_fallback", image_model=image_model)
     return _make_fallback_cover(title)
 
 
@@ -507,9 +667,11 @@ def create_epub(
     user_prompt: str,
     text_model: str,
     image_model: str,
+    run_id: str,
 ) -> bytes:
     """Build an EPUB and return the raw file bytes."""
     print("Creating EPUB…")
+    _log_script_event(run_id, "epub_build_start", title=title, content_image_count=len(content_images))
 
     book = epub.EpubBook()
     book.set_identifier(str(uuid.uuid4()))
@@ -601,11 +763,15 @@ def create_epub(
 
     with tempfile.NamedTemporaryFile(suffix=".epub", delete=False) as tmp:
         tmp_path = tmp.name
+    epub_bytes: bytes
     try:
         epub.write_epub(tmp_path, book)
-        return Path(tmp_path).read_bytes()
+        epub_bytes = Path(tmp_path).read_bytes()
     finally:
         Path(tmp_path).unlink(missing_ok=True)
+
+    _log_script_event(run_id, "epub_build_complete", title=title, content_image_count=len(content_images))
+    return epub_bytes
 
 
 def _xml_escape(text: str) -> str:
@@ -665,9 +831,11 @@ def send_email(
     smtp_user: str,
     smtp_password: str,
     from_email: str,
+    run_id: str,
 ) -> bool:
     """Attach the EPUB to an email and send it via SMTP."""
     print(f"Sending email to {recipient}…")
+    _log_script_event(run_id, "email_send_start", recipient=recipient, smtp_host=smtp_host, smtp_port=smtp_port)
 
     msg = MIMEMultipart()
     msg["From"] = from_email
@@ -709,12 +877,15 @@ def send_email(
             "  Warning: SMTP authentication failed. Check SMTP_USER, SMTP_PASSWORD, "
             "and whether your provider requires an app password.",
         )
+        _log_script_event(run_id, "email_send_failed", recipient=recipient, smtp_host=smtp_host, smtp_port=smtp_port, error="SMTPAuthenticationError")
         return False
     except Exception as exc:
         print(f"  Warning: email send failed – {exc}")
+        _log_script_event(run_id, "email_send_failed", recipient=recipient, smtp_host=smtp_host, smtp_port=smtp_port, error=str(exc))
         return False
 
     print("Email sent successfully.")
+    _log_script_event(run_id, "email_send_success", recipient=recipient, smtp_host=smtp_host, smtp_port=smtp_port)
     return True
 
 
@@ -724,23 +895,43 @@ def _slugify_filename(text: str) -> str:
     return slug[:80] or "essay"
 
 
-def _save_outputs(title: str, epub_bytes: bytes, content_md: str, output_path: str | None) -> Path:
+def _save_outputs(
+    title: str,
+    epub_bytes: bytes,
+    content_md: str,
+    output_path: str | None,
+    run_id: str,
+) -> tuple[Path, Path]:
     if output_path:
-        epub_path = Path(output_path)
+        requested_path = Path(output_path)
+        if requested_path.suffix:
+            output_dir = requested_path.with_suffix("")
+            output_stem = requested_path.stem
+        else:
+            output_dir = requested_path
+            output_stem = requested_path.name or _slugify_filename(title)
     else:
-        output_dir = Path("output")
-        output_dir.mkdir(parents=True, exist_ok=True)
-        epub_path = output_dir / f"{_slugify_filename(title)}.epub"
+        output_stem = _slugify_filename(title)
+        output_dir = Path("output") / output_stem
 
-    epub_path.parent.mkdir(parents=True, exist_ok=True)
+    output_dir.mkdir(parents=True, exist_ok=True)
+    epub_path = output_dir / f"{output_stem}.epub"
+
     epub_path.write_bytes(epub_bytes)
 
-    md_path = epub_path.with_suffix(".md")
+    md_path = output_dir / f"{output_stem}.md"
     md_path.write_text(content_md, encoding="utf-8")
 
     print(f"EPUB saved to: {epub_path}")
     print(f"Essay markdown saved to: {md_path}")
-    return epub_path
+    _log_script_event(
+        run_id,
+        "local_save_complete",
+        output_dir=str(output_dir),
+        epub_path=str(epub_path),
+        md_path=str(md_path),
+    )
+    return epub_path, md_path
 
 
 # ---------------------------------------------------------------------------
@@ -799,7 +990,7 @@ def build_arg_parser() -> argparse.ArgumentParser:
     p.add_argument(
         "--output",
         metavar="FILE",
-        help="Also save the EPUB to this local file path",
+        help="Also save the EPUB and markdown into a dedicated subdirectory at this path",
     )
     p.add_argument(
         "--no-email",
@@ -832,6 +1023,16 @@ def main() -> None:
     )
 
     run_id = str(uuid.uuid4())
+    _log_script_event(
+        run_id,
+        "run_start",
+        text_model=args.text_model,
+        image_model=args.image_model,
+        no_images=args.no_images,
+        no_cover=args.no_cover,
+        no_email=args.no_email,
+        output=args.output,
+    )
     prompt_log_path = _log_essay_run(
         status="started",
         run_id=run_id,
@@ -845,13 +1046,20 @@ def main() -> None:
 
     # 1 – Generate essay
     try:
-        title, content_md = generate_essay(
+        title, content_md, essay_meta = generate_essay(
             openai_key,
             args.system_prompt,
             args.user_prompt,
             args.text_model,
+            run_id,
         )
     except Exception as exc:
+        if _is_insufficient_quota_error(exc):
+            print(
+                "Error: OpenAI quota is exhausted for this account. Use a cheaper model for testing, "
+                "or add billing/quota before running GPT-5.5 essays.",
+                file=sys.stderr,
+            )
         _log_essay_run(
             status="failed",
             run_id=run_id,
@@ -862,6 +1070,7 @@ def main() -> None:
             image_model=args.image_model,
             error=str(exc),
         )
+        _log_script_event(run_id, "run_failed", stage="essay_generation", error=str(exc))
         print(
             "Error: essay generation failed after retries. The prompt was logged and you can rerun safely.",
             file=sys.stderr,
@@ -874,14 +1083,17 @@ def main() -> None:
     if not args.no_images:
         image_queries = extract_image_suggestions(content_md)
         fallback_topics = extract_key_topics(title, content_md)
-        content_images = fetch_content_images(image_queries, fallback_topics)
+        content_images = fetch_content_images(image_queries, fallback_topics, run_id)
         print(f"  {len(content_images)} content image(s) collected.")
+    else:
+        _log_script_event(run_id, "content_image_search_skipped", reason="--no-images")
 
     # 3 – Generate cover
     if args.no_cover:
         cover_bytes = _make_fallback_cover(title)
+        _log_script_event(run_id, "cover_generation_skipped", reason="--no-cover")
     else:
-        cover_bytes = generate_cover_image(openai_key, title, args.image_model)
+        cover_bytes = generate_cover_image(openai_key, title, args.image_model, run_id)
 
     # 4 – Build EPUB
     epub_bytes = create_epub(
@@ -892,18 +1104,22 @@ def main() -> None:
         args.user_prompt,
         args.text_model,
         args.image_model,
+        run_id,
     )
 
     # 5 – Save locally
-    _save_outputs(title, epub_bytes, content_md, args.output)
+    epub_path, md_path = _save_outputs(title, epub_bytes, content_md, args.output, run_id)
     _log_essay_run(
         status="completed",
         run_id=run_id,
         title=title,
         user_prompt=args.user_prompt,
-        output_path=args.output,
+        output_path=str(epub_path),
         text_model=args.text_model,
         image_model=args.image_model,
+        response_id=essay_meta.get("response_id"),
+        usage=essay_meta.get("usage"),
+        elapsed_seconds=essay_meta.get("elapsed_seconds"),
     )
 
     # 6 – Email
@@ -917,7 +1133,10 @@ def main() -> None:
             smtp_user=smtp_user,
             smtp_password=smtp_password,
             from_email=from_email,
+            run_id=run_id,
         )
+    else:
+        _log_script_event(run_id, "email_send_skipped", reason="--no-email")
 
 
 if __name__ == "__main__":

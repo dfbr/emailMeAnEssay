@@ -15,8 +15,8 @@ Kindle's personal-document address.
 | **Essay generation** | GPT-5.5 via the Responses API, configurable with `--text-model` |
 | **Cover image** | GPT Image, configurable with `--image-model`; falls back to a styled Pillow image if unavailable |
 | **Content images** | Model-suggested image hints first, then rate-limited Wikimedia Commons fallback |
-| **EPUB output** | Valid EPUB 3 with embedded CSS, cover, images, and prompt metadata |
-| **Run logging** | Records started/completed/failed runs with prompt, models, and metadata in `output/logs/essay_runs.jsonl` |
+| **EPUB output** | Valid EPUB 3 with embedded CSS, cover, images, prompt metadata, and one subdirectory per essay bundle |
+| **Run logging** | Records prompt audit entries in `output/logs/essay_runs.jsonl` and detailed script events in `output/logs/script_events.jsonl` |
 | **Email delivery** | SMTP with STARTTLS (port 587) or SSL (port 465) |
 | **Kindle-ready** | Attach the EPUB directly to a Kindle email address |
 
@@ -89,6 +89,9 @@ python essay_emailer.py \
     --no-email \
     --output printing_press.epub
 
+The EPUB and markdown for that run are written to `printing_press/` as
+`printing_press.epub` and `printing_press.md`.
+
 # Skip images (faster / no network calls to Wikimedia)
 python essay_emailer.py \
     --user-prompt "Renaissance art" \
@@ -115,7 +118,8 @@ optional arguments:
   --email ADDRESS       Recipient email address (defaults to TO_EMAIL)
   --no-images           Skip embedding content images in the EPUB
   --no-cover            Use a simple generated cover instead of DALL-E
-  --output FILE         Also save the EPUB to this local file path
+  --output FILE         Also save the EPUB and markdown into a dedicated
+                        subdirectory at this path
   --no-email            Skip sending email (combine with --output to save only)
 ```
 
@@ -139,7 +143,10 @@ text flow. The EPUB has embedded CSS for comfortable reading on all e-readers,
 and the prompt used to generate the essay is included in the EPUB metadata.
 The script logs the run before generation starts so prompts are captured even
 if the OpenAI request fails, then logs a completion record after the EPUB is
-saved.
+saved. When the OpenAI response is available, the run log includes the response
+ID, token usage, and elapsed time. A second JSONL log captures per-step script
+events such as retries, content-image search results, EPUB creation, and email
+delivery outcomes.
 
 ---
 
@@ -154,6 +161,7 @@ saved.
 * **Images:** model-generated image hints are preferred. Wikimedia Commons
   images are freely licensed but attribution requirements vary, and lookups
   are rate-limited with retries. The image title/caption is embedded in the EPUB.
-* **Logging:** each run records a started event before generation and a
-  completed or failed event afterwards, with the title when available, the user
-  prompt, output path, and chosen models in `output/logs/essay_runs.jsonl`.
+* **Logging:** `output/logs/essay_runs.jsonl` records the prompt audit trail
+  plus response metadata such as token usage and elapsed time when available,
+  and `output/logs/script_events.jsonl` records detailed step-by-step events,
+  including retries, image selection, EPUB creation, and email delivery.
