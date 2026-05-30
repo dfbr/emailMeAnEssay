@@ -20,6 +20,8 @@ Environment variables (or .env file):
 
 Runtime notes:
     - The essay body is generated with GPT-5.5 via the Responses API.
+        - The text and image models can be overridden with --text-model and
+            --image-model; their defaults are gpt-5.5 and gpt-image-2.
     - The run prompt is logged to output/logs/essay_runs.jsonl.
     - The generated EPUB metadata includes the user prompt.
     - Content images prefer model-provided image suggestions, then fall
@@ -337,13 +339,6 @@ def _to_jpeg(raw: bytes) -> bytes | None:
 # ---------------------------------------------------------------------------
 # Cover image
 # ---------------------------------------------------------------------------
-
-def generate_cover_image(client: OpenAI, title: str) -> bytes:
-    """Generate a cover via the GPT image API, falling back to a Pillow-drawn cover."""
-    print("Generating cover image…")
-
-    raise NotImplementedError
-
 
 def generate_cover_image(client: OpenAI, title: str, image_model: str) -> bytes:
     """Generate a cover via the GPT image API, falling back to a Pillow-drawn cover."""
@@ -759,7 +754,7 @@ def build_arg_parser() -> argparse.ArgumentParser:
     p.add_argument(
         "--no-cover",
         action="store_true",
-        help="Use a simple generated cover instead of DALL-E",
+        help="Use a simple generated cover instead of the image model",
     )
     p.add_argument(
         "--output",
