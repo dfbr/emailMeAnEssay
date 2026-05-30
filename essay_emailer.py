@@ -211,6 +211,28 @@ def _build_openai_client(api_key: str, text_model: str | None = None) -> OpenAI:
     return OpenAI(api_key=api_key, timeout=request_timeout, max_retries=0, http_client=http_client)
 
 
+def _build_openai_image_client(api_key: str) -> OpenAI:
+    # Image generation can take longer to produce the first bytes than text responses.
+    request_timeout = 300.0
+    http_client = httpx.Client(
+        http2=False,
+        trust_env=False,
+        timeout=httpx.Timeout(request_timeout, connect=30.0),
+        limits=httpx.Limits(max_connections=10, max_keepalive_connections=0),
+    )
+    return OpenAI(api_key=api_key, timeout=request_timeout, max_retries=0, http_client=http_client)
+
+
+def _error_details(exc: Exception) -> str:
+    message = str(exc)
+    cause = getattr(exc, "__cause__", None)
+    if cause is not None:
+        cause_message = str(cause)
+        if cause_message and cause_message != message:
+            return f"{message} | cause={cause.__class__.__name__}: {cause_message}"
+    return message
+
+
 def _responses_request_kwargs(text_model: str) -> dict[str, Any]:
     request_kwargs: dict[str, Any] = {
         "text": {"verbosity": "medium"},
@@ -309,6 +331,7 @@ def _retry_openai_call(
                     delay_seconds=delay_seconds,
                     error_type=exc.__class__.__name__,
                     error_message=str(exc),
+                    error_details=_error_details(exc),
                 )
         except Exception as exc:
             if _is_insufficient_quota_error(exc):
@@ -404,6 +427,55 @@ def _default_image_title(url: str) -> str:
     return name or "Referenced image"
 
 
+def _commons_file_name_from_url(url: str) -> str | None:
+    parsed = urlparse(url)
+    host = (parsed.netloc or "").lower()
+    path = parsed.path
+
+    if host == "commons.wikimedia.org":
+        if path.startswith("/wiki/File:"):
+            file_name = unquote(path[len("/wiki/File:"):]).strip()
+            return file_name or None
+        if path.startswith("/wiki/Special:FilePath/"):
+            file_name = unquote(path[len("/wiki/Special:FilePath/"):]).strip()
+            return file_name or None
+        if path.startswith("/wiki/Special:Redirect/file/"):
+            file_name = unquote(path[len("/wiki/Special:Redirect/file/"):]).strip()
+            return file_name or None
+
+    if host == "upload.wikimedia.org":
+        name = unquote(Path(path).name).strip()
+        return name or None
+
+    return None
+
+
+def _resolve_commons_file_url(file_name: str) -> tuple[str, str] | None:
+    params = {
+        "action": "query",
+        "format": "json",
+        "titles": f"File:{file_name}",
+        "prop": "imageinfo",
+        "iiprop": "url",
+    }
+    try:
+        resp = _rate_limited_get("https://commons.wikimedia.org/w/api.php", params=params)
+        data = resp.json()
+    except Exception:
+        return None
+
+    pages = data.get("query", {}).get("pages", {})
+    for page in pages.values():
+        if "missing" in page:
+            return None
+        title = (page.get("title") or "").replace("File:", "").strip()
+        for info in page.get("imageinfo", []):
+            url = info.get("url")
+            if url:
+                return url, (title or file_name)
+    return None
+
+
 def _normalize_image_url(url: str) -> str | None:
     if not _is_trusted_image_url(url):
         return None
@@ -418,24 +490,55 @@ def _normalize_image_url(url: str) -> str | None:
     return url
 
 
+def _resolve_image_reference(url: str, title: str) -> dict[str, str] | None:
+    normalized = _normalize_image_url(url)
+    if not normalized:
+        return None
+
+    parsed = urlparse(normalized)
+    host = (parsed.netloc or "").lower()
+    if host.endswith("wikimedia.org") or host.endswith("wikipedia.org"):
+        file_name = _commons_file_name_from_url(normalized)
+        if file_name:
+            resolved = _resolve_commons_file_url(file_name)
+            if resolved:
+                resolved_url, resolved_title = resolved
+                return {
+                    "url": resolved_url,
+                    "title": title.strip() or resolved_title,
+                }
+            return None
+
+    return {
+        "url": normalized,
+        "title": title.strip() or _default_image_title(normalized),
+    }
+
+
 def extract_image_urls(content: str) -> list[dict[str, str]]:
     """Return trusted direct image URLs embedded in markdown or hidden comments."""
     seen: set[str] = set()
     refs: list[dict[str, str]] = []
 
     for alt, url in re.findall(r"!\[([^\]]*)\]\((https?://[^)\s]+)(?:\s+\&quot;[^\&]*\&quot;|\s+\"[^\"]*\")?\)", content):
-        cleaned = _normalize_image_url(url.strip())
-        if not cleaned or cleaned in seen:
+        resolved = _resolve_image_reference(url.strip(), alt.strip())
+        if not resolved:
             continue
-        seen.add(cleaned)
-        refs.append({"url": cleaned, "title": alt.strip() or _default_image_title(cleaned)})
+        cleaned_url = resolved["url"]
+        if cleaned_url in seen:
+            continue
+        seen.add(cleaned_url)
+        refs.append(resolved)
 
     for url in re.findall(r"<!--\s*IMAGE_URL:\s*(https?://.+?)\s*-->", content, re.IGNORECASE):
-        cleaned = _normalize_image_url(url.strip())
-        if not cleaned or cleaned in seen:
+        resolved = _resolve_image_reference(url.strip(), "")
+        if not resolved:
             continue
-        seen.add(cleaned)
-        refs.append({"url": cleaned, "title": _default_image_title(cleaned)})
+        cleaned_url = resolved["url"]
+        if cleaned_url in seen:
+            continue
+        seen.add(cleaned_url)
+        refs.append(resolved)
 
     return refs[:5]
 
@@ -711,6 +814,7 @@ def generate_cover_image(api_key: str, title: str, image_model: str, run_id: str
             lambda: _generate_cover_once(api_key=api_key, prompt=prompt, image_model=image_model),
             action_name="cover generation",
             run_id=run_id,
+            attempts=5,
         )
         raw = _extract_generated_image_bytes(resp)
         if raw:
@@ -733,12 +837,11 @@ def generate_cover_image(api_key: str, title: str, image_model: str, run_id: str
 
 
 def _generate_cover_once(*, api_key: str, prompt: str, image_model: str):
-    with _build_openai_client(api_key) as client:
+    with _build_openai_image_client(api_key) as client:
         return client.images.generate(
             model=image_model,
             prompt=prompt,
             size="1024x1024",
-            quality="high",
         )
 
 
