@@ -51,6 +51,7 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from pathlib import Path
 from typing import Any
+from urllib.parse import quote, unquote, urlparse
 
 import markdown
 import httpx
@@ -193,13 +194,13 @@ def _is_insufficient_quota_error(exc: Exception) -> bool:
 # Essay generation
 # ---------------------------------------------------------------------------
 
-def _responses_timeout(text_model: str) -> float:
-    if text_model.startswith("gpt-5"):
+def _responses_timeout(text_model: str | None = None) -> float:
+    if text_model and text_model.startswith("gpt-5"):
         return 600.0
     return 120.0
 
 
-def _build_openai_client(api_key: str, text_model: str) -> OpenAI:
+def _build_openai_client(api_key: str, text_model: str | None = None) -> OpenAI:
     request_timeout = _responses_timeout(text_model)
     http_client = httpx.Client(
         http2=False,
@@ -379,6 +380,66 @@ def extract_image_suggestions(content: str) -> list[str]:
     return unique[:5]
 
 
+_TRUSTED_IMAGE_HOSTS = (
+    "upload.wikimedia.org",
+    "commons.wikimedia.org",
+    "wikipedia.org",
+    "wikimedia.org",
+)
+
+
+def _is_trusted_image_url(url: str) -> bool:
+    try:
+        parsed = urlparse(url)
+    except Exception:
+        return False
+    host = (parsed.netloc or "").lower()
+    if parsed.scheme != "https" or not host:
+        return False
+    return any(host == trusted or host.endswith(f".{trusted}") for trusted in _TRUSTED_IMAGE_HOSTS)
+
+
+def _default_image_title(url: str) -> str:
+    name = Path(urlparse(url).path).name
+    return name or "Referenced image"
+
+
+def _normalize_image_url(url: str) -> str | None:
+    if not _is_trusted_image_url(url):
+        return None
+    parsed = urlparse(url)
+    host = (parsed.netloc or "").lower()
+    path = parsed.path
+    if host == "commons.wikimedia.org" and path.startswith("/wiki/File:"):
+        file_name = unquote(path[len("/wiki/File:"):]).strip()
+        if not file_name:
+            return None
+        return f"https://commons.wikimedia.org/wiki/Special:FilePath/{quote(file_name)}"
+    return url
+
+
+def extract_image_urls(content: str) -> list[dict[str, str]]:
+    """Return trusted direct image URLs embedded in markdown or hidden comments."""
+    seen: set[str] = set()
+    refs: list[dict[str, str]] = []
+
+    for alt, url in re.findall(r"!\[([^\]]*)\]\((https?://[^)\s]+)(?:\s+\&quot;[^\&]*\&quot;|\s+\"[^\"]*\")?\)", content):
+        cleaned = _normalize_image_url(url.strip())
+        if not cleaned or cleaned in seen:
+            continue
+        seen.add(cleaned)
+        refs.append({"url": cleaned, "title": alt.strip() or _default_image_title(cleaned)})
+
+    for url in re.findall(r"<!--\s*IMAGE_URL:\s*(https?://.+?)\s*-->", content, re.IGNORECASE):
+        cleaned = _normalize_image_url(url.strip())
+        if not cleaned or cleaned in seen:
+            continue
+        seen.add(cleaned)
+        refs.append({"url": cleaned, "title": _default_image_title(cleaned)})
+
+    return refs[:5]
+
+
 _WIKIMEDIA_LAST_REQUEST_AT = 0.0
 _WIKIMEDIA_MIN_REQUEST_INTERVAL = 1.0
 
@@ -419,15 +480,48 @@ def _rate_limited_get(url: str, *, params: dict | None = None, stream: bool = Fa
 # Image sourcing – Wikimedia Commons (no API key required)
 # ---------------------------------------------------------------------------
 
-def search_wikimedia_images(query: str, max_images: int = 2) -> list[dict]:
-    """Search Wikimedia Commons for freely-licensed bitmap images."""
-    print(f"  Searching Wikimedia Commons for: {query!r}")
+def _wikimedia_query_variants(query: str) -> list[str]:
+    variants: list[str] = []
+
+    def _add(value: str) -> None:
+        cleaned = re.sub(r"\s+", " ", value).strip(" ,.-")
+        if cleaned and cleaned not in variants:
+            variants.append(cleaned)
+
+    _add(query)
+
+    lowered = query.lower()
+    for separator in (" with ", " showing ", " featuring ", " depicting ", " celebrating ", " and beyond", ","):
+        if separator in lowered:
+            prefix = query[:lowered.index(separator)]
+            _add(prefix)
+
+    token_stopwords = {
+        "a", "an", "and", "at", "between", "beyond", "by", "during", "for",
+        "from", "in", "into", "of", "on", "showing", "the", "to", "visible", "with",
+    }
+    tokens = re.findall(r"[A-Za-z0-9']+", query)
+    keyword_tokens = [
+        token
+        for token in tokens
+        if token.lower() not in token_stopwords and (token.isdigit() or len(token) >= 4 or token.upper() == token)
+    ]
+    _add(" ".join(keyword_tokens[:8]))
+
+    years = [token for token in tokens if re.fullmatch(r"\d{4}", token)]
+    if years and {"fifa", "world", "cup"}.issubset({token.lower() for token in tokens}):
+        _add(f"{years[0]} FIFA World Cup")
+
+    return variants[:5]
+
+
+def _search_wikimedia_images_once(query: str, max_images: int, *, use_bitmap_filter: bool) -> list[dict]:
     params = {
         "action": "query",
         "format": "json",
         "generator": "search",
         "gsrnamespace": "6",
-        "gsrsearch": f"filetype:bitmap {query}",
+        "gsrsearch": f"filetype:bitmap {query}" if use_bitmap_filter else query,
         "gsrlimit": str(max_images * 4),
         "prop": "imageinfo",
         "iiprop": "url|size|mediatype",
@@ -458,6 +552,25 @@ def search_wikimedia_images(query: str, max_images: int = 2) -> list[dict]:
     return results
 
 
+def search_wikimedia_images(query: str, max_images: int = 2) -> list[dict]:
+    """Search Wikimedia Commons for freely-licensed bitmap images."""
+    print(f"  Searching Wikimedia Commons for: {query!r}")
+    variants = _wikimedia_query_variants(query)
+    seen_titles: set[str] = set()
+    results: list[dict] = []
+    for variant in variants:
+        for use_bitmap_filter in (True, False):
+            for item in _search_wikimedia_images_once(variant, max_images=max_images, use_bitmap_filter=use_bitmap_filter):
+                title = item["title"]
+                if title in seen_titles:
+                    continue
+                seen_titles.add(title)
+                results.append(item)
+                if len(results) >= max_images:
+                    return results
+    return results
+
+
 def _download_bytes(url: str) -> bytes | None:
     """Download a URL and return raw bytes, or *None* on failure."""
     try:
@@ -469,28 +582,91 @@ def _download_bytes(url: str) -> bytes | None:
     return None
 
 
-def fetch_content_images(image_queries: list[str], fallback_topics: list[str], run_id: str) -> list[dict]:
+def _rewrite_markdown_image_urls(content_md: str, url_map: dict[str, str]) -> str:
+    if not url_map:
+        return content_md
+
+    def _replace(match: re.Match) -> str:
+        alt_text = match.group(1)
+        source_url = match.group(2).strip()
+        mapped = url_map.get(source_url)
+        if not mapped:
+            return match.group(0)
+        return f"![{alt_text}]({mapped})"
+
+    return re.sub(r"!\[([^\]]*)\]\((https?://[^)\s]+)(?:\s+\&quot;[^\&]*\&quot;|\s+\"[^\"]*\")?\)", _replace, content_md)
+
+
+def fetch_content_images(
+    image_urls: list[dict[str, str]],
+    image_queries: list[str],
+    fallback_topics: list[str],
+    run_id: str,
+) -> list[dict]:
     """Download one image per query, preferring model-provided image suggestions."""
     print("Fetching content images…")
+    direct_urls = [item["url"] for item in image_urls]
+    queries = _unique_preserving_order(image_queries) if image_queries else _unique_preserving_order(fallback_topics)
     _log_script_event(
         run_id,
         "content_image_search_start",
+        direct_image_urls=direct_urls,
         suggested_queries=image_queries,
         fallback_topics=fallback_topics,
+        active_queries=queries,
     )
     images: list[dict] = []
-    queries = _unique_preserving_order(image_queries + fallback_topics)
+    seen_titles: set[str] = set()
+    if image_urls:
+        for ref in image_urls:
+            raw = _download_bytes(ref["url"])
+            if not raw:
+                continue
+            jpeg = _to_jpeg(raw)
+            if not jpeg:
+                continue
+            title = ref["title"] or _default_image_title(ref["url"])
+            seen_titles.add(title)
+            images.append(
+                {
+                    "bytes": jpeg,
+                    "title": title,
+                    "inline": True,
+                    "source_url": ref["url"],
+                }
+            )
+            if len(images) >= 5:
+                break
+        if len(images) >= 5:
+            _log_script_event(
+                run_id,
+                "content_image_search_complete",
+                image_count=len(images),
+                query_count=0,
+                direct_url_count=len(direct_urls),
+            )
+            return images
+
     for query in queries:
         for meta in search_wikimedia_images(query, max_images=1):
+            if meta["title"] in seen_titles:
+                continue
             raw = _download_bytes(meta["url"])
             if raw:
                 jpeg = _to_jpeg(raw)
                 if jpeg:
+                    seen_titles.add(meta["title"])
                     images.append({"bytes": jpeg, "title": meta["title"]})
                     break  # one image per query
         if len(images) >= 5:
             break
-    _log_script_event(run_id, "content_image_search_complete", image_count=len(images), query_count=len(queries))
+    _log_script_event(
+        run_id,
+        "content_image_search_complete",
+        image_count=len(images),
+        query_count=len(queries),
+        direct_url_count=len(direct_urls),
+    )
     return images
 
 
@@ -1081,9 +1257,17 @@ def main() -> None:
     # 2 – Fetch content images
     content_images: list[dict] = []
     if not args.no_images:
+        image_urls = extract_image_urls(content_md)
         image_queries = extract_image_suggestions(content_md)
         fallback_topics = extract_key_topics(title, content_md)
-        content_images = fetch_content_images(image_queries, fallback_topics, run_id)
+        content_images = fetch_content_images(image_urls, image_queries, fallback_topics, run_id)
+        inline_url_map: dict[str, str] = {}
+        for idx, item in enumerate(content_images):
+            source_url = item.get("source_url")
+            if source_url:
+                inline_url_map[source_url] = f"images/content_{idx}.jpg"
+        if inline_url_map:
+            content_md = _rewrite_markdown_image_urls(content_md, inline_url_map)
         print(f"  {len(content_images)} content image(s) collected.")
     else:
         _log_script_event(run_id, "content_image_search_skipped", reason="--no-images")
