@@ -242,6 +242,291 @@ def _responses_request_kwargs(text_model: str) -> dict[str, Any]:
     return request_kwargs
 
 
+_TESTED_TEXT_MODELS = {"gpt-4.1-mini", "gpt-5.5"}
+
+
+def _is_tested_text_model(text_model: str) -> bool:
+    return text_model in _TESTED_TEXT_MODELS
+
+
+def _should_use_chunked_generation(text_model: str) -> bool:
+    # gpt-5.5 long-form calls are more reliable when split into coherent sections.
+    return text_model.startswith("gpt-5.5")
+
+
+def _merge_usage_summaries(summaries: list[dict[str, Any] | None]) -> dict[str, Any] | None:
+    merged: dict[str, Any] = {}
+    for key in ("input_tokens", "output_tokens", "total_tokens"):
+        values: list[int] = []
+        for summary in summaries:
+            if not summary:
+                continue
+            value = summary.get(key)
+            if isinstance(value, int):
+                values.append(value)
+        if values:
+            merged[key] = sum(values)
+    call_count = sum(1 for s in summaries if s)
+    if call_count:
+        merged["calls"] = call_count
+    return merged or None
+
+
+def _extract_plan_field(plan_text: str, field: str) -> str | None:
+    pattern = re.compile(rf"^{field}:\s*(.+)$", re.IGNORECASE | re.MULTILINE)
+    match = pattern.search(plan_text)
+    if not match:
+        return None
+    return match.group(1).strip() or None
+
+
+def _extract_plan_sections(plan_text: str) -> list[str]:
+    matches = re.findall(r"^\s*(?:\d+\.|[-*])\s+(.+)$", plan_text, re.MULTILINE)
+    sections = _unique_preserving_order([m.strip() for m in matches])
+    return sections[:12]
+
+
+def _default_chunk_sections(user_prompt: str) -> list[str]:
+    prompt_title = user_prompt.strip().rstrip(".?!")
+    if len(prompt_title) > 90:
+        prompt_title = prompt_title[:90].rstrip()
+    topic = prompt_title or "the requested topic"
+    return [
+        f"Origins and Historical Context of {topic}",
+        f"Key Figures and Turning Points in {topic}",
+        f"Narrative Evolution and Public Reception of {topic}",
+        f"Economic Impact and Industry Effects of {topic}",
+        f"Global Cultural Influence of {topic}",
+        f"Critiques, Debates, and Counterarguments Around {topic}",
+        f"Contemporary Relevance of {topic}",
+        f"Conclusion: Long-Term Significance of {topic}",
+    ]
+
+
+def _strip_duplicate_heading(section_md: str, section_heading: str) -> str:
+    lines = section_md.splitlines()
+    if not lines:
+        return section_md
+    first_non_empty = next((i for i, line in enumerate(lines) if line.strip()), None)
+    if first_non_empty is None:
+        return section_md
+    first_line = lines[first_non_empty].strip()
+    normalized = section_heading.strip().lower()
+    if first_line.startswith("## ") and first_line[3:].strip().lower() == normalized:
+        return section_md
+    if first_line.startswith("# ") and first_line[2:].strip().lower() == normalized:
+        lines[first_non_empty] = f"## {section_heading}"
+        return "\n".join(lines).strip()
+    return f"## {section_heading}\n\n{section_md.strip()}"
+
+
+def _remove_top_level_heading(markdown_text: str) -> str:
+    lines = markdown_text.splitlines()
+    for idx, line in enumerate(lines):
+        if line.strip().startswith("# "):
+            del lines[idx]
+            break
+        if line.strip():
+            break
+    return "\n".join(lines).strip()
+
+
+def _generate_chunk_plan_once(
+    *,
+    api_key: str,
+    system_prompt: str,
+    user_prompt: str,
+    text_model: str,
+):
+    planning_prompt = (
+        "Create a precise long-form writing plan for the requested essay. "
+        "The final essay target is 5000-10000 words with a single coherent voice. "
+        "Return plain text in exactly this structure:\n"
+        "TITLE: <concise title>\n"
+        "STYLE_BRIEF: <one sentence that locks tone/voice/style>\n"
+        "SECTION_HEADINGS:\n"
+        "1. <heading>\n"
+        "2. <heading>\n"
+        "...\n"
+        "Use 7-10 sections, in a logical narrative sequence, ending in a conclusion section.\n\n"
+        f"User request:\n{user_prompt}"
+    )
+    with _build_openai_client(api_key, text_model) as client:
+        return client.responses.create(
+            model=text_model,
+            instructions=system_prompt,
+            input=planning_prompt,
+            **_responses_request_kwargs(text_model),
+        )
+
+
+def _generate_chunk_section_once(
+    *,
+    api_key: str,
+    system_prompt: str,
+    text_model: str,
+    title: str,
+    style_brief: str,
+    outline_sections: list[str],
+    section_heading: str,
+    section_index: int,
+    section_count: int,
+    target_words: int,
+    prior_context: str,
+):
+    outline_block = "\n".join(f"{idx + 1}. {heading}" for idx, heading in enumerate(outline_sections))
+    section_prompt = (
+        "Write one section of an essay in markdown.\n"
+        f"Essay title: {title}\n"
+        f"Locked style: {style_brief}\n"
+        f"Section {section_index + 1} of {section_count}: {section_heading}\n"
+        f"Target length for this section: about {target_words} words.\n"
+        "Keep voice, rhythm, and terminology consistent with prior sections. "
+        "Use factual claims only; if uncertain, qualify briefly instead of inventing details.\n\n"
+        "Full outline:\n"
+        f"{outline_block}\n\n"
+        "Most recent context from already-written sections (for continuity, do not repeat verbatim):\n"
+        f"{prior_context or '[none]'}\n\n"
+        "Output requirements:\n"
+        "- Output markdown only for this section.\n"
+        "- Start with a level-2 heading for this section.\n"
+        "- Do not include references list or appendix.\n"
+        "- Do not include a top-level title heading."
+    )
+    with _build_openai_client(api_key, text_model) as client:
+        return client.responses.create(
+            model=text_model,
+            instructions=system_prompt,
+            input=section_prompt,
+            **_responses_request_kwargs(text_model),
+        )
+
+
+def _generate_essay_chunked(
+    *,
+    api_key: str,
+    system_prompt: str,
+    user_prompt: str,
+    text_model: str,
+    run_id: str,
+) -> tuple[str, str, dict[str, Any]]:
+    _log_script_event(run_id, "essay_chunked_plan_start", text_model=text_model)
+    outline_started_at = time.monotonic()
+    outline_response = _retry_openai_call(
+        lambda: _generate_chunk_plan_once(
+            api_key=api_key,
+            system_prompt=system_prompt,
+            user_prompt=user_prompt,
+            text_model=text_model,
+        ),
+        action_name="essay outline generation",
+        run_id=run_id,
+    )
+    plan_text = (outline_response.output_text or "").strip()
+    plan_title = _extract_plan_field(plan_text, "TITLE")
+    style_brief = _extract_plan_field(plan_text, "STYLE_BRIEF") or "Clear, narrative business prose with consistent voice."
+    sections = _extract_plan_sections(plan_text)
+    if len(sections) < 6:
+        sections = _default_chunk_sections(user_prompt)
+
+    title = plan_title or _extract_title(plan_text) or _extract_title(user_prompt)
+    outline_usage = _usage_summary(getattr(outline_response, "usage", None))
+    outline_elapsed = time.monotonic() - outline_started_at
+    _log_script_event(
+        run_id,
+        "essay_chunked_plan_success",
+        text_model=text_model,
+        title=title,
+        section_count=len(sections),
+        usage=outline_usage,
+        response_id=getattr(outline_response, "id", None),
+        elapsed_seconds=round(outline_elapsed, 3),
+    )
+
+    total_target_words = 7000
+    per_section_target = max(550, total_target_words // max(len(sections), 1))
+    written_sections: list[str] = []
+    response_ids: list[str] = []
+    usage_summaries: list[dict[str, Any] | None] = [outline_usage]
+    elapsed_total = outline_elapsed
+    first_response_id = getattr(outline_response, "id", None)
+    if first_response_id:
+        response_ids.append(first_response_id)
+
+    for idx, section_heading in enumerate(sections):
+        prior_context = "\n\n".join(written_sections)[-2200:]
+        _log_script_event(
+            run_id,
+            "essay_chunked_section_start",
+            text_model=text_model,
+            section_index=idx + 1,
+            section_count=len(sections),
+            section_heading=section_heading,
+            target_words=per_section_target,
+        )
+        section_started_at = time.monotonic()
+        section_response = _retry_openai_call(
+            lambda heading=section_heading, context=prior_context: _generate_chunk_section_once(
+                api_key=api_key,
+                system_prompt=system_prompt,
+                text_model=text_model,
+                title=title,
+                style_brief=style_brief,
+                outline_sections=sections,
+                section_heading=heading,
+                section_index=idx,
+                section_count=len(sections),
+                target_words=per_section_target,
+                prior_context=context,
+            ),
+            action_name=f"essay section {idx + 1} generation",
+            run_id=run_id,
+        )
+        section_md = (section_response.output_text or "").strip()
+        section_md = _remove_top_level_heading(section_md)
+        section_md = _strip_duplicate_heading(section_md, section_heading)
+        written_sections.append(section_md)
+
+        section_usage = _usage_summary(getattr(section_response, "usage", None))
+        usage_summaries.append(section_usage)
+        section_response_id = getattr(section_response, "id", None)
+        if section_response_id:
+            response_ids.append(section_response_id)
+        section_elapsed = time.monotonic() - section_started_at
+        elapsed_total += section_elapsed
+        _log_script_event(
+            run_id,
+            "essay_chunked_section_success",
+            text_model=text_model,
+            section_index=idx + 1,
+            section_count=len(sections),
+            section_heading=section_heading,
+            output_chars=len(section_md),
+            usage=section_usage,
+            response_id=section_response_id,
+            elapsed_seconds=round(section_elapsed, 3),
+        )
+
+    full_md = f"# {title}\n\n" + "\n\n".join(written_sections).strip()
+    merged_usage = _merge_usage_summaries(usage_summaries)
+    _log_script_event(
+        run_id,
+        "essay_chunked_complete",
+        text_model=text_model,
+        title=title,
+        section_count=len(sections),
+        output_chars=len(full_md),
+        response_ids=response_ids,
+        usage=merged_usage,
+        elapsed_seconds=round(elapsed_total, 3),
+    )
+    return title, full_md, {
+        "response_id": response_ids[0] if response_ids else None,
+        "usage": merged_usage,
+        "elapsed_seconds": elapsed_total,
+    }
+
+
 def generate_essay(
     api_key: str,
     system_prompt: str,
@@ -251,32 +536,47 @@ def generate_essay(
 ) -> tuple[str, str, dict[str, Any]]:
     """Call the OpenAI Responses API and return *(title, markdown_content)*."""
     print(f"Generating essay with OpenAI using {text_model}…")
+    generation_mode = "chunked" if _should_use_chunked_generation(text_model) else "single"
     _log_script_event(
         run_id,
         "essay_generation_start",
         text_model=text_model,
+        generation_mode=generation_mode,
         prompt_length=len(user_prompt),
     )
     started_at = time.monotonic()
-    response = _retry_openai_call(
-        lambda: _generate_essay_once(
+    if _should_use_chunked_generation(text_model):
+        title, content, meta = _generate_essay_chunked(
             api_key=api_key,
             system_prompt=system_prompt,
             user_prompt=user_prompt,
             text_model=text_model,
-        ),
-        action_name="essay generation",
-        run_id=run_id,
-    )
-    content = response.output_text or ""
-    title = _extract_title(content)
-    usage = _usage_summary(getattr(response, "usage", None))
+            run_id=run_id,
+        )
+        usage = meta.get("usage")
+        response_id = meta.get("response_id")
+    else:
+        response = _retry_openai_call(
+            lambda: _generate_essay_once(
+                api_key=api_key,
+                system_prompt=system_prompt,
+                user_prompt=user_prompt,
+                text_model=text_model,
+            ),
+            action_name="essay generation",
+            run_id=run_id,
+        )
+        content = response.output_text or ""
+        title = _extract_title(content)
+        usage = _usage_summary(getattr(response, "usage", None))
+        response_id = getattr(response, "id", None)
+
     elapsed_seconds = time.monotonic() - started_at
-    response_id = getattr(response, "id", None)
     _log_script_event(
         run_id,
         "essay_generation_success",
         text_model=text_model,
+        generation_mode=generation_mode,
         title=title,
         output_chars=len(content),
         response_id=response_id,
@@ -1302,6 +1602,19 @@ def main() -> None:
     )
 
     run_id = str(uuid.uuid4())
+    if not _is_tested_text_model(args.text_model):
+        tested_models = ", ".join(sorted(_TESTED_TEXT_MODELS))
+        print(
+            f"Warning: text model '{args.text_model}' is not in tested models ({tested_models}). "
+            "Proceeding with safe defaults; behavior may vary."
+        )
+        _log_script_event(
+            run_id,
+            "untested_text_model_warning",
+            text_model=args.text_model,
+            tested_models=sorted(_TESTED_TEXT_MODELS),
+        )
+
     _log_script_event(
         run_id,
         "run_start",

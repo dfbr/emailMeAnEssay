@@ -12,7 +12,7 @@ Kindle's personal-document address.
 
 | Feature | Detail |
 |---|---|
-| **Essay generation** | GPT-5.5 via the Responses API, configurable with `--text-model` |
+| **Essay generation** | GPT-5.5 via the Responses API, configurable with `--text-model` (GPT-5.5 uses chunked section generation for long-form reliability) |
 | **Cover image** | GPT Image, configurable with `--image-model`; falls back to a styled Pillow image if unavailable |
 | **Content images** | Model-suggested image hints first, then rate-limited Wikimedia Commons fallback |
 | **EPUB output** | Valid EPUB 3 with embedded CSS, cover, images, prompt metadata, and one subdirectory per essay bundle |
@@ -154,6 +154,9 @@ delivery outcomes.
 
 * **Kindle:** add your Gmail (or other sending address) to the list of
   approved senders in your Amazon account before sending.
+* **Model safety:** the script has tested profiles for `gpt-4.1-mini` and
+  `gpt-5.5`. Other text models are still allowed, but the script prints and logs
+  a warning that behavior may vary.
 * **Costs:** each run uses GPT-5.5 for text generation and, unless
   `--no-cover` is passed, GPT Image for cover creation by default. You can
   override both with `--text-model` and `--image-model`. Check
