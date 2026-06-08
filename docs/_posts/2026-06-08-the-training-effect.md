@@ -1,18 +1,21 @@
 ---
 layout: essay
 title: "The Training Effect"
+date: 2026-06-08 00:00:00 +0000
 generated_at: 2026-06-08
 preview_slug: "Bodies, Minds, Records"
 preview_text: "From Milo of Croton to Roger Bannister, Soviet periodisation to wearable sensors, physical training has evolved from folklore into a science of adaptation. This essay traces the classic and modern ideas that reshaped sport, then asks what their deeper logic can teach us about learning, focus, creativity, and intellectual work."
-preview_image: "/essays/the-training-effect/images/preview_1200x630.jpg"
-epub_download: /essays/the-training-effect/the-training-effect.epub
+preview_image: "/assets/essays/the-training-effect/images/preview_1200x630.jpg"
+epub_download: "/assets/essays/the-training-effect/the-training-effect.epub"
+word_count: 7512
+run_id: "d545e296-f2c0-4b75-9a2a-f9cc000ffc64"
 ---
 
 # The Training Effect
 
 ## Introduction: The Human Engine and the Problem of Improvement
 
-![Milo of Croton (1821) - Vatican Museums.jpg](images/content_0.jpg)
+![Milo of Croton (1821) - Vatican Museums.jpg](/assets/essays/the-training-effect/images/content_0.jpg)
 
 *Image attribution: [Milo of Croton (1821) - Vatican Museums.jpg](https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Milo_of_Croton_%281821%29_-_Vatican_Museums.jpg/960px-Milo_of_Croton_%281821%29_-_Vatican_Museums.jpg) via Wikimedia Commons.*
 
@@ -38,7 +41,7 @@ This is why the history of training is also a history of disappointment with sim
 
 ## The Oldest Training Theory: Milo, Progressive Overload, and the Myth That Happens to Be True
 
-![Craftsbury Outdoor Center Sculling Camp 2016 Vermont 01.jpg](images/content_1.jpg)
+![Craftsbury Outdoor Center Sculling Camp 2016 Vermont 01.jpg](/assets/essays/the-training-effect/images/content_1.jpg)
 
 *Image attribution: [Craftsbury Outdoor Center Sculling Camp 2016 Vermont 01.jpg](https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Craftsbury_Outdoor_Center_Sculling_Camp_2016_Vermont_01.jpg/960px-Craftsbury_Outdoor_Center_Sculling_Camp_2016_Vermont_01.jpg) via Wikimedia Commons.*
 
@@ -62,7 +65,7 @@ But there is a difference between progressive overload and ritualised overloadin
 
 ## Fatigue, Recovery, and the Discovery That Rest Is Part of the Work
 
-![090115 Military bobsledders dominate 4-man National Championships (4901409501).jpg](images/content_2.jpg)
+![090115 Military bobsledders dominate 4-man National Championships (4901409501).jpg](/assets/essays/the-training-effect/images/content_2.jpg)
 
 *Image attribution: [090115 Military bobsledders dominate 4-man National Championships (4901409501).jpg](https://upload.wikimedia.org/wikipedia/commons/8/81/090115_Military_bobsledders_dominate_4-man_National_Championships_%284901409501%29.jpg) via Wikimedia Commons.*
 

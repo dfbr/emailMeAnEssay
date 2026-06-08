@@ -1,10 +1,14 @@
 ---
 layout: essay
 title: "The Economic Ideas That Still Run the World"
+date: 2026-06-01 00:00:00 +0000
 generated_at: 2026-06-01
 preview_slug: "Trade-Offs Rule Everything"
 preview_text: "A clear guide to the economic ideas behind prices, wages, budgets and policy choices, showing why every promise carries a cost."
-epub_download: /essays/the-economic-ideas-that-still-run-the-world/the-economic-ideas-that-still-run-the-world.epub
+preview_image: ""
+epub_download: "/assets/essays/the-economic-ideas-that-still-run-the-world/the-economic-ideas-that-still-run-the-world.epub"
+word_count: 12526
+run_id: "legacy-the-economic-ideas-that-still-run-the-world"
 ---
 
 # The Economic Ideas That Still Run the World

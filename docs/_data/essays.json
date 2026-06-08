@@ -12,6 +12,19 @@
     "run_id": "legacy-the-cisos-long-march"
   },
   {
+    "slug": "the-training-effect",
+    "title": "The Training Effect",
+    "generated_at": "2026-06-08",
+    "preview_slug": "Bodies, Minds, Records",
+    "preview_text": "From Milo of Croton to Roger Bannister, Soviet periodisation to wearable sensors, physical training has evolved from folklore into a science of adaptation. This essay traces the classic and modern ideas that reshaped sport, then asks what their deeper logic can teach us about learning, focus, creativity, and intellectual work.",
+    "preview_image": "/essays/the-training-effect/images/preview_1200x630.jpg",
+    "word_count": 7512,
+    "excerpt": "The Training Effect Introduction: The Human Engine and the Problem of Improvement *Image attribution: via Wikimedia Commons.* <!-- IMAGE: human engine athlete training historical gymnasium --> The most seductive idea in...",
+    "read_path": "/essays/the-training-effect/",
+    "epub_path": "/essays/the-training-effect/the-training-effect.epub",
+    "run_id": "d545e296-f2c0-4b75-9a2a-f9cc000ffc64"
+  },
+  {
     "slug": "the-great-ideas-of-artificial-intelligence",
     "title": "The Great Ideas of Artificial Intelligence",
     "generated_at": "2026-06-08",
@@ -36,18 +49,6 @@
     "run_id": "legacy-the-dinner-party-guide-to-political-ideologies"
   },
   {
-    "slug": "mario-the-plumber-who-built-a-kingdom",
-    "title": "Mario: The Plumber Who Built a Kingdom",
-    "generated_at": "2026-06-01",
-    "preview_slug": "Mario Built A Kingdom",
-    "preview_text": "How a pixelated arcade carpenter became Nintendo’s defining hero, revived home gaming, and turned a red cap and mustache into a global empire.",
-    "word_count": 1594,
-    "excerpt": "Mario: The Plumber Who Built a Kingdom Mario is more than just a video game character: he’s a cultural icon, a corporate mascot, and a figure whose influence stretches from Tokyo to Times Square, from arcade cabinets to...",
-    "read_path": "/essays/mario-the-plumber-who-built-a-kingdom/",
-    "epub_path": "/essays/mario-the-plumber-who-built-a-kingdom/mario-the-plumber-who-built-a-kingdom.epub",
-    "run_id": "legacy-mario-the-plumber-who-built-a-kingdom"
-  },
-  {
     "slug": "the-economic-ideas-that-still-run-the-world",
     "title": "The Economic Ideas That Still Run the World",
     "generated_at": "2026-06-01",
@@ -60,16 +61,16 @@
     "run_id": "legacy-the-economic-ideas-that-still-run-the-world"
   },
   {
-    "slug": "from-the-first-rifle-to-the-drone",
-    "title": "From Matchlocks to Drones: The Evolution of Modern Military Weaponry up to the Ukraine-Russia War",
-    "generated_at": "2026-05-30",
-    "preview_slug": "From Muskets To Drones",
-    "preview_text": "A sweeping look at how firearms, artillery, machine guns, and drones transformed warfare from early gunpowder battles to Ukraine’s modern front lines.",
-    "word_count": 1798,
-    "excerpt": "From Matchlocks to Drones: The Evolution of Modern Military Weaponry up to the Ukraine-Russia War The story of military weaponry is, in many ways, a story of human conflict writ large — a testament to ingenuity,...",
-    "read_path": "/essays/from-the-first-rifle-to-the-drone/",
-    "epub_path": "/essays/from-the-first-rifle-to-the-drone/from-the-first-rifle-to-the-drone.epub",
-    "run_id": "legacy-from-the-first-rifle-to-the-drone"
+    "slug": "mario-the-plumber-who-built-a-kingdom",
+    "title": "Mario: The Plumber Who Built a Kingdom",
+    "generated_at": "2026-06-01",
+    "preview_slug": "Mario Built A Kingdom",
+    "preview_text": "How a pixelated arcade carpenter became Nintendo’s defining hero, revived home gaming, and turned a red cap and mustache into a global empire.",
+    "word_count": 1594,
+    "excerpt": "Mario: The Plumber Who Built a Kingdom Mario is more than just a video game character: he’s a cultural icon, a corporate mascot, and a figure whose influence stretches from Tokyo to Times Square, from arcade cabinets to...",
+    "read_path": "/essays/mario-the-plumber-who-built-a-kingdom/",
+    "epub_path": "/essays/mario-the-plumber-who-built-a-kingdom/mario-the-plumber-who-built-a-kingdom.epub",
+    "run_id": "legacy-mario-the-plumber-who-built-a-kingdom"
   },
   {
     "slug": "world-cup-essay",
@@ -82,5 +83,17 @@
     "read_path": "/essays/world-cup-essay/",
     "epub_path": "/essays/world-cup-essay/world-cup-essay.epub",
     "run_id": "legacy-world-cup-essay"
+  },
+  {
+    "slug": "from-the-first-rifle-to-the-drone",
+    "title": "From Matchlocks to Drones: The Evolution of Modern Military Weaponry up to the Ukraine-Russia War",
+    "generated_at": "2026-05-30",
+    "preview_slug": "From Muskets To Drones",
+    "preview_text": "A sweeping look at how firearms, artillery, machine guns, and drones transformed warfare from early gunpowder battles to Ukraine’s modern front lines.",
+    "word_count": 1798,
+    "excerpt": "From Matchlocks to Drones: The Evolution of Modern Military Weaponry up to the Ukraine-Russia War The story of military weaponry is, in many ways, a story of human conflict writ large — a testament to ingenuity,...",
+    "read_path": "/essays/from-the-first-rifle-to-the-drone/",
+    "epub_path": "/essays/from-the-first-rifle-to-the-drone/from-the-first-rifle-to-the-drone.epub",
+    "run_id": "legacy-from-the-first-rifle-to-the-drone"
   }
 ]

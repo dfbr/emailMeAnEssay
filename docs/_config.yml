@@ -2,8 +2,9 @@ title: "Essays"
 description: "Long-form AI-generated essays"
 url: "https://essays.dfbr.co.uk"
 markdown: kramdown
+permalink: "/essays/:title/"
 plugins:
   - jekyll-feed
   - jekyll-paginate
 paginate: 5
-paginate_path: "/page:num/"
+paginate_path: "/page/:num/"

@@ -1,0 +1,42 @@
+---
+layout: default
+title: Essay Library
+---
+
+<h1>Essay Library</h1>
+
+<p>Every now and then I get curious about something and ask an LLM to generate an essay for me on a topic. Here are the results in case anyone else is interested in them. The usual caveats for LLM generated content apply <em>mistakes happen</em>.</p>
+
+{% if paginator.posts and paginator.posts.size > 0 %}
+<ul class="essay-list">
+{% for post in paginator.posts %}
+  <li class="essay-card">
+    {% if post.preview_image %}
+    <a href="{{ post.url | relative_url }}" class="card-image-link">
+      <img src="{{ post.preview_image | relative_url }}" alt="Preview image for {{ post.title }}" class="card-image" />
+    </a>
+    {% endif %}
+    <h2><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h2>
+    {% if post.preview_slug %}<p class="meta">{{ post.preview_slug }}</p>{% endif %}
+    <p class="meta">{{ post.generated_at | default: post.date | date: "%Y-%m-%d" }}{% if post.word_count %} • {{ post.word_count }} words{% endif %}</p>
+    <p>{{ post.preview_text | default: post.excerpt }}</p>
+    <p class="actions">
+      <a href="{{ post.url | relative_url }}">Read online</a>
+      {% if post.epub_download %}<a href="{{ post.epub_download | relative_url }}">Download EPUB</a>{% endif %}
+    </p>
+  </li>
+{% endfor %}
+</ul>
+
+<nav class="pagination">
+  {% if paginator.previous_page %}
+    <a href="{{ paginator.previous_page_path | relative_url }}">Newer</a>
+  {% endif %}
+  <span>Page {{ paginator.page }} of {{ paginator.total_pages }}</span>
+  {% if paginator.next_page %}
+    <a href="{{ paginator.next_page_path | relative_url }}">Older</a>
+  {% endif %}
+</nav>
+{% else %}
+<p>No essays published yet.</p>
+{% endif %}
