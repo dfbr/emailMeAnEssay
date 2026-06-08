@@ -2,8 +2,8 @@
 layout: essay
 title: "From Matchlocks to Drones: The Evolution of Modern Military Weaponry up to the Ukraine-Russia War"
 generated_at: 2026-05-30
-preview_slug: "From Matchlocks To Drones The"
-preview_text: "From Matchlocks to Drones: The Evolution of Modern Military Weaponry up to the Ukraine-Russia War The story of military weaponry is, in many ways, a story of human..."
+preview_slug: "From Muskets To Drones"
+preview_text: "A sweeping look at how firearms, artillery, machine guns, and drones transformed warfare from early gunpowder battles to Ukraine’s modern front lines."
 epub_download: /essays/from-the-first-rifle-to-the-drone/from-the-first-rifle-to-the-drone.epub
 ---
 

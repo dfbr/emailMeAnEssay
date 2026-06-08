@@ -2,8 +2,8 @@
 layout: essay
 title: "The Great Ideas of Artificial Intelligence"
 generated_at: 2026-06-08
-preview_slug: "The Great Ideas Of Artificial"
-preview_text: "The Great Ideas of Artificial Intelligence The Machine That Learned to Guess <!-- IMAGE: Alan Turing computer Manchester Mark I --> Artificial intelligence did not begin..."
+preview_slug: "Machines That Guess"
+preview_text: "Modern AI began with Turing’s question and now works by disciplined prediction, turning patterns in text into answers that can feel intelligent."
 epub_download: /essays/the-great-ideas-of-artificial-intelligence/the-great-ideas-of-artificial-intelligence.epub
 ---
 

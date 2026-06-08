@@ -2,8 +2,8 @@
 layout: essay
 title: "The Political and Social History of the FIFA World Cup: England’s Legacy and Global Contributions"
 generated_at: 2026-05-30
-preview_slug: "The Political And Social History"
-preview_text: "The Political and Social History of the FIFA World Cup: England’s Legacy and Global Contributions The FIFA World Cup, the grandest spectacle in international sport, is..."
+preview_slug: "Football’s Global Power Stage"
+preview_text: "How the World Cup became a mirror of politics, identity, and empire, with England’s uneasy legacy at the center of football’s global rise."
 epub_download: /essays/world-cup-essay/world-cup-essay.epub
 ---
 

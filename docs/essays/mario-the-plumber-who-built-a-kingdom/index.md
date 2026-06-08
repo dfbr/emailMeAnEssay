@@ -2,8 +2,8 @@
 layout: essay
 title: "Mario: The Plumber Who Built a Kingdom"
 generated_at: 2026-06-01
-preview_slug: "Mario The Plumber Who Built"
-preview_text: "Mario: The Plumber Who Built a Kingdom Mario is more than just a video game character: he’s a cultural icon, a corporate mascot, and a figure whose influence stretches..."
+preview_slug: "Mario Built A Kingdom"
+preview_text: "How a pixelated arcade carpenter became Nintendo’s defining hero, revived home gaming, and turned a red cap and mustache into a global empire."
 epub_download: /essays/mario-the-plumber-who-built-a-kingdom/mario-the-plumber-who-built-a-kingdom.epub
 ---
 

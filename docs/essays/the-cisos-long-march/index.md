@@ -2,8 +2,8 @@
 layout: essay
 title: "The CISO’s Long March"
 generated_at: 2026-06-08
-preview_slug: "The Ciso S Long March"
-preview_text: "The CISO’s Long March Introduction: The Executive Who Inherited the Breach The first thing a new chief information security officer often inherits is not a strategy. It..."
+preview_slug: "Security’s Long March"
+preview_text: "A sharp look at how the CISO became an enterprise risk leader, translating breaches, boards, regulators and technology into decisions."
 epub_download: /essays/the-cisos-long-march/the-cisos-long-march.epub
 ---
 

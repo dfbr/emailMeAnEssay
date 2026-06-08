@@ -2,8 +2,8 @@
 layout: essay
 title: "The Economic Ideas That Still Run the World"
 generated_at: 2026-06-01
-preview_slug: "The Economic Ideas That Still"
-preview_text: "The Economic Ideas That Still Run the World Introduction: Why Economics Is Really a Study of Trade-Offs Economics has an unfortunate reputation. To many people it sounds..."
+preview_slug: "Trade-Offs Rule Everything"
+preview_text: "A clear guide to the economic ideas behind prices, wages, budgets and policy choices, showing why every promise carries a cost."
 epub_download: /essays/the-economic-ideas-that-still-run-the-world/the-economic-ideas-that-still-run-the-world.epub
 ---
 

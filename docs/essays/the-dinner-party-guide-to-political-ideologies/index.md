@@ -2,8 +2,8 @@
 layout: essay
 title: "The Dinner-Party Guide to Political Ideologies"
 generated_at: 2026-06-07
-preview_slug: "The Dinner Party Guide To"
-preview_text: "The Dinner-Party Guide to Political Ideologies Why Ideologies Matter: The Maps People Mistake for the Territory <!-- IMAGE: political spectrum chart --> Political..."
+preview_slug: "Ideologies At Dinner"
+preview_text: "A witty guide to political ideologies as flawed maps that shape laws, parties, institutions, and arguments long after dinner is served."
 epub_download: /essays/the-dinner-party-guide-to-political-ideologies/the-dinner-party-guide-to-political-ideologies.epub
 ---
 
