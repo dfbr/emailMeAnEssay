@@ -3,7 +3,7 @@ layout: default
 ---
 <article class="essay">
   <header class="essay-header">
-    {% if page.preview_image %}
+    {% if page.preview_image != blank %}
     <img src="{{ page.preview_image | relative_url }}" alt="Preview image for {{ page.title }}" class="essay-preview-image" />
     {% endif %}
     <h1>{{ page.title }}</h1>
