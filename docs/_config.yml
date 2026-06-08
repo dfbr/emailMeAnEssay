@@ -1,0 +1,6 @@
+title: "Essays"
+description: "Long-form AI-generated essays"
+url: "https://essays.dfbr.co.uk"
+markdown: kramdown
+plugins:
+  - jekyll-feed
