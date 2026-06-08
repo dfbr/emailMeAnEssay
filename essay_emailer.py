@@ -1948,29 +1948,6 @@ def create_epub(
     chapters_md = _split_markdown_by_h2(content_md)
     chapter_items: list[epub.EpubHtml] = []
 
-    toc_entries_html = "\n".join(
-        f'  <li><a href="chapter_{idx + 1}.xhtml">{_xml_escape(chapter_meta["title"])}</a></li>'
-        for idx, chapter_meta in enumerate(chapters_md)
-    )
-    toc_page = epub.EpubHtml(title="Contents", file_name="contents.xhtml", lang="en")
-    toc_page.content = (
-        "<?xml version='1.0' encoding='utf-8'?>\n"
-        "<!DOCTYPE html>\n"
-        '<html xmlns="http://www.w3.org/1999/xhtml">\n'
-        "<head>\n"
-        f"  <title>{_xml_escape(title)} - Contents</title>\n"
-        '  <link rel="stylesheet" type="text/css" href="style/main.css"/>\n'
-        "</head>\n"
-        "<body>\n"
-        f"<h1>{_xml_escape(title)}</h1>\n"
-        "<h2>Contents</h2>\n"
-        f"<ol>\n{toc_entries_html}\n</ol>\n"
-        "</body>\n"
-        "</html>"
-    ).encode("utf-8")
-    toc_page.add_item(css_item)
-    book.add_item(toc_page)
-
     image_cursor = 0
     for idx, chapter_meta in enumerate(chapters_md):
         chapter_title = chapter_meta["title"]
@@ -2013,15 +1990,12 @@ def create_epub(
         chapter_items.append(chapter_item)
 
     book.toc = [
-        epub.Link("contents.xhtml", "Contents", "contents"),
-        *[
-            epub.Link(chapter.file_name, chapter.title, f"chapter-{idx + 1}")
-            for idx, chapter in enumerate(chapter_items)
-        ],
+        epub.Link(chapter.file_name, chapter.title, f"chapter-{idx + 1}")
+        for idx, chapter in enumerate(chapter_items)
     ]
     book.add_item(epub.EpubNcx())
     book.add_item(epub.EpubNav())
-    book.spine = ["nav", toc_page, *chapter_items]
+    book.spine = ["nav", *chapter_items]
 
     with tempfile.NamedTemporaryFile(suffix=".epub", delete=False) as tmp:
         tmp_path = tmp.name
