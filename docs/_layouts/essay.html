@@ -3,6 +3,9 @@ layout: default
 ---
 <article class="essay">
   <header class="essay-header">
+    {% if page.preview_image %}
+    <img src="{{ page.preview_image | relative_url }}" alt="Preview image for {{ page.title }}" class="essay-preview-image" />
+    {% endif %}
     <h1>{{ page.title }}</h1>
     {% if page.generated_at %}<p class="meta">Generated {{ page.generated_at }}</p>{% endif %}
     <p class="actions">
