@@ -11,9 +11,10 @@ title: Essay Library
 <ul class="essay-list">
 {% for post in paginator.posts %}
   <li class="essay-card">
-    {% if post.preview_image != blank %}
+    {% assign card_preview_image = post.preview_image | default: "" | strip %}
+    {% if card_preview_image != "" %}
     <a href="{{ post.url | relative_url }}" class="card-image-link">
-      <img src="{{ post.preview_image | relative_url }}" alt="Preview image for {{ post.title }}" class="card-image" />
+      <img src="{{ card_preview_image | relative_url }}" alt="Preview image for {{ post.title }}" class="card-image" />
     </a>
     {% endif %}
     <h2><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h2>
