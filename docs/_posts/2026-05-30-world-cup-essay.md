@@ -5,7 +5,6 @@ date: 2026-05-30 00:00:00 +0000
 generated_at: 2026-05-30
 preview_slug: "Football’s Global Power Stage"
 preview_text: "How the World Cup became a mirror of politics, identity, and empire, with England’s uneasy legacy at the center of football’s global rise."
-preview_image: ""
 epub_download: "/assets/essays/world-cup-essay/world-cup-essay.epub"
 word_count: 1994
 run_id: "legacy-world-cup-essay"

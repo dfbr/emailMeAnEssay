@@ -5,7 +5,6 @@ date: 2026-05-30 00:00:00 +0000
 generated_at: 2026-05-30
 preview_slug: "From Muskets To Drones"
 preview_text: "A sweeping look at how firearms, artillery, machine guns, and drones transformed warfare from early gunpowder battles to Ukraine’s modern front lines."
-preview_image: ""
 epub_download: "/assets/essays/from-the-first-rifle-to-the-drone/from-the-first-rifle-to-the-drone.epub"
 word_count: 1798
 run_id: "legacy-from-the-first-rifle-to-the-drone"

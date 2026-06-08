@@ -5,7 +5,6 @@ date: 2026-06-08 00:00:00 +0000
 generated_at: 2026-06-08
 preview_slug: "Machines That Guess"
 preview_text: "Modern AI began with Turing’s question and now works by disciplined prediction, turning patterns in text into answers that can feel intelligent."
-preview_image: ""
 epub_download: "/assets/essays/the-great-ideas-of-artificial-intelligence/the-great-ideas-of-artificial-intelligence.epub"
 word_count: 7348
 run_id: "legacy-the-great-ideas-of-artificial-intelligence"

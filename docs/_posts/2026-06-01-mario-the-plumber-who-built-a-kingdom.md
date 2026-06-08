@@ -5,7 +5,6 @@ date: 2026-06-01 00:00:00 +0000
 generated_at: 2026-06-01
 preview_slug: "Mario Built A Kingdom"
 preview_text: "How a pixelated arcade carpenter became Nintendo’s defining hero, revived home gaming, and turned a red cap and mustache into a global empire."
-preview_image: ""
 epub_download: "/assets/essays/mario-the-plumber-who-built-a-kingdom/mario-the-plumber-who-built-a-kingdom.epub"
 word_count: 1594
 run_id: "legacy-mario-the-plumber-who-built-a-kingdom"

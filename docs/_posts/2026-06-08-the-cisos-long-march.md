@@ -5,7 +5,6 @@ date: 2026-06-08 00:00:00 +0000
 generated_at: 2026-06-08
 preview_slug: "Security’s Long March"
 preview_text: "A sharp look at how the CISO became an enterprise risk leader, translating breaches, boards, regulators and technology into decisions."
-preview_image: ""
 epub_download: "/assets/essays/the-cisos-long-march/the-cisos-long-march.epub"
 word_count: 7414
 run_id: "legacy-the-cisos-long-march"

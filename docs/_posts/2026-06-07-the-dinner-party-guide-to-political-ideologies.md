@@ -5,7 +5,6 @@ date: 2026-06-07 00:00:00 +0000
 generated_at: 2026-06-07
 preview_slug: "Ideologies At Dinner"
 preview_text: "A witty guide to political ideologies as flawed maps that shape laws, parties, institutions, and arguments long after dinner is served."
-preview_image: ""
 epub_download: "/assets/essays/the-dinner-party-guide-to-political-ideologies/the-dinner-party-guide-to-political-ideologies.epub"
 word_count: 7093
 run_id: "legacy-the-dinner-party-guide-to-political-ideologies"
