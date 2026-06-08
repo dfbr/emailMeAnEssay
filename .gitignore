@@ -1,4 +1,4 @@
 .env
 *.pyc
-logs/
-output/
+
+output/logs/
