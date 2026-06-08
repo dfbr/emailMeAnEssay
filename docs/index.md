@@ -12,8 +12,13 @@ Every now and then I get curious about something and ask an LLM to generate an e
 No essays published yet.
 {% else %}
 <ul class="essay-list">
-{% for essay in essays %}
+{% for essay in paginator.essays %}
   <li class="essay-card">
+    {% if essay.preview_image %}
+    <a href="{{ essay.read_path | relative_url }}" class="card-image-link">
+      <img src="{{ essay.preview_image | relative_url }}" alt="Preview image for {{ essay.title }}" class="card-image" />
+    </a>
+    {% endif %}
     <h2><a href="{{ essay.read_path | relative_url }}">{{ essay.title }}</a></h2>
     {% if essay.preview_slug %}<p class="meta">{{ essay.preview_slug }}</p>{% endif %}
     <p class="meta">{{ essay.generated_at }} • {{ essay.word_count }} words</p>
