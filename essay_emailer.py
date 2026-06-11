@@ -759,10 +759,13 @@ def _generate_essay_chunked(
     )
     return title, full_md, {
         "response_id": response_ids[0] if response_ids else None,
+        "response_ids": response_ids,
+        "api_call_count": len(response_ids),
         "usage": merged_usage,
         "elapsed_seconds": elapsed_total,
         "preview_slug": preview_slug,
         "preview_text": preview_text,
+        "generation_mode": "chunked",
     }
 
 
@@ -845,11 +848,85 @@ def generate_essay(
     )
     return title, content, {
         "response_id": response_id,
+        "response_ids": [response_id] if response_id else [],
+        "api_call_count": 1 if response_id else 0,
         "usage": usage,
         "elapsed_seconds": elapsed_seconds,
         "preview_slug": preview_slug,
         "preview_text": preview_text,
+        "generation_mode": generation_mode,
     }
+
+
+def _append_generation_appendix(
+    content_md: str,
+    *,
+    user_prompt: str,
+    text_model: str,
+    image_model: str,
+    run_id: str,
+    essay_meta: dict[str, Any],
+) -> str:
+    marker_start = "<!-- GENERATED_APPENDIX_START -->"
+    marker_end = "<!-- GENERATED_APPENDIX_END -->"
+    cleaned = re.sub(
+        rf"\n?{re.escape(marker_start)}[\s\S]*?{re.escape(marker_end)}\n?",
+        "\n",
+        content_md,
+        flags=re.MULTILINE,
+    ).strip()
+
+    usage_raw = essay_meta.get("usage")
+    usage: dict[str, Any] = usage_raw if isinstance(usage_raw, dict) else {}
+    input_tokens = usage.get("input_tokens")
+    output_tokens = usage.get("output_tokens")
+    total_tokens = usage.get("total_tokens")
+
+    response_ids = essay_meta.get("response_ids")
+    if not isinstance(response_ids, list):
+        response_ids = []
+    response_ids = [str(response_id).strip() for response_id in response_ids if str(response_id).strip()]
+
+    api_call_count = essay_meta.get("api_call_count")
+    if not isinstance(api_call_count, int) or api_call_count <= 0:
+        calls_from_usage = usage.get("calls") if isinstance(usage.get("calls"), int) else None
+        api_call_count = calls_from_usage or len(response_ids)
+
+    generation_mode = str(essay_meta.get("generation_mode") or "single").strip()
+    safe_user_prompt = (user_prompt or "").replace("```", "'''").strip() or "[empty prompt]"
+
+    lines = [
+        marker_start,
+        "## Appendix: Generation Details",
+        "",
+        "### User Prompt",
+        "",
+        "```text",
+        safe_user_prompt,
+        "```",
+        "",
+        "### Model and Usage",
+        "",
+        f"- Text model: {text_model}",
+        f"- Image model: {image_model}",
+        f"- Generation mode: {generation_mode}",
+        f"- Run ID: {run_id}",
+        f"- Essay generation API calls: {api_call_count if api_call_count else 'unknown'}",
+        f"- Input tokens (essay generation): {input_tokens if isinstance(input_tokens, int) else 'unknown'}",
+        f"- Output tokens (essay generation): {output_tokens if isinstance(output_tokens, int) else 'unknown'}",
+        f"- Total tokens (essay generation): {total_tokens if isinstance(total_tokens, int) else 'unknown'}",
+    ]
+
+    if response_ids:
+        lines.extend([
+            "",
+            "### OpenAI Response IDs (Essay Generation)",
+            "",
+            *[f"- {response_id}" for response_id in response_ids],
+        ])
+
+    lines.extend(["", marker_end])
+    return f"{cleaned}\n\n" + "\n".join(lines) + "\n"
 
 
 def _generate_essay_once(
@@ -2188,6 +2265,10 @@ def _save_outputs(
     cover_bytes: bytes,
     content_md: str,
     content_images: list[dict[str, Any]],
+    user_prompt: str,
+    text_model: str,
+    image_model: str,
+    essay_meta: dict[str, Any],
     preview_slug: str,
     preview_text: str,
     output_path: str | None,
@@ -2255,6 +2336,14 @@ def _save_outputs(
         image_base_path=image_base_path,
     )
     prepared_md = _append_markdown_image_attribution_section(prepared_md, content_images)
+    prepared_md = _append_generation_appendix(
+        prepared_md,
+        user_prompt=user_prompt,
+        text_model=text_model,
+        image_model=image_model,
+        run_id=run_id,
+        essay_meta=essay_meta,
+    )
 
     if publish_jekyll:
         _ensure_jekyll_site_scaffold(site_path)
@@ -2897,11 +2986,20 @@ def main() -> None:
                 attempts=args.cover_attempts,
             )
 
+        content_md_with_appendix = _append_generation_appendix(
+            content_md,
+            user_prompt=args.user_prompt,
+            text_model=args.text_model,
+            image_model=args.image_model,
+            run_id=run_id,
+            essay_meta=essay_meta,
+        )
+
         # 4 – Build EPUB
         failed_stage = "epub_build"
         epub_bytes = create_epub(
             title,
-            content_md,
+            content_md_with_appendix,
             cover_bytes,
             content_images,
             preview_text,
@@ -2919,6 +3017,10 @@ def main() -> None:
             cover_bytes,
             content_md,
             content_images,
+            args.user_prompt,
+            args.text_model,
+            args.image_model,
+            essay_meta,
             preview_slug,
             preview_text,
             args.output,
