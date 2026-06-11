@@ -1,0 +1,4 @@
+# Next essays
+
+1. What are the counties of the UK? What is the character of each? What are they known for? How are they governed? What are they like politically? How do they relate to the other states? How do they relate to the world? What are they famous for? Are the counties relevant any more as cultural identifiers?
+1. Give me a history of the presidents of the USA. For each one (in chronological order), who were they, which party did they represent, what did they achieve, what is their legacy, how were they perceived at the time, how are they perceived through the lens of history, what was their character, what are the memorable moments of their presidency (including run up to their presidency and post-presidency), what did they do after being president?
