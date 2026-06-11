@@ -1871,6 +1871,7 @@ def create_epub(
     content_md: str,
     cover_bytes: bytes,
     content_images: list[dict],
+    preview_text: str,
     user_prompt: str,
     text_model: str,
     image_model: str,
@@ -1884,7 +1885,7 @@ def create_epub(
     book.set_identifier(str(uuid.uuid4()))
     book.set_title(title)
     book.set_language("en")
-    book.add_author("ChatGPT")
+    book.add_author("ChatGPT prompted by David Rowan")
     book.add_metadata(
         "DC",
         "description",
@@ -1893,8 +1894,8 @@ def create_epub(
     book.add_metadata("DC", "description", f"User prompt: {user_prompt}")
     book.add_metadata("DC", "description", f"Text model: {text_model}")
     book.add_metadata("DC", "description", f"Image model: {image_model}")
-    book.add_metadata("DC", "publisher", "OpenAI")
-    book.add_metadata("DC", "subject", "Essay")
+    book.add_metadata("DC", "publisher", "Rowan Page")
+    book.add_metadata("DC", "subject", (preview_text or "").strip())
 
     # Cover image
     book.set_cover("images/cover.jpg", cover_bytes)
@@ -2903,6 +2904,7 @@ def main() -> None:
             content_md,
             cover_bytes,
             content_images,
+            preview_text,
             args.user_prompt,
             args.text_model,
             args.image_model,
