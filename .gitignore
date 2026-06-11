@@ -5,3 +5,5 @@ output/logs/
 docs/Gemfile
 docs/Gemfile.lock
 docs/_site/
+
+__pycache__/
