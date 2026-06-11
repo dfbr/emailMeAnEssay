@@ -6,8 +6,8 @@ layout: none
   <title>{{ site.title | xml_escape }}</title>
   <link href="{{ site.url }}{{ site.baseurl }}/feed.xml" rel="self"/>
   <link href="{{ site.url }}{{ site.baseurl }}/"/>
-  <updated>{{ site.time | date_to_xmlschema }}</updated>
-  <id>{{ site.url }}{{ site.baseurl }}/</id>
+  <updated>{{ site.posts[0].date | date_to_xmlschema }}</updated><!-- Most recent post -->
+  <id>{{ site.url | xml_escape }}{{ site.baseurl | xml_escape }}/</id>
   <author>
     <name>{{ site.author.name | default: site.title | xml_escape }}</name>
   </author>
@@ -15,9 +15,11 @@ layout: none
     <entry>
       <title>{{ post.title | xml_escape }}</title>
       <link href="{{ site.url }}{{ post.url | xml_escape }}"/>
-      <id>{{ site.url }}{{ post.id }}</id>
+      <id>{{ site.url }}{{ post.url | xml_escape }}</id>
       <updated>{{ post.date | date_to_xmlschema }}</updated>
-      <summary type="html">{{ post.summary | default: post.excerpt | xml_escape }}</summary>
+      <summary>
+        {{ post.preview_text | strip_html | xml_escape | normalize_whitespace }}
+      </summary>
     </entry>
   {% endfor %}
 </feed>
