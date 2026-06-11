@@ -3036,7 +3036,7 @@ def main() -> None:
             output_path=str(epub_path),
             text_model=args.text_model,
             image_model=args.image_model,
-            response_id=essay_meta.get("response_id"),
+            # response_id=essay_meta.get("response_id"),
             usage=essay_meta.get("usage"),
             elapsed_seconds=essay_meta.get("elapsed_seconds"),
         )
