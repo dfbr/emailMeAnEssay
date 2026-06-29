@@ -5,7 +5,7 @@ emailMeAnEssay – Generate an essay using Google Gemini or OpenAI, bundle it as
 save the output locally, and publish it into your Jekyll workspace.
 
 Usage:
-    python essay_emailer.py --user-prompt "Write an essay about stoicism" \
+    python essay_emailer.py --user-prompt "Write an essay about world religions" \
         --email yourname_kindle@kindle.com
 """
 
@@ -92,7 +92,7 @@ def _load_default_system_prompt() -> str:
     try:
         return prompt_path.read_text(encoding="utf-8").strip()
     except FileNotFoundError:
-        return "You are an expert academic research essayist. Write exhaustively."
+        return "You are an expert academic research essayist. Write exhaustively and structure with markdown headings."
 
 
 def _log_essay_run(*, status: str, run_id: str, title: str | None, user_prompt: str, output_path: str | None, text_model: str, image_model: str, error: str | None = None) -> Path:
@@ -110,15 +110,6 @@ def _log_essay_run(*, status: str, run_id: str, title: str | None, user_prompt: 
     }
     if error:
         entry["error"] = error
-    with log_path.open("a", encoding="utf-8") as handle:
-        handle.write(json.dumps(entry, ensure_ascii=False) + "\n")
-    return log_path
-
-
-def _log_script_event(run_id: str, event: str, **details: Any) -> Path:
-    log_path = Path("output") / "logs" / "script_events.jsonl"
-    log_path.parent.mkdir(parents=True, exist_ok=True)
-    entry = {"timestamp_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "run_id": run_id, "event": event, **details}
     with log_path.open("a", encoding="utf-8") as handle:
         handle.write(json.dumps(entry, ensure_ascii=False) + "\n")
     return log_path
@@ -266,7 +257,7 @@ def generate_essay_pipeline(provider: str, gemini_client: genai.Client, openai_c
         "Create an essay structure. Return text exactly formatted as:\n"
         "TITLE: <title>\nSTYLE_BRIEF: <one sentence style definition>\n"
         "PREVIEW_SLUG: <slug label>\nPREVIEW_TEXT: <summary text>\n"
-        "SECTION_HEADINGS:\n1. Introduction\n2. Historical Context\n3. Conclusion\n"
+        "SECTION_HEADINGS:\n1. Introduction\n2. Historical Analysis\n3. Contemporary Global Dynamics\n4. Comparative Shared Principles\n5. Future Horizons and Secular Trends\n"
         f"Topic request:\n{user_prompt}"
     )
 
@@ -282,13 +273,13 @@ def generate_essay_pipeline(provider: str, gemini_client: genai.Client, openai_c
     style_brief = _extract_field(plan_text, "STYLE_BRIEF") or "Academic tone."
     preview_slug = _extract_field(plan_text, "PREVIEW_SLUG") or "essay-anthology"
     preview_text = _extract_field(plan_text, "PREVIEW_TEXT") or "Long-form analytical exposition."
-    sections = _extract_sections(plan_text) or ["Introduction", "Analysis", "Conclusion"]
+    sections = _extract_sections(plan_text) or ["Introduction", "Historical Analysis", "Contemporary Global Dynamics", "Comparative Shared Principles", "Future Horizons and Secular Trends"]
 
     written_chunks = []
     for idx, sec in enumerate(sections):
         print(f"Writing chapter {idx+1}/{len(sections)}: {sec}...")
         context_str = "\n\n".join(written_chunks)[-2000:]
-        sec_prompt = f"Write section {idx+1} of essay '{title}' based on locked brief: '{style_brief}'. Heading: '## {sec}'. Prior Context: {context_str}"
+        sec_prompt = f"Write a comprehensive section of the essay '{title}' based on locked brief: '{style_brief}'. Heading: '## {sec}'. Focus specifically on this subtopic within the global comparative analysis framework. Prior Context: {context_str}"
         
         def run_section():
             if provider == "gemini":
@@ -311,27 +302,17 @@ def generate_cover_image(provider: str, gemini_client: genai.Client, openai_clie
         return generate_fallback_pillow_cover(prompt)
         
     print(f"Assembling cover canvas imagery via engine [{provider.upper()}] model: {image_model}...")
-    enhanced_prompt = f"Minimalist elegant book cover graphic design framework for a book titled: {prompt}"
+    enhanced_prompt = f"Minimalist elegant book cover graphic design artwork for a volume titled: {prompt[:100]}"
     try:
         if provider == "gemini":
             res = gemini_client.models.generate_images(model=image_model, prompt=enhanced_prompt, config=types.GenerateImagesConfig(number_of_images=1, aspect_ratio="3:4", output_mime_type="image/jpeg"))
             return res.generated_images[0].image.image_bytes
         else:
-            # Handle newer 'gpt-image-*' endpoints differently than traditional DALL-E endpoints
+            # Clean strict parameter requirements for gpt-image models
             if "gpt-image" in image_model.lower():
-                res = openai_client.images.generate(
-                    model=image_model, 
-                    prompt=enhanced_prompt, 
-                    n=1
-                )
+                res = openai_client.images.generate(model=image_model, prompt=enhanced_prompt, n=1)
             else:
-                res = openai_client.images.generate(
-                    model=image_model, 
-                    prompt=enhanced_prompt, 
-                    n=1, 
-                    size="1024x1024", 
-                    response_format="b64_json"
-                )
+                res = openai_client.images.generate(model=image_model, prompt=enhanced_prompt, n=1, size="1024x1024", response_format="b64_json")
             return base64.b64decode(res.data[0].b64_json)
     except Exception as e:
         print(f"Cover compilation exception tracking error ({e}). Using Pillow fallback.")
@@ -342,7 +323,8 @@ def generate_fallback_pillow_cover(title: str) -> bytes:
     img = Image.new("RGB", (600, 800), color="#0f172a")
     draw = ImageDraw.Draw(img)
     draw.rectangle([20, 20, 580, 780], outline="#cbd5e1", width=2)
-    draw.text((40, 200), title[:40] + "..." if len(title) > 40 else title, fill="#f8fafc")
+    clean_title = title.replace('"', '').replace("'", "")
+    draw.text((40, 200), clean_title[:40] + ("..." if len(clean_title) > 40 else ""), fill="#f8fafc")
     out = io.BytesIO()
     img.save(out, format="JPEG")
     return out.getvalue()
@@ -367,11 +349,11 @@ def _split_markdown_by_h2(content_md: str) -> list[dict[str, str]]:
     if current_lines:
         chapters.append({"title": current_title, "markdown": "\n".join(current_lines).strip()})
         
-    # Prevent crashing ebooklib with an empty document schema if markdown format varies
-    if not chapters or (len(chapters) == 1 and not chapters[0]["markdown"].strip()):
+    cleaned_chapters = [ch for ch in chapters if ch["markdown"].strip()]
+    if not cleaned_chapters:
         return [{"title": "Essay Content", "markdown": content_md}]
         
-    return chapters
+    return cleaned_chapters
 
 
 def _write_output_tree(title: str, epub_bytes: bytes, cover_bytes: bytes, content_md: str, meta: dict, site_root: str, publish_jekyll: bool) -> None:
@@ -455,10 +437,26 @@ def main():
         book.set_language("en")
         book.set_cover("cover.jpg", cover_bytes)
 
+        # Encode item contents as UTF-8 bytes to fix the XML empty document parse error
         spine_items = []
         for idx, ch in enumerate(_split_markdown_by_h2(content_md)):
             item = epub.EpubHtml(title=ch["title"], file_name=f"ch_{idx}.xhtml", lang="en")
-            item.content = f"<html><body>{markdown.markdown(ch['markdown'])}</body></html>"
+            body_html = markdown.markdown(ch["markdown"])
+            
+            xhtml_document = (
+                '<?xml version="1.0" encoding="utf-8"?>\n'
+                '<!DOCTYPE html>\n'
+                '<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">\n'
+                '<head>\n'
+                f'  <title>{ch["title"]}</title>\n'
+                '</head>\n'
+                '<body>\n'
+                f'  {body_html}\n'
+                '</body>\n'
+                '</html>'
+            )
+            # CRITICAL FIX: Encode raw Python string content into explicit UTF-8 bytes
+            item.content = xhtml_document.encode('utf-8')
             book.add_item(item)
             spine_items.append(item)
 
