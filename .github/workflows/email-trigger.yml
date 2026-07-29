@@ -1,0 +1,73 @@
+name: Email Trigger Essay Runner
+
+on:
+  schedule:
+    - cron: '0 8,16 * * *'
+  workflow_dispatch:
+
+jobs:
+  process-email-trigger:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Process trigger inbox
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          XAI_API_KEY: ${{ secrets.XAI_API_KEY }}
+          SMTP_HOST: ${{ secrets.SMTP_HOST }}
+          SMTP_PORT: ${{ secrets.SMTP_PORT }}
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+          FROM_EMAIL: ${{ secrets.FROM_EMAIL }}
+          TO_EMAIL: ${{ secrets.TO_EMAIL }}
+          TEXT_PROVIDER: ${{ secrets.TEXT_PROVIDER }}
+          TEXT_MODEL: ${{ secrets.TEXT_MODEL }}
+          IMAGE_PROVIDER: ${{ secrets.IMAGE_PROVIDER }}
+          IMAGE_MODEL: ${{ secrets.IMAGE_MODEL }}
+          IMAP_HOST: ${{ secrets.IMAP_HOST }}
+          IMAP_PORT: ${{ secrets.IMAP_PORT }}
+          IMAP_USER: ${{ secrets.IMAP_USER }}
+          IMAP_PASSWORD: ${{ secrets.IMAP_PASSWORD }}
+          TRIGGER_RECIPIENT: ${{ secrets.TRIGGER_RECIPIENT }}
+          TRIGGER_ALLOWED_FROM: ${{ secrets.TRIGGER_ALLOWED_FROM }}
+          TRIGGER_MAILBOX: ${{ secrets.TRIGGER_MAILBOX }}
+          TRIGGER_MAX_MESSAGES_PER_RUN: ${{ secrets.TRIGGER_MAX_MESSAGES_PER_RUN }}
+          TRIGGER_MAX_PROMPT_CHARS: ${{ secrets.TRIGGER_MAX_PROMPT_CHARS }}
+          TRIGGER_TEXT_PROVIDER: ${{ secrets.TRIGGER_TEXT_PROVIDER }}
+          TRIGGER_TEXT_MODEL: ${{ secrets.TRIGGER_TEXT_MODEL }}
+          TRIGGER_IMAGE_PROVIDER: ${{ secrets.TRIGGER_IMAGE_PROVIDER }}
+          TRIGGER_IMAGE_MODEL: ${{ secrets.TRIGGER_IMAGE_MODEL }}
+          TRIGGER_EMAIL: ${{ secrets.TRIGGER_EMAIL }}
+          TRIGGER_SITE_ROOT: ${{ secrets.TRIGGER_SITE_ROOT }}
+          TRIGGER_SYSTEM_PROMPT: ${{ secrets.TRIGGER_SYSTEM_PROMPT }}
+          TRIGGER_NO_EMAIL: ${{ secrets.TRIGGER_NO_EMAIL }}
+          TRIGGER_NO_PUBLISH_JEKYLL: ${{ secrets.TRIGGER_NO_PUBLISH_JEKYLL }}
+        run: python email_trigger_runner.py
+
+      - name: Commit generated docs updates
+        run: |
+          if [ -n "$(git status --porcelain docs)" ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add docs
+            git commit -m "Publish generated essays"
+            git push
+          else
+            echo "No docs changes to commit."
+          fi
