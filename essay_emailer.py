@@ -279,7 +279,13 @@ def generate_essay_pipeline(provider: str, gemini_client: genai.Client, openai_c
     for idx, sec in enumerate(sections):
         print(f"Writing chapter {idx+1}/{len(sections)}: {sec}...")
         context_str = "\n\n".join(written_chunks)[-2000:]
-        sec_prompt = f"Write a comprehensive section of the essay '{title}' based on locked brief: '{style_brief}'. Heading: '## {sec}'. Focus specifically on this subtopic within the global comparative analysis framework. Prior Context: {context_str}"
+        sec_prompt = (
+            f"Write a comprehensive section of the essay '{title}' based on locked brief: '{style_brief}'. "
+            f"Heading: '## {sec}'. Focus specifically on this subtopic within the global comparative analysis framework. "
+            f"Use around 500–800 words as a rough guide, but always finish your final sentence and paragraph completely — "
+            f"never cut off mid-sentence or mid-thought to meet a word limit. "
+            f"Prior Context: {context_str}"
+        )
         
         def run_section():
             if provider == "gemini":
