@@ -312,12 +312,16 @@ def generate_essay_pipeline(
             "Use around 500–800 words as a rough guide, but always finish your final sentence and paragraph completely. "
             f"Prior context:\n{prior_context}"
         )
-        chunk_md = _retry_call(
-            lambda prompt=section_prompt: _generate_text(
+
+        def run_section() -> str:
+            return _generate_text(
                 text_selection,
                 system_prompt=system_prompt,
-                user_prompt=prompt,
-            ),
+                user_prompt=section_prompt,
+            )
+
+        chunk_md = _retry_call(
+            run_section,
             f"section generation for {section}",
         )
         chunk_md = chunk_md.strip()

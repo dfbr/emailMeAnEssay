@@ -119,7 +119,7 @@ How it works:
 - Groq: `GROQ_API_KEY`
 - xAI: `XAI_API_KEY`
 
-See `/home/runner/work/emailMeAnEssay/emailMeAnEssay/GITHUB_SECRETS.md` for the full list and what each secret should contain.
+See `GITHUB_SECRETS.md` for the full list and what each secret should contain.
 
 ## GitHub Actions
 
