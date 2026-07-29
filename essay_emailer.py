@@ -24,6 +24,7 @@ from email import encoders
 from email.mime.base import MIMEBase
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+from functools import lru_cache
 from pathlib import Path
 from typing import Any
 
@@ -121,6 +122,20 @@ def _normalize_provider(raw_provider: str, allowed: set[str], kind: str) -> str:
     return provider
 
 
+@lru_cache(maxsize=None)
+def _get_gemini_client() -> genai.Client:
+    return genai.Client(api_key=_require_env("GEMINI_API_KEY"))
+
+
+@lru_cache(maxsize=None)
+def _get_openai_compatible_client(provider: str) -> OpenAI:
+    if not OPENAI_AVAILABLE:
+        raise ConfigurationError("The openai package is required for OpenAI-compatible providers.")
+    config = OPENAI_COMPATIBLE_PROVIDERS[provider]
+    api_key = _require_env(str(config["api_key_env"]))
+    return OpenAI(api_key=api_key, base_url=config["base_url"])
+
+
 def _resolve_provider_selection(
     *,
     kind: str,
@@ -151,14 +166,9 @@ def _resolve_provider_selection(
     if kind == "image" and provider == "pillow":
         return ProviderSelection(provider=provider, model="pillow-local", client=None)
     if provider == "gemini":
-        return ProviderSelection(provider=provider, model=model, client=genai.Client(api_key=_require_env("GEMINI_API_KEY")))
+        return ProviderSelection(provider=provider, model=model, client=_get_gemini_client())
     if provider in OPENAI_COMPATIBLE_PROVIDERS:
-        if not OPENAI_AVAILABLE:
-            raise ConfigurationError("The openai package is required for OpenAI-compatible providers.")
-        config = OPENAI_COMPATIBLE_PROVIDERS[provider]
-        api_key = _require_env(str(config["api_key_env"]))
-        client = OpenAI(api_key=api_key, base_url=config["base_url"])
-        return ProviderSelection(provider=provider, model=model, client=client)
+        return ProviderSelection(provider=provider, model=model, client=_get_openai_compatible_client(provider))
     raise ConfigurationError(f"Unsupported provider '{provider}'.")
 
 
