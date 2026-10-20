@@ -6,6 +6,7 @@ publisher: "dfbr.co.uk"
 date: "2026-10-19"
 toc: true
 toc-depth: 2
+epub_download: ../docs/assets/essays/2026-10-19-the-american-civil-war.epub
 ---
 
 # The War That Made America
