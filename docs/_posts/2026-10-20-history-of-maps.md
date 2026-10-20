@@ -14,7 +14,7 @@ preview_slug: "Lies, Land, Dots"
 preview_text: "From a Babylonian clay tablet that put Babylon at the centre of the world to the blue dot on your phone, maps have always been useful lies."
 toc: true
 toc-depth: 2
-epub_download: ../docs/assets/essays/2026-10-20-history-of-maps.md
+epub_download: /assets/essays/2026-10-20-history-of-maps.md
 ---
 
 ## The Lie That Gets You Home
