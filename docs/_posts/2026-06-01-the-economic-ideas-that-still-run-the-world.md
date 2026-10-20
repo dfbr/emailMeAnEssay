@@ -10,7 +10,7 @@ generated_at: "2026-06-01"
 word_count: 12526
 run_id: "legacy-the-economic-ideas-that-still-run-the-world"
 subtitle: "A reflective essay on The Economic Ideas That Still Run the World"
-preview_image: "https://images.unsplash.com/photo-1521295121783-8a321d551ad2?auto=format&fit=crop&w=1400&q=80"
+preview_image: "https://images.unsplash.com/photo-1559526324-4b87b5e36e44?auto=format&fit=crop&w=1400&q=80"
 ---
 
 # The Economic Ideas That Still Run the World

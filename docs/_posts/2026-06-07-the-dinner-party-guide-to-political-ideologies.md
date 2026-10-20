@@ -10,7 +10,7 @@ generated_at: "2026-06-07"
 word_count: 7093
 run_id: "legacy-the-dinner-party-guide-to-political-ideologies"
 subtitle: "A reflective essay on The Dinner-Party Guide to Political Ideologies"
-preview_image: "https://images.unsplash.com/photo-1521295121783-8a321d551ad2?auto=format&fit=crop&w=1400&q=80"
+preview_image: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1400&q=80"
 ---
 
 # The Dinner-Party Guide to Political Ideologies

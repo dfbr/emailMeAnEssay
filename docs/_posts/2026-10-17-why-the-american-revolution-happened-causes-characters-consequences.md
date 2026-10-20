@@ -7,7 +7,7 @@ word_count: 5033
 subtitle: "A reflective essay on Why the American Revolution Happened: Causes, Characters, Consequences"
 preview_slug: "Why the American Revolution Happened: Causes, Characters, Consequences"
 preview_text: "Why the American Revolution Happened: Causes, Characters, Consequences"
-preview_image: "https://images.unsplash.com/photo-1521295121783-8a321d551ad2?auto=format&fit=crop&w=1400&q=80"
+preview_image: "/assets/essays/why-the-american-revolution-happened-causes-characters-consequences/cover.jpg"
 epub_download: "/assets/essays/2026-10-17-why-the-american-revolution-happened-causes-characters-consequences.epub"
 ---
 

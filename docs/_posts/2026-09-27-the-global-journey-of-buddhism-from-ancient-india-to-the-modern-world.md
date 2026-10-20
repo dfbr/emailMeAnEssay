@@ -7,7 +7,7 @@ word_count: 5126
 subtitle: "A reflective essay on The Global Journey of Buddhism: From Ancient India to the Modern World"
 preview_slug: "The Global Journey of Buddhism: From Ancient India"
 preview_text: "The Global Journey of Buddhism: From Ancient India to the Modern World"
-preview_image: "https://images.unsplash.com/photo-1521295121783-8a321d551ad2?auto=format&fit=crop&w=1400&q=80"
+preview_image: "/assets/essays/the-global-journey-of-buddhism-from-ancient-india-to-the-modern-world/cover.jpg"
 epub_download: "/assets/essays/2026-09-27-the-global-journey-of-buddhism-from-ancient-india-to-the-modern-world.epub"
 ---
 

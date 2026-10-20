@@ -10,7 +10,7 @@ generated_at: "2026-05-30"
 word_count: 1798
 run_id: "legacy-from-the-first-rifle-to-the-drone"
 subtitle: "A reflective essay on From Matchlocks to Drones: The Evolution of Modern Military Weaponry up to the Ukraine-Russia War"
-preview_image: "https://images.unsplash.com/photo-1521295121783-8a321d551ad2?auto=format&fit=crop&w=1400&q=80"
+preview_image: "https://images.unsplash.com/photo-1529107386315-e1a2ed48a620?auto=format&fit=crop&w=1400&q=80"
 ---
 
 # From Matchlocks to Drones: The Evolution of Modern Military Weaponry up to the Ukraine-Russia War
