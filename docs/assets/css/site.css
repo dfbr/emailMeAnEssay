@@ -54,7 +54,7 @@ body {
 .card-image {
   display: block;
   width: 100%;
-  aspect-ratio: 1200 / 630;
+  height: clamp(160px, 22vw, 220px);
   object-fit: cover;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
