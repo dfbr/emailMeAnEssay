@@ -1,11 +1,14 @@
 ---
-layout: essay
 title: "The Architecture of Faith: Mapping the World’s Great Traditions"
-date: 2026-06-29 14:51:05 
+author: "ClaudeAI"
+date: "2026-06-29 14:51:05"
 preview_slug: "The State of Global Belief"
 preview_text: "From the shifting demographics of the Middle East to the secularization of the West, faith remains a primary driver of human behavior. This examination traces the origins, trajectories, and future of the world’s major religions, assessing how ancient traditions navigate an increasingly secular, data-driven global marketplace."
 epub_download: "/assets/essays/the-architecture-of-faith-mapping-the-worlds-great-traditions/the-architecture-of-faith-mapping-the-worlds-great-traditions.epub"
+layout: "essay"
 word_count: 4819
+subtitle: "A reflective essay on The Architecture of Faith: Mapping the World’s Great Traditions"
+preview_image: "https://images.unsplash.com/photo-1521295121783-8a321d551ad2?auto=format&fit=crop&w=1400&q=80"
 ---
 
 ## The Mosaic of Belief: An Overview of the Global Religious Landscape

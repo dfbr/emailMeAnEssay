@@ -1,14 +1,16 @@
 ---
-layout: essay
 title: "The Training Effect"
-date: 2026-06-08 00:00:00 +0000
-generated_at: 2026-06-08
+author: "ClaudeAI"
+date: "2026-06-08 00:00:00 +0000"
 preview_slug: "Bodies, Minds, Records"
 preview_text: "From Milo of Croton to Roger Bannister, Soviet periodisation to wearable sensors, physical training has evolved from folklore into a science of adaptation. This essay traces the classic and modern ideas that reshaped sport, then asks what their deeper logic can teach us about learning, focus, creativity, and intellectual work."
 preview_image: "/assets/essays/the-training-effect/images/preview_1200x630.jpg"
 epub_download: "/assets/essays/the-training-effect/the-training-effect.epub"
+layout: "essay"
+generated_at: "2026-06-08"
 word_count: 7512
 run_id: "d545e296-f2c0-4b75-9a2a-f9cc000ffc64"
+subtitle: "A reflective essay on The Training Effect"
 ---
 
 # The Training Effect

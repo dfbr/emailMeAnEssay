@@ -1,13 +1,16 @@
 ---
-layout: essay
 title: "Fifty Republics in One Republic"
-generated_at: 2026-06-11
+author: "ClaudeAI"
+date: "2026-06-11"
 preview_slug: "The American States"
 preview_text: "A guided tour of the fifty states as political units, cultural brands, economic engines, regional rivals, and global actors. The essay explains how states are governed, why stereotypes stick, what each state is famous for, and how America’s federal patchwork became one of the country’s defining features."
 preview_image: "/assets/essays/fifty-republics-in-one-republic/images/preview_1200x630.jpg"
 epub_download: "/assets/essays/fifty-republics-in-one-republic/fifty-republics-in-one-republic.epub"
+layout: "essay"
+generated_at: "2026-06-11"
 word_count: 7184
 run_id: "07559c83-2bc9-48a7-9fbd-2a77af14779b"
+subtitle: "A reflective essay on Fifty Republics in One Republic"
 ---
 
 # Fifty Republics in One Republic

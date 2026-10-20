@@ -11,13 +11,12 @@ title: Essay Library
 <ul class="essay-list">
 {% for post in paginator.posts %}
   <li class="essay-card">
-    {% assign card_preview_image = post.preview_image | default: "" | strip %}
-    {% if card_preview_image != "" %}
+    {% assign card_preview_image = post.preview_image | default: "https://images.unsplash.com/photo-1521295121783-8a321d551ad2?auto=format&fit=crop&w=1400&q=80" | strip %}
     <a href="{{ post.url | relative_url }}" class="card-image-link">
-      <img src="{{ card_preview_image | relative_url }}" alt="Preview image for {{ post.title }}" class="card-image" />
+      <img src="{{ card_preview_image }}" alt="Preview image for {{ post.title }}" class="card-image" />
     </a>
-    {% endif %}
     <h2><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h2>
+    {% if post.subtitle %}<p class="meta essay-card-subtitle">{{ post.subtitle }}</p>{% endif %}
     {% if post.preview_slug %}<p class="meta">{{ post.preview_slug }}</p>{% endif %}
     <p class="meta">{{ post.generated_at | default: post.date | date: "%Y-%m-%d" }}{% if post.word_count %} • {{ post.word_count }} words{% endif %}</p>
     <p>{{ post.preview_text | default: post.excerpt }}</p>

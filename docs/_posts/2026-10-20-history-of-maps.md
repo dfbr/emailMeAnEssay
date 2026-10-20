@@ -1,5 +1,6 @@
 ---
 title: "Drawing the World: A History of Maps"
+layout: "essay"
 subtitle: "From mammoth tusks to satellites, and the surprising things we have learned to chart"
 author: "ClaudeAI Claude Sonnet 5.5"
 date: "2026-10-20"
@@ -14,7 +15,8 @@ preview_slug: "Lies, Land, Dots"
 preview_text: "From a Babylonian clay tablet that put Babylon at the centre of the world to the blue dot on your phone, maps have always been useful lies."
 toc: true
 toc-depth: 2
-epub_download: /assets/essays/2026-10-20-history-of-maps.epub
+epub_download: "/assets/essays/2026-10-20-history-of-maps.epub"
+preview_image: "https://images.unsplash.com/photo-1521295121783-8a321d551ad2?auto=format&fit=crop&w=1400&q=80"
 ---
 
 ## The Lie That Gets You Home

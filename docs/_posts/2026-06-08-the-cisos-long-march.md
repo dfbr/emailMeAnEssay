@@ -1,13 +1,16 @@
 ---
-layout: essay
 title: "The CISO’s Long March"
-date: 2026-06-08 00:00:00 +0000
-generated_at: 2026-06-08
+author: "ClaudeAI"
+date: "2026-06-08 00:00:00 +0000"
 preview_slug: "Security’s Long March"
 preview_text: "A sharp look at how the CISO became an enterprise risk leader, translating breaches, boards, regulators and technology into decisions."
 epub_download: "/assets/essays/the-cisos-long-march/the-cisos-long-march.epub"
+layout: "essay"
+generated_at: "2026-06-08"
 word_count: 7414
 run_id: "legacy-the-cisos-long-march"
+subtitle: "A reflective essay on The CISO’s Long March"
+preview_image: "https://images.unsplash.com/photo-1521295121783-8a321d551ad2?auto=format&fit=crop&w=1400&q=80"
 ---
 
 # The CISO’s Long March

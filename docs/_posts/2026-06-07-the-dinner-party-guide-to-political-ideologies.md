@@ -1,13 +1,16 @@
 ---
-layout: essay
 title: "The Dinner-Party Guide to Political Ideologies"
-date: 2026-06-07 00:00:00 +0000
-generated_at: 2026-06-07
+author: "ClaudeAI"
+date: "2026-06-07 00:00:00 +0000"
 preview_slug: "Ideologies At Dinner"
 preview_text: "A witty guide to political ideologies as flawed maps that shape laws, parties, institutions, and arguments long after dinner is served."
 epub_download: "/assets/essays/the-dinner-party-guide-to-political-ideologies/the-dinner-party-guide-to-political-ideologies.epub"
+layout: "essay"
+generated_at: "2026-06-07"
 word_count: 7093
 run_id: "legacy-the-dinner-party-guide-to-political-ideologies"
+subtitle: "A reflective essay on The Dinner-Party Guide to Political Ideologies"
+preview_image: "https://images.unsplash.com/photo-1521295121783-8a321d551ad2?auto=format&fit=crop&w=1400&q=80"
 ---
 
 # The Dinner-Party Guide to Political Ideologies

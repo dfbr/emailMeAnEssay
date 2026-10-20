@@ -79,10 +79,34 @@ body {
 .actions a {
   color: var(--accent);
 }
+.essay {
+  max-width: 900px;
+  margin: 0 auto;
+}
+.essay-header {
+  margin-bottom: 1.5rem;
+}
+.essay-header-copy {
+  padding-top: 1rem;
+}
+.essay-title {
+  margin: 0 0 0.35rem;
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  line-height: 1.1;
+}
+.essay-subtitle {
+  margin: 0 0 1rem;
+  color: var(--muted);
+  font-size: clamp(1.05rem, 2vw, 1.5rem);
+  line-height: 1.4;
+  font-style: italic;
+}
 .essay-content img {
+  display: block;
   max-width: 100%;
   height: auto;
   border-radius: 8px;
+  margin: 1.25rem auto;
 }
 .essay-preview-image {
   display: block;
@@ -92,6 +116,11 @@ body {
   object-fit: cover;
   border-radius: 10px;
   margin: 0 0 0.9rem;
+}
+.essay-card-subtitle {
+  font-size: 0.95rem;
+  font-style: italic;
+  color: var(--muted);
 }
 .pagination {
   display: flex;

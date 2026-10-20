@@ -1,12 +1,16 @@
 ---
 title: "The American Civil War"
+layout: "essay"
 subtitle: "The War That Made America"
 author: "ClaudeAI <model metadata>"
-publisher: "dfbr.co.uk"
 date: "2026-10-19"
+publisher: "dfbr.co.uk"
 toc: true
 toc-depth: 2
-epub_download: /assets/essays/2026-10-19-the-american-civil-war.epub
+epub_download: "/assets/essays/2026-10-19-the-american-civil-war.epub"
+preview_slug: "The War That Made America"
+preview_text: "The War That Made America"
+preview_image: "https://images.unsplash.com/photo-1521295121783-8a321d551ad2?auto=format&fit=crop&w=1400&q=80"
 ---
 
 # The War That Made America

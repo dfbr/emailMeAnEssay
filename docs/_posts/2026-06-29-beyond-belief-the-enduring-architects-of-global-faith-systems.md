@@ -1,11 +1,14 @@
 ---
-layout: essay
 title: "Beyond Belief: The Enduring Architects of Global Faith Systems"
-date: 2026-06-29 12:26:20 
+author: "ClaudeAI"
+date: "2026-06-29 12:26:20"
 preview_slug: "Global Faith Systems"
 preview_text: "An exploration of the enduring power and pervasive influence of the world's major religions. This essay delves beyond theological tenets to examine their profound historical, economic, and social impact, revealing how these ancient belief systems continue to shape modern societies and individual lives, acting as unseen architects of human experience."
 epub_download: "/assets/essays/beyond-belief-the-enduring-architects-of-global-faith-systems/beyond-belief-the-enduring-architects-of-global-faith-systems.epub"
+layout: "essay"
 word_count: 4685
+subtitle: "A reflective essay on Beyond Belief: The Enduring Architects of Global Faith Systems"
+preview_image: "https://images.unsplash.com/photo-1521295121783-8a321d551ad2?auto=format&fit=crop&w=1400&q=80"
 ---
 
 ## Introduction: The Enduring Architects of Human Experience

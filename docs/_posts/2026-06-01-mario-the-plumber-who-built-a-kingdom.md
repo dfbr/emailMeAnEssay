@@ -1,13 +1,16 @@
 ---
-layout: essay
 title: "Mario: The Plumber Who Built a Kingdom"
-date: 2026-06-01 00:00:00 +0000
-generated_at: 2026-06-01
+author: "ClaudeAI"
+date: "2026-06-01 00:00:00 +0000"
 preview_slug: "Mario Built A Kingdom"
 preview_text: "How a pixelated arcade carpenter became Nintendo’s defining hero, revived home gaming, and turned a red cap and mustache into a global empire."
 epub_download: "/assets/essays/mario-the-plumber-who-built-a-kingdom/mario-the-plumber-who-built-a-kingdom.epub"
+layout: "essay"
+generated_at: "2026-06-01"
 word_count: 1594
 run_id: "legacy-mario-the-plumber-who-built-a-kingdom"
+subtitle: "A reflective essay on Mario: The Plumber Who Built a Kingdom"
+preview_image: "https://images.unsplash.com/photo-1521295121783-8a321d551ad2?auto=format&fit=crop&w=1400&q=80"
 ---
 
 # Mario: The Plumber Who Built a Kingdom

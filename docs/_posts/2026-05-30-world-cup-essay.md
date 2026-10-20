@@ -1,13 +1,16 @@
 ---
-layout: essay
 title: "The Political and Social History of the FIFA World Cup: England’s Legacy and Global Contributions"
-date: 2026-05-30 00:00:00 +0000
-generated_at: 2026-05-30
+author: "ClaudeAI"
+date: "2026-05-30 00:00:00 +0000"
 preview_slug: "Football’s Global Power Stage"
 preview_text: "How the World Cup became a mirror of politics, identity, and empire, with England’s uneasy legacy at the center of football’s global rise."
 epub_download: "/assets/essays/world-cup-essay/world-cup-essay.epub"
+layout: "essay"
+generated_at: "2026-05-30"
 word_count: 1994
 run_id: "legacy-world-cup-essay"
+subtitle: "A reflective essay on The Political and Social History of the FIFA World Cup: England’s Legacy and Global Contributions"
+preview_image: "https://images.unsplash.com/photo-1521295121783-8a321d551ad2?auto=format&fit=crop&w=1400&q=80"
 ---
 
 # The Political and Social History of the FIFA World Cup: England’s Legacy and Global Contributions

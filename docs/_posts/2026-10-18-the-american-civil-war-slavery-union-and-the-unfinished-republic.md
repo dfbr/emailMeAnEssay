@@ -1,8 +1,16 @@
 ---
-layout: essay
 title: "The American Civil War: Slavery, Union, and the Unfinished Republic"
+author: "ClaudeAI"
+date: "2026-10-18"
+layout: "essay"
 word_count: 5177
+subtitle: "A reflective essay on The American Civil War: Slavery, Union, and the Unfinished Republic"
+preview_slug: "The American Civil War: Slavery, Union, and the"
+preview_text: "The American Civil War: Slavery, Union, and the Unfinished Republic"
+preview_image: "https://images.unsplash.com/photo-1521295121783-8a321d551ad2?auto=format&fit=crop&w=1400&q=80"
+epub_download: "/assets/essays/2026-10-18-the-american-civil-war-slavery-union-and-the-unfinished-republic.epub"
 ---
+
 # The American Civil War: Slavery, Union, and the Unfinished Republic
 
 ## Introduction
