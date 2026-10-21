@@ -86,10 +86,13 @@ def _draw_centered(draw, lines, font, y, width, fill, spacing):
     return y
 
 
-def build_cover(background: Image.Image, title: str, subtitle: str, author: str, credit: str) -> Image.Image:
+def build_cover(
+    background: Image.Image, title: str, subtitle: str, author: str, credit: str, shade: bool = True
+) -> Image.Image:
     cover = ImageOps.fit(background.convert("RGB"), COVER_SIZE, Image.LANCZOS, centering=(0.5, 0.5))
-    black = Image.new("RGB", COVER_SIZE, (8, 14, 24))
-    cover = Image.composite(black, cover, _shade(COVER_SIZE, top=0.88, bottom=0.8))
+    if shade:
+        black = Image.new("RGB", COVER_SIZE, (8, 14, 24))
+        cover = Image.composite(black, cover, _shade(COVER_SIZE, top=0.88, bottom=0.8))
     draw = ImageDraw.Draw(cover)
     w, h = COVER_SIZE
     margin = 130
@@ -135,6 +138,8 @@ def main() -> None:
     parser.add_argument("--subtitle", default="")
     parser.add_argument("--author", default="ClaudeAI")
     parser.add_argument("--credit", default="", help="Image credit printed at the foot of the cover")
+    parser.add_argument("--no-shade", action="store_true", help="Skip darkening the background behind the text")
+    parser.add_argument("--preview-image", help="Separate (landscape) background for the preview images")
     args = parser.parse_args()
 
     out_dir = Path(args.out_dir)
@@ -143,11 +148,12 @@ def main() -> None:
     # A light blur keeps busy paintings from fighting the type.
     softened = background.convert("RGB").filter(ImageFilter.GaussianBlur(radius=1.2))
 
-    build_cover(softened, args.title, args.subtitle, args.author, args.credit).save(
+    build_cover(softened, args.title, args.subtitle, args.author, args.credit, shade=not args.no_shade).save(
         out_dir / "cover.jpg", quality=90, optimize=True
     )
+    preview_background = Image.open(args.preview_image) if args.preview_image else background
     for size in PREVIEW_SIZES:
-        build_preview(background, size).save(
+        build_preview(preview_background, size).save(
             out_dir / "images" / f"preview_{size[0]}x{size[1]}.jpg", quality=85, optimize=True
         )
     print(f"Wrote cover and previews to {out_dir}")
