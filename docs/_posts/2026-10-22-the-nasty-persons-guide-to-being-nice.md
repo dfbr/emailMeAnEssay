@@ -1,5 +1,6 @@
 ---
 title: "The Nasty Person's Guide to Being Nice"
+layout: "essay"
 subtitle: "How to be considerate and kind: a practical guide for those who need it"
 author: "ClaudeAI Claude Sonnet 5.5"
 preview_slug: "Manners for the Unwilling"
@@ -8,7 +9,6 @@ preview_image: "https://commons.wikimedia.org/wiki/Special:FilePath/Charles_Darw
 lang: "en-GB"
 publisher: "dfbr.co.uk"
 date: "2026-10-21"
-epub_download:
 word_count: 11932
 toc: true
 toc-depth: 2
