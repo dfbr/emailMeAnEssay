@@ -12,7 +12,7 @@ epub_download:
 word_count: 11932
 toc: true
 toc-depth: 2
-epub-download: /assets/essays/2026-10-22-the-nasty-persons-guide-to-being-nice.epub
+epub_download: /assets/essays/2026-10-22-the-nasty-persons-guide-to-being-nice.epub
 ---
 
 > *"…and the life of man, solitary, poor, nasty, brutish, and short."*
