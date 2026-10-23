@@ -5,7 +5,8 @@
   },
   "red-fox": {
     "source": "inaturalist",
-    "taxon": "Vulpes vulpes"
+    "taxon": "Vulpes vulpes",
+    "place_id": 6857
   },
   "dust-bath": {
     "source": "openverse",
@@ -69,7 +70,7 @@
   },
   "hen-with-chicks": {
     "source": "openverse",
-    "q": "hen with chicks"
+    "q": "mother hen with chicks chicken"
   },
   "runner-ducks": {
     "source": "inaturalist",
@@ -88,8 +89,7 @@
   },
   "guinea-fowl": {
     "source": "inaturalist",
-    "taxon": "Numida meleagris",
-    "captive": true
+    "taxon": "Numida meleagris"
   },
   "turkey": {
     "source": "inaturalist",

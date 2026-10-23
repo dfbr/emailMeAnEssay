@@ -6,8 +6,8 @@ Wikimedia Commons; an object picks the source:
     {
       "light-sussex": "Light Sussex hen",
       "silkie": {"source": "openverse", "q": "Silkie chicken"},
-      "red-fox": {"source": "inaturalist", "taxon": "Vulpes vulpes"},
-      "geese": {"source": "inaturalist", "taxon": "Anser anser", "captive": true, "q": "domestic"}
+      "geese": {"source": "inaturalist", "taxon": "Anser anser", "captive": true},
+      "red-fox": {"source": "inaturalist", "taxon": "Vulpes vulpes", "place_id": 6857}
     }
 
 Step 1, review: download a few candidates per key, plus a contact sheet each:
@@ -150,8 +150,9 @@ def search_inaturalist(spec: dict, limit: int) -> list[dict]:
         params["captive"] = "true"
     else:
         params["quality_grade"] = "research"
-    if spec.get("q"):
-        params["q"] = spec["q"]
+    for field in ("q", "place_id"):
+        if spec.get(field):
+            params[field] = spec[field]
     data = _get_json(INATURALIST_API, params)
     licences = {"cc-by": "CC BY 4.0", "cc-by-sa": "CC BY-SA 4.0", "cc0": "CC0"}
     results = []

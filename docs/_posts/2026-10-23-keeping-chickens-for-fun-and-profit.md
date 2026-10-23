@@ -224,9 +224,9 @@ Pure breeds, sometimes called heritage or traditional breeds, are the descendant
 
 **Marans.** A French breed, from the town of Marans near La Rochelle, famous for laying very dark, chocolate-brown eggs. The Cuckoo Marans, with grey barred feathers, is common in Britain, and the Black Copper Marans lays the darkest eggs of all. Marans lay 150 to 200 eggs a year. A box of their eggs mixed with white and blue ones looks wonderful.
 
-![Araucana hen](/assets/essays/keeping-chickens-for-fun-and-profit/images/araucana.jpg)
+![Two blue-green Araucana eggs in a hand](/assets/essays/keeping-chickens-for-fun-and-profit/images/araucana.jpg)
 
-*The Araucana, which lays blue eggs. Many British Araucanas sport fluffy crests on their heads.* {{credit:araucana}}
+*The Araucana's claim to fame: eggs with blue or blue-green shells, coloured right the way through.* {{credit:araucana}}
 
 **Araucana.** A breed descended from chickens in Chile, best known for laying eggs with blue or blue-green shells, a colour that runs right through the shell rather than sitting on the surface. Many British Araucanas have small crests. They lay around 150 to 200 eggs a year and are lively, independent birds.
 
@@ -465,9 +465,9 @@ Once you have chickens, it is very tempting to add other creatures. Some mix wel
 
 **Ducks.** Ducks are probably the most popular companions for chickens, and several breeds are prolific layers. Khaki Campbells can lay close to 300 eggs a year, and Indian Runners, which stand upright and run around like animated wine bottles, are excellent layers and superb slug hunters. Duck eggs are larger and richer than hens' eggs, and bakers love them. Ducks and chickens can share a garden or run, but they have different needs. Ducks need water deep enough to dunk their whole heads, to keep their eyes and nostrils clean, and they splash it everywhere, which turns a chicken run into a swamp. They do not perch, and they prefer to sleep on the floor, so they are best given their own house. Drakes can also try to mate with hens, which can injure them. Ducks are hardy and rarely get red mite, but they are just as attractive to foxes.
 
-![Geese grazing](/assets/essays/keeping-chickens-for-fun-and-profit/images/geese.jpg)
+![A domestic goose](/assets/essays/keeping-chickens-for-fun-and-profit/images/geese.jpg)
 
-*Geese: grazers, guardians, and very loud.* {{credit:geese}}
+*A domestic goose: grazer, guardian, and very loud.* {{credit:geese}}
 
 **Geese.** Geese are grazers that eat mostly grass, so they need a decent-sized paddock or orchard. They make superb guard animals, honking loudly at anything unfamiliar, and they will sometimes see off a fox or a stray dog. They can live alongside chickens if there is enough space, but they can be bossy and territorial, especially in the breeding season. They are also very noisy, which neighbours may not appreciate. Not for small gardens.
 
