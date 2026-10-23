@@ -8,7 +8,7 @@ subtitle: "A reflective essay on The Global Journey of Buddhism: From Ancient In
 preview_slug: "The Global Journey of Buddhism: From Ancient India"
 preview_text: "The Global Journey of Buddhism: From Ancient India to the Modern World"
 preview_image: "/assets/essays/the-global-journey-of-buddhism-from-ancient-india-to-the-modern-world/cover.jpg"
-epub_download: "/assets/essays/2026-09-27-the-global-journey-of-buddhism-from-ancient-india-to-the-modern-world.epub"
+epub_download: "/assets/essays/the-global-journey-of-buddhism-from-ancient-india-to-the-modern-world/the-global-journey-of-buddhism-from-ancient-india-to-the-modern-world.epub"
 ---
 
 # The Global Journey of Buddhism: From Ancient India to the Modern World
