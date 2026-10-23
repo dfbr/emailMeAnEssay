@@ -1,0 +1,99 @@
+{
+  "cover": {
+    "source": "openverse",
+    "q": "hens free range garden"
+  },
+  "red-fox": {
+    "source": "inaturalist",
+    "taxon": "Vulpes vulpes",
+    "place_id": 6857
+  },
+  "dust-bath": {
+    "source": "openverse",
+    "q": "chicken dust bathing"
+  },
+  "isa-brown": {
+    "source": "openverse",
+    "q": "ISA Brown hen"
+  },
+  "light-sussex": {
+    "source": "openverse",
+    "q": "Light Sussex hen"
+  },
+  "rhode-island-red": {
+    "source": "openverse",
+    "q": "Rhode Island Red hen"
+  },
+  "leghorn": {
+    "source": "openverse",
+    "q": "White Leghorn hen"
+  },
+  "plymouth-rock": {
+    "source": "openverse",
+    "q": "Barred Plymouth Rock hen"
+  },
+  "buff-orpington": {
+    "source": "openverse",
+    "q": "Buff Orpington hen"
+  },
+  "wyandotte": {
+    "source": "openverse",
+    "q": "Silver Laced Wyandotte"
+  },
+  "australorp": {
+    "source": "openverse",
+    "q": "Australorp hen"
+  },
+  "marans": {
+    "source": "openverse",
+    "q": "Marans hen chicken"
+  },
+  "araucana": {
+    "source": "openverse",
+    "q": "Araucana chicken"
+  },
+  "welsummer": {
+    "source": "openverse",
+    "q": "Welsummer hen"
+  },
+  "brahma": {
+    "source": "openverse",
+    "q": "Brahma chicken"
+  },
+  "pekin": {
+    "source": "openverse",
+    "q": "Pekin bantam"
+  },
+  "silkie": {
+    "source": "openverse",
+    "q": "Silkie chicken"
+  },
+  "hen-with-chicks": {
+    "source": "openverse",
+    "q": "mother hen with chicks chicken"
+  },
+  "runner-ducks": {
+    "source": "inaturalist",
+    "taxon": "Anas platyrhynchos",
+    "captive": true,
+    "q": "runner"
+  },
+  "geese": {
+    "source": "inaturalist",
+    "taxon": "Anser anser",
+    "captive": true
+  },
+  "quail": {
+    "source": "inaturalist",
+    "taxon": "Coturnix japonica"
+  },
+  "guinea-fowl": {
+    "source": "inaturalist",
+    "taxon": "Numida meleagris"
+  },
+  "turkey": {
+    "source": "inaturalist",
+    "taxon": "Meleagris gallopavo",
+    "captive": true
+  }
+}
