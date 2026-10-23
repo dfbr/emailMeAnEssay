@@ -8,7 +8,7 @@ subtitle: "A reflective essay on The Beginner’s Guide to Wine: How It Is Made,
 preview_slug: "The Beginner’s Guide to Wine: How It Is"
 preview_text: "The Beginner’s Guide to Wine: How It Is Made, Marketed, Sold, and Why It Matters Less Than It Thinks"
 preview_image: "/assets/essays/the-beginners-guide-to-wine-how-it-is-made-marketed-sold-and-why-it-matters-less-than-it-thinks/cover.jpg"
-epub_download: "/assets/essays/2026-09-27-the-beginners-guide-to-wine-how-it-is-made-marketed-sold-and-why-it-matters-less-than-it-thinks.epub"
+epub_download: "/assets/essays/the-beginners-guide-to-wine-how-it-is-made-marketed-sold-and-why-it-matters-less-than-it-thinks/the-beginners-guide-to-wine-how-it-is-made-marketed-sold-and-why-it-matters-less-than-it-thinks.epub"
 ---
 
 # The Beginner’s Guide to Wine: How It Is Made, Marketed, Sold, and Why It Matters Less Than It Thinks
