@@ -24,6 +24,8 @@ import html
 import json
 import re
 import sys
+import time
+import urllib.error
 import urllib.parse
 import urllib.request
 from io import BytesIO
@@ -35,13 +37,25 @@ API = "https://commons.wikimedia.org/w/api.php"
 USER_AGENT = "emailMeAnEssay/1.0 (https://essays.dfbr.co.uk)"
 ALLOWED = re.compile(r"^(CC0|Public domain|PD\b|CC BY(-SA)? \d)", re.I)
 MIN_WIDTH = 800
-THUMB_WIDTH = 1200
+THUMB_WIDTH = 1280  # a standard Commons thumbnail size; odd sizes are rate-limited harder
+DELAY = 1.0  # seconds between requests; raise with --delay if Commons rate-limits you
 
 
-def _get(url: str) -> bytes:
+def _get(url: str, attempts: int = 6) -> bytes:
     request = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
-    with urllib.request.urlopen(request, timeout=60) as response:
-        return response.read()
+    for attempt in range(attempts):
+        try:
+            with urllib.request.urlopen(request, timeout=60) as response:
+                data = response.read()
+            time.sleep(DELAY)
+            return data
+        except urllib.error.HTTPError as error:
+            if error.code != 429 or attempt == attempts - 1:
+                raise
+            wait = int(error.headers.get("Retry-After") or 0) or 30 * 2**attempt
+            print(f"  rate-limited; waiting {wait}s", flush=True)
+            time.sleep(wait)
+    raise RuntimeError("unreachable")
 
 
 def _plain(value: str) -> str:
@@ -100,15 +114,18 @@ def contact_sheet(key: str, images: list[Image.Image], path: Path) -> None:
 
 
 def main() -> None:
+    global DELAY
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("manifest")
     parser.add_argument("out_dir")
     parser.add_argument("--candidates", type=int, default=0, help="Review mode: candidates per key")
     parser.add_argument("--pick", action="append", default=[], help="key=index to install (default index 0)")
     parser.add_argument("--only", nargs="*", help="Limit to these keys")
+    parser.add_argument("--delay", type=float, default=DELAY, help="Seconds between requests")
     parser.add_argument("--fill-credits", metavar="POST", help="Replace {{credit:key}} placeholders in POST")
     args = parser.parse_args()
 
+    DELAY = args.delay
     manifest = json.loads(Path(args.manifest).read_text())
     keys = args.only or list(manifest)
     picks = dict(p.split("=", 1) for p in args.pick)
@@ -135,12 +152,20 @@ def main() -> None:
 
     for key in keys:
         if args.candidates:
+            if (out / f"{key}.json").exists():
+                continue
             found = search(manifest[key], args.candidates)
-            images = [download(c) for c in found]
+            images = []
+            for candidate in list(found):
+                try:
+                    images.append(download(candidate))
+                except urllib.error.HTTPError as error:
+                    print(f"  skipped {candidate['title']}: {error}", flush=True)
+                    found.remove(candidate)
             (out / f"{key}.json").write_text(json.dumps(found, indent=2))
             if images:
                 contact_sheet(key, images, out / f"{key}-sheet.jpg")
-            print(f"{key}: {len(images)} candidates")
+            print(f"{key}: {len(images)} candidates", flush=True)
             continue
         index = int(picks.get(key, 0))
         found = search(manifest[key], index + 1)
