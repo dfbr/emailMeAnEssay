@@ -100,7 +100,7 @@ The run is where your hens will spend their days, and it needs to be secure, dry
 
 ![Red fox](/assets/essays/keeping-chickens-for-fun-and-profit/images/red-fox.jpg)
 
-*The red fox: clever, persistent, and found almost everywhere in Britain, including city centres. Design every part of your set-up with this animal in mind.* {{credit:red-fox}}
+*The red fox: clever, persistent, and found almost everywhere in Britain, including city centres. Design every part of your set-up with this animal in mind.* Photo: Genevieve Early, [CC BY 4.0](https://www.inaturalist.org/observations/301768846), via iNaturalist.
 
 **Flooring.** A run on bare earth quickly turns into a muddy, smelly bog in a British winter, especially with a small flock in a small space. Grass does not survive long under chickens' feet. Many keepers cover the floor of their run with a deep layer of wood chips or bark chips, which drains well, can be raked, and gives the birds something to scratch in. It needs topping up and eventually replacing. Others use sand. If you can, roof at least part of the run with clear corrugated sheeting, so the birds have somewhere dry to stand and the floor does not become waterlogged.
 
@@ -110,7 +110,7 @@ The run is where your hens will spend their days, and it needs to be secure, dry
 
 ![A hen enjoying a dust bath](/assets/essays/keeping-chickens-for-fun-and-profit/images/dust-bath.jpg)
 
-*A hen enjoying a dust bath. It looks like a collapse; it is actually a spa treatment.* {{credit:dust-bath}}
+*A hen enjoying a dust bath. It looks like a collapse; it is actually a spa treatment.* Photo: Linda N., [CC BY 2.0](https://www.flickr.com/photos/22748341@N00/1801444481), via Flickr.
 
 ### Other equipment
 
@@ -166,7 +166,7 @@ The downside is that their productive lives are often short. Hybrids lay heavily
 
 ![ISA Brown hen](/assets/essays/keeping-chickens-for-fun-and-profit/images/isa-brown.jpg)
 
-*The ISA Brown, or one of its many close relatives sold under different names, is the classic brown commercial hybrid: friendly, easy and capable of well over 300 eggs in her first year.* {{credit:isa-brown}}
+*The ISA Brown, or one of its many close relatives sold under different names, is the classic brown commercial hybrid: friendly, easy and capable of well over 300 eggs in her first year.* Photo: conall.., [CC BY 2.0](https://www.flickr.com/photos/16176711@N02/52719188017), via Flickr.
 
 **ISA Brown and similar brown hybrids.** These ginger-brown hens, sold under many names, are the most common laying hens in the world. They are docile, curious and very easy to tame, and they lay large brown eggs at an astonishing rate. They make wonderful first chickens.
 
@@ -178,67 +178,67 @@ Pure breeds, sometimes called heritage or traditional breeds, are the descendant
 
 ![Light Sussex hen](/assets/essays/keeping-chickens-for-fun-and-profit/images/light-sussex.jpg)
 
-*The Light Sussex: white body, black neck and tail, and one of the most reliable dual-purpose breeds ever developed.* {{credit:light-sussex}}
+*The Light Sussex: white body, black neck and tail, and one of the most reliable dual-purpose breeds ever developed.* Photo: CaptainVindaloo, [Public domain](https://commons.wikimedia.org/wiki/File:Light_sussex_hen.jpg), via Wikimedia Commons.
 
 **Light Sussex.** An old English breed from the south of England, with a white body, black-striped neck feathers and a black tail. Sussex hens are calm, friendly and hardy, lay 220 to 260 cream or light brown eggs a year, and are good foragers. They are one of the best all-round breeds for a beginner. They come in several other colours, including Buff, Speckled and Coronation.
 
 ![Rhode Island Red hen](/assets/essays/keeping-chickens-for-fun-and-profit/images/rhode-island-red.jpg)
 
-*The Rhode Island Red: a deep mahogany American classic, and the ancestor of many modern brown-egg hybrids.* {{credit:rhode-island-red}}
+*The Rhode Island Red: a deep mahogany American classic, and the ancestor of many modern brown-egg hybrids.* Photo: Garrett Heath, [CC BY 2.0](https://www.flickr.com/photos/79459685@N03/9340819782), via Flickr.
 
 **Rhode Island Red.** An American breed developed in the nineteenth century in, unsurprisingly, Rhode Island. The hens are a rich, deep red-brown and lay 200 to 250 brown eggs a year. They are hardy and productive, though the cockerels can be aggressive and some strains are rather bossy with other breeds.
 
 ![White Leghorn hen](/assets/essays/keeping-chickens-for-fun-and-profit/images/leghorn.jpg)
 
-*The Leghorn: slim, alert and flighty, and the champion layer of white eggs.* {{credit:leghorn}}
+*The Leghorn: slim, alert and flighty, and the champion layer of white eggs.* Photo: Dano, [CC BY 2.0](https://www.flickr.com/photos/36101697408@N01/275056837), via Flickr.
 
 **Leghorn.** An Italian breed, named after the port of Livorno (once called Leghorn in English). Leghorns are slim, active, flighty birds with large combs, and they lay a great many white eggs, often 250 to 300 a year. They are not the friendliest of birds, are good fliers, and dislike being confined, but if eggs are your priority, they are hard to beat.
 
 ![Barred Plymouth Rock hen](/assets/essays/keeping-chickens-for-fun-and-profit/images/plymouth-rock.jpg)
 
-*The Barred Plymouth Rock, with its striking black-and-white "cuckoo" barring.* {{credit:plymouth-rock}}
+*The Barred Plymouth Rock, with its striking black-and-white "cuckoo" barring.* Photo: thomas pix, [CC BY 2.0](https://www.flickr.com/photos/89804841@N00/2428454172), via Flickr.
 
 **Plymouth Rock.** Another American breed, best known in the barred variety, with black and white stripes across every feather. Plymouth Rocks are calm, sturdy and friendly, lay around 200 brown eggs a year, and cope well with cold weather.
 
 ![Buff Orpington hen](/assets/essays/keeping-chickens-for-fun-and-profit/images/buff-orpington.jpg)
 
-*The Buff Orpington: large, golden, fluffy, and about as gentle as a chicken can be.* {{credit:buff-orpington}}
+*The Buff Orpington: large, golden, fluffy, and about as gentle as a chicken can be.* Photo: elias_daniel, [CC BY 2.0](https://www.flickr.com/photos/58853173@N00/6727197375), via Flickr.
 
 **Buff Orpington.** Developed in the 1880s in Orpington, Kent, by William Cook, this is the gentle giant of the garden. Buff Orpingtons are large, golden, fluffy and very docile, which makes them excellent with children. They lay around 150 to 180 light brown eggs a year, and they are enthusiastic mothers that often go broody. They are a breed for people who want a calm pet first and eggs second.
 
 ![Silver Laced Wyandotte hen](/assets/essays/keeping-chickens-for-fun-and-profit/images/wyandotte.jpg)
 
-*The Silver Laced Wyandotte: each white feather edged in black, like a living piece of lace.* {{credit:wyandotte}}
+*The Silver Laced Wyandotte: each white feather edged in black, like a living piece of lace.* Photo: Amanda Kae's Photoz, [CC BY 2.0](https://www.flickr.com/photos/27477227@N02/2615268648), via Flickr.
 
 **Wyandotte.** An American breed with a rounded, compact shape and a neat, low "rose" comb, which makes it resistant to frostbite. The Silver Laced variety, with each feather outlined in black, is one of the most beautiful chickens there is. Wyandottes are calm and hardy and lay around 180 to 200 eggs a year.
 
 ![Black Australorp hen](/assets/essays/keeping-chickens-for-fun-and-profit/images/australorp.jpg)
 
-*The Australorp, whose glossy black feathers shine green in the sunlight. One famously laid 364 eggs in 365 days.* {{credit:australorp}}
+*The Australorp, whose glossy black feathers shine green in the sunlight. One famously laid 364 eggs in 365 days.* Photo: Sarah and Jason, [CC BY-SA 2.0](https://www.flickr.com/photos/23601949@N00/5662346392), via Flickr.
 
 **Australorp.** An Australian breed developed from Orpingtons in the early twentieth century, with a focus on egg production. Australorps are black, glossy, gentle and very productive. In the 1920s an Australorp hen was recorded laying 364 eggs in 365 days, a figure that is still quoted with awe at poultry shows. In real life, expect 220 to 250 light brown eggs a year.
 
 ![Marans hen](/assets/essays/keeping-chickens-for-fun-and-profit/images/marans.jpg)
 
-*The Marans, from France, famous for its dark chocolate-brown eggs.* {{credit:marans}}
+*The Marans, from France, famous for its dark chocolate-brown eggs.* Photo: soapydishwater, [CC BY 2.0](https://www.flickr.com/photos/8090900@N04/5419251379), via Flickr.
 
 **Marans.** A French breed, from the town of Marans near La Rochelle, famous for laying very dark, chocolate-brown eggs. The Cuckoo Marans, with grey barred feathers, is common in Britain, and the Black Copper Marans lays the darkest eggs of all. Marans lay 150 to 200 eggs a year. A box of their eggs mixed with white and blue ones looks wonderful.
 
 ![Two blue-green Araucana eggs in a hand](/assets/essays/keeping-chickens-for-fun-and-profit/images/araucana.jpg)
 
-*The Araucana's claim to fame: eggs with blue or blue-green shells, coloured right the way through.* {{credit:araucana}}
+*The Araucana's claim to fame: eggs with blue or blue-green shells, coloured right the way through.* Photo: observing life, [CC BY 2.0](https://www.flickr.com/photos/26765085@N08/3392625043), via Flickr.
 
 **Araucana.** A breed descended from chickens in Chile, best known for laying eggs with blue or blue-green shells, a colour that runs right through the shell rather than sitting on the surface. Many British Araucanas have small crests. They lay around 150 to 200 eggs a year and are lively, independent birds.
 
 ![Welsummer hen](/assets/essays/keeping-chickens-for-fun-and-profit/images/welsummer.jpg)
 
-*The Welsummer, from the Netherlands, lays dark terracotta eggs with darker speckles.* {{credit:welsummer}}
+*The Welsummer, from the Netherlands, lays dark terracotta eggs with darker speckles.* Photo: normanack, [CC BY 2.0](https://www.flickr.com/photos/29278394@N00/7629363634), via Flickr.
 
 **Welsummer.** A Dutch breed from the village of Welsum, famous for laying beautiful dark terracotta eggs with darker freckles. The cockerel is said to be the model for the rooster on the Kellogg's Corn Flakes box. Welsummers are friendly, active foragers that lay 160 to 200 eggs a year.
 
 ![Brahma hen](/assets/essays/keeping-chickens-for-fun-and-profit/images/brahma.jpg)
 
-*The Brahma: enormous, feather-footed and calm. Not a bird for small runs or muddy ground.* {{credit:brahma}}
+*The Brahma: enormous, feather-footed and calm. Not a bird for small runs or muddy ground.* Photo: JumpV, [CC BY 2.0](https://www.flickr.com/photos/60812270@N07/5927522643), via Flickr.
 
 **Brahma.** A huge breed with feathered feet, developed in America from birds imported from Asia. Brahmas are calm, gentle giants (the largest cockerels can stand around 75 centimetres tall), and lay around 150 eggs a year, often continuing through winter better than other breeds. They need more space, low perches and dry ground, because their feathered feet get muddy and caked.
 
@@ -248,13 +248,13 @@ Bantams are miniature chickens, typically a quarter to a fifth of the size of la
 
 ![Pekin bantam](/assets/essays/keeping-chickens-for-fun-and-profit/images/pekin.jpg)
 
-*The Pekin bantam: a small, round, feather-footed ball of fluff, and a superb chicken for families.* {{credit:pekin}}
+*The Pekin bantam: a small, round, feather-footed ball of fluff, and a superb chicken for families.* Photo: onlyruff, [CC BY-SA 2.0](https://www.flickr.com/photos/54516384@N02/54201412529), via Flickr.
 
 **Pekin.** A true bantam, small and round, with feathered feet and a waddling walk. Pekins are among the friendliest and calmest of all chickens and are ideal for families with young children. They lay small cream eggs and go broody often.
 
 ![Silkie hen](/assets/essays/keeping-chickens-for-fun-and-profit/images/silkie.jpg)
 
-*The Silkie, whose feathers lack the tiny hooks that hold ordinary feathers together, giving it a coat like fur.* {{credit:silkie}}
+*The Silkie, whose feathers lack the tiny hooks that hold ordinary feathers together, giving it a coat like fur.* Photo: sandyseek, [CC BY 2.0](https://www.flickr.com/photos/23880513@N02/2706965374), via Flickr.
 
 **Silkie.** Perhaps the strangest chicken of all. Silkies have fluffy, fur-like feathers that lack the tiny barbs that hold normal feathers together, black skin, five toes rather than four, and feathered feet. They cannot fly and cannot cope with getting soaked, so they need a dry run. They lay only around 100 small cream eggs a year, but they are famously broody, and many keepers keep a Silkie or two purely to hatch other hens' eggs.
 
@@ -355,7 +355,7 @@ Chickens are not hard work, but they do need a routine. Here is a typical schedu
 
 ![A broody hen with chicks](/assets/essays/keeping-chickens-for-fun-and-profit/images/hen-with-chicks.jpg)
 
-*A broody hen with her chicks. When it works, there is no better incubator and no more devoted parent.* {{credit:hen-with-chicks}}
+*A broody hen with her chicks. When it works, there is no better incubator and no more devoted parent.* Photo: Thomas James Caldwell, [CC BY-SA 2.0](https://www.flickr.com/photos/81643710@N00/26012307653), via Flickr.
 
 ### Breeding and hatching
 
@@ -461,31 +461,31 @@ Once you have chickens, it is very tempting to add other creatures. Some mix wel
 
 ![Indian Runner ducks](/assets/essays/keeping-chickens-for-fun-and-profit/images/runner-ducks.jpg)
 
-*Indian Runner ducks: upright, comical, excellent layers and enthusiastic slug hunters.* {{credit:runner-ducks}}
+*Indian Runner ducks: upright, comical, excellent layers and enthusiastic slug hunters.* Photo: Alan Rockefeller, [CC BY 4.0](https://www.inaturalist.org/observations/1623130), via iNaturalist.
 
 **Ducks.** Ducks are probably the most popular companions for chickens, and several breeds are prolific layers. Khaki Campbells can lay close to 300 eggs a year, and Indian Runners, which stand upright and run around like animated wine bottles, are excellent layers and superb slug hunters. Duck eggs are larger and richer than hens' eggs, and bakers love them. Ducks and chickens can share a garden or run, but they have different needs. Ducks need water deep enough to dunk their whole heads, to keep their eyes and nostrils clean, and they splash it everywhere, which turns a chicken run into a swamp. They do not perch, and they prefer to sleep on the floor, so they are best given their own house. Drakes can also try to mate with hens, which can injure them. Ducks are hardy and rarely get red mite, but they are just as attractive to foxes.
 
 ![A domestic goose](/assets/essays/keeping-chickens-for-fun-and-profit/images/geese.jpg)
 
-*A domestic goose: grazer, guardian, and very loud.* {{credit:geese}}
+*A domestic goose: grazer, guardian, and very loud.* Photo: Ricard Busquets Reverte, [CC BY 4.0](https://www.inaturalist.org/observations/196540790), via iNaturalist.
 
 **Geese.** Geese are grazers that eat mostly grass, so they need a decent-sized paddock or orchard. They make superb guard animals, honking loudly at anything unfamiliar, and they will sometimes see off a fox or a stray dog. They can live alongside chickens if there is enough space, but they can be bossy and territorial, especially in the breeding season. They are also very noisy, which neighbours may not appreciate. Not for small gardens.
 
 ![Coturnix quail](/assets/essays/keeping-chickens-for-fun-and-profit/images/quail.jpg)
 
-*Japanese quail: tiny birds, speckled eggs, and an astonishing laying rate for their size.* {{credit:quail}}
+*Japanese quail: tiny birds, speckled eggs, and an astonishing laying rate for their size.* Photo: 林孫鋒(Lin Sun Fong), [CC BY-SA 4.0](https://www.inaturalist.org/observations/138714425), via iNaturalist.
 
 **Quail.** Japanese, or Coturnix, quail are small, quiet birds that can lay more than 250 tiny speckled eggs a year and need very little space. They are popular with people in small gardens. They should not be kept with chickens, though: they are much smaller, need a higher-protein diet, are easily bullied or killed by hens, and are best kept in their own secure aviary or hutch.
 
 ![Helmeted guineafowl](/assets/essays/keeping-chickens-for-fun-and-profit/images/guinea-fowl.jpg)
 
-*Guineafowl: the farmyard's burglar alarm, and voracious eaters of ticks and insects.* {{credit:guinea-fowl}}
+*Guineafowl: the farmyard's burglar alarm, and voracious eaters of ticks and insects.* Photo: Christine Laney, [CC BY 4.0](https://www.inaturalist.org/observations/391164309), via iNaturalist.
 
 **Guineafowl.** Guineafowl are half-wild, speckled birds from Africa. They eat huge numbers of insects, including ticks, and raise a deafening alarm at the slightest disturbance, which can help protect the flock from predators. They are often kept with chickens on farms. But they are very noisy, like to roost in trees, wander widely and are difficult to keep in a garden. They are best suited to a smallholding with forgiving neighbours.
 
 ![Turkey](/assets/essays/keeping-chickens-for-fun-and-profit/images/turkey.jpg)
 
-*Turkeys are friendly and impressive, but should not be kept with chickens because of the risk of blackhead disease.* {{credit:turkey}}
+*Turkeys are friendly and impressive, but should not be kept with chickens because of the risk of blackhead disease.* Photo: Ricard Busquets Reverte, [CC BY 4.0](https://www.inaturalist.org/observations/144873840), via iNaturalist.
 
 **Turkeys.** Turkeys can be surprisingly friendly and personable, but they should not be kept with chickens. Chickens commonly carry, without much harm to themselves, a parasite that causes histomoniasis, or "blackhead", a disease that is often fatal to turkeys. The parasite can survive in the soil for years, so turkeys should not even be put on ground where chickens have been. Keep them separately, or not at all.
 
