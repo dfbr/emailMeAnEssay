@@ -1,25 +1,99 @@
 {
-  "cover": "hens free range garden",
-  "red-fox": "Vulpes vulpes red fox",
-  "dust-bath": "chicken dust bathing",
-  "isa-brown": "ISA Brown hen",
-  "light-sussex": "Light Sussex hen",
-  "rhode-island-red": "Rhode Island Red hen",
-  "leghorn": "White Leghorn hen",
-  "plymouth-rock": "Barred Plymouth Rock hen",
-  "buff-orpington": "Buff Orpington hen",
-  "wyandotte": "Silver Laced Wyandotte",
-  "australorp": "Australorp hen",
-  "marans": "Marans hen chicken",
-  "araucana": "Araucana chicken",
-  "welsummer": "Welsummer hen",
-  "brahma": "Brahma chicken",
-  "pekin": "Pekin bantam",
-  "silkie": "Silkie chicken",
-  "hen-with-chicks": "hen with chicks",
-  "runner-ducks": "Indian Runner ducks",
-  "geese": "domestic geese grazing",
-  "quail": "Coturnix japonica quail",
-  "guinea-fowl": "Helmeted guineafowl",
-  "turkey": "domestic turkey"
+  "cover": {
+    "source": "openverse",
+    "q": "hens free range garden"
+  },
+  "red-fox": {
+    "source": "inaturalist",
+    "taxon": "Vulpes vulpes"
+  },
+  "dust-bath": {
+    "source": "openverse",
+    "q": "chicken dust bathing"
+  },
+  "isa-brown": {
+    "source": "openverse",
+    "q": "ISA Brown hen"
+  },
+  "light-sussex": {
+    "source": "openverse",
+    "q": "Light Sussex hen"
+  },
+  "rhode-island-red": {
+    "source": "openverse",
+    "q": "Rhode Island Red hen"
+  },
+  "leghorn": {
+    "source": "openverse",
+    "q": "White Leghorn hen"
+  },
+  "plymouth-rock": {
+    "source": "openverse",
+    "q": "Barred Plymouth Rock hen"
+  },
+  "buff-orpington": {
+    "source": "openverse",
+    "q": "Buff Orpington hen"
+  },
+  "wyandotte": {
+    "source": "openverse",
+    "q": "Silver Laced Wyandotte"
+  },
+  "australorp": {
+    "source": "openverse",
+    "q": "Australorp hen"
+  },
+  "marans": {
+    "source": "openverse",
+    "q": "Marans hen chicken"
+  },
+  "araucana": {
+    "source": "openverse",
+    "q": "Araucana chicken"
+  },
+  "welsummer": {
+    "source": "openverse",
+    "q": "Welsummer hen"
+  },
+  "brahma": {
+    "source": "openverse",
+    "q": "Brahma chicken"
+  },
+  "pekin": {
+    "source": "openverse",
+    "q": "Pekin bantam"
+  },
+  "silkie": {
+    "source": "openverse",
+    "q": "Silkie chicken"
+  },
+  "hen-with-chicks": {
+    "source": "openverse",
+    "q": "hen with chicks"
+  },
+  "runner-ducks": {
+    "source": "inaturalist",
+    "taxon": "Anas platyrhynchos",
+    "captive": true,
+    "q": "runner"
+  },
+  "geese": {
+    "source": "inaturalist",
+    "taxon": "Anser anser",
+    "captive": true
+  },
+  "quail": {
+    "source": "inaturalist",
+    "taxon": "Coturnix japonica"
+  },
+  "guinea-fowl": {
+    "source": "inaturalist",
+    "taxon": "Numida meleagris",
+    "captive": true
+  },
+  "turkey": {
+    "source": "inaturalist",
+    "taxon": "Meleagris gallopavo",
+    "captive": true
+  }
 }
