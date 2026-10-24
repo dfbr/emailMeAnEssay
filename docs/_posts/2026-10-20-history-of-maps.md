@@ -145,7 +145,7 @@ Not every famous map from this period is quite what it is said to be. The Piri R
 
 Europe's mapmakers now had two jobs: to record the discoveries and to find ways to make them useful. The Low Countries took the lead, helped by Antwerp's position as a centre of commerce and printing. In 1570, a merchant of maps named Abraham Ortelius published in Antwerp the *Theatrum Orbis Terrarum* ("Theatre of the World"), a collection of around fifty maps of uniform size, engraved on copper and bound into a single volume, each accompanied by descriptive text. It is considered the first modern atlas. It was an instant success, ran to many editions in several languages, and made its author rich. Its publication coincided with a revolution in a different but related aspect of map technology: copper-plate engraving gave finer detail than woodcuts, and allowed the same plate to be reprinted many times. Map-making had become an industry.
 
-![Abraham Ortelius's world map from the Theatrum Orbis Terrarum (1570), the first modern atlas.](https://commons.wikimedia.org/wiki/Special:FilePath/OrteliusWorldMap.jpg?width=1000)
+![Abraham Ortelius's world map from the Theatrum Orbis Terrarum (1570), the first modern atlas.](https://commons.wikimedia.org/wiki/Special:FilePath/OrteliusWorldMap1570.jpg?width=1000)
 
 *Ortelius's world map (Typus Orbis Terrarum) from the Theatrum Orbis Terrarum, 1570. Public domain; via Wikimedia Commons.*
 
