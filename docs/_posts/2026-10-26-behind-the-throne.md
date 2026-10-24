@@ -294,7 +294,7 @@ George III chose his bride from a list of German Protestant princesses, and marr
 
 ![Strelitzia reginae, the bird of paradise flower](/assets/essays/behind-the-throne/images/charlotte.jpg)
 
-*Strelitzia reginae, the bird of paradise flower, named in honour of Queen Charlotte, who was born a princess of Mecklenburg-Strelitz.* Photo: Kirt Edblom, [CC BY-SA 2.0](https://www.flickr.com/photos/27190564@N02/41867591920), via Flickr.
+*Strelitzia reginae, the bird of paradise flower, in a botanical plate published between 1805 and 1816, during Queen Charlotte's lifetime. The plant was named in her honour; she was born a princess of Mecklenburg-Strelitz.* Image: Swallowtail Garden Seeds, [Public domain](https://www.flickr.com/photos/97123293@N07/16558820423), via Flickr.
 
 Charlotte was a keen amateur botanist who helped to develop the gardens at Kew. The South African bird of paradise flower, *Strelitzia reginae*, was named in her honour. She was a patron of music; the eight-year-old Mozart dedicated a set of sonatas to her in 1765. She is also credited with setting up one of the first Christmas trees in England, at Windsor in 1800. The city of Charlotte in North Carolina was named after her. Her later years were overshadowed by her husband's mental illness. Under the Regency Act of 1811, she was given custody of the king's person, a heavy and miserable responsibility. She died in 1818, two years before him.
 
