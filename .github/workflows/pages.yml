@@ -3,6 +3,11 @@ name: Deploy Jekyll Site
 on:
   push:
     branches: ["main"]
+  # Rebuild daily so posts dated in the future appear on their publishing date
+  # (Jekyll leaves future-dated posts out of the build). 00:07 UTC is just
+  # after midnight, so a post dated today is included.
+  schedule:
+    - cron: "7 0 * * *"
   workflow_dispatch:
 
 permissions:
