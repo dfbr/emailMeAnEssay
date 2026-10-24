@@ -58,8 +58,10 @@ TIMEOUT = 25
 HOST_DELAY = 1.0  # seconds between requests to the same host
 MAX_NEW_ISSUES = 25  # per run, so a mass outage cannot open hundreds of issues
 
-MD_IMAGE = re.compile(r"!\[[^\]]*\]\(\s*<?([^)\s>]+)>?(?:\s+\"[^\"]*\")?\s*\)")
-MD_LINK = re.compile(r"(?<!!)\[[^\]]*\]\(\s*<?([^)\s>]+)>?(?:\s+\"[^\"]*\")?\s*\)")
+# A Markdown URL may itself contain balanced brackets, e.g. "File_(1879).jpg".
+MD_URL = r"<?((?:[^()\s<>]|\([^()\s]*\))+)>?"
+MD_IMAGE = re.compile(r"!\[[^\]]*\]\(\s*" + MD_URL + r"(?:\s+\"[^\"]*\")?\s*\)")
+MD_LINK = re.compile(r"(?<!!)\[[^\]]*\]\(\s*" + MD_URL + r"(?:\s+\"[^\"]*\")?\s*\)")
 HTML_SRC = re.compile(r"""<(?:img|source|script)\b[^>]*?\bsrc\s*=\s*["']([^"']+)["']""", re.I)
 HTML_HREF = re.compile(r"""<(?:a|link)\b[^>]*?\bhref\s*=\s*["']([^"']+)["']""", re.I)
 FRONT_MATTER = re.compile(r"\A---\s*\n(.*?)\n---\s*\n", re.S)
