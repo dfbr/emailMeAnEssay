@@ -11,9 +11,8 @@ Example:
         --title "My Essay" --subtitle "A subtitle" --author "ClaudeAI" \
         --credit "Painter, Title (1850), public domain"
 
-Then build the EPUB from the Jekyll post with pandoc:
-    pandoc docs/_posts/2026-01-01-my-essay.md -o docs/assets/essays/my-essay/my-essay.epub \
-        --epub-cover-image docs/assets/essays/my-essay/cover.jpg --toc --toc-depth 2
+Then build the EPUB from the Jekyll post (see BUILDING_EPUBS.md):
+    ./build_epub.sh docs/_posts/2026-01-01-my-essay.md
 """
 
 import argparse
