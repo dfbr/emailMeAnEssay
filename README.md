@@ -315,3 +315,12 @@ Operational note:
 
 * The trigger runner writes poller events to `output/logs/trigger_runs.jsonl`
   in the workflow workspace for diagnostics.
+
+---
+
+## Building EPUBs with pandoc
+
+Essays committed straight to `docs/_posts` are turned into EPUBs with pandoc
+via `./build_epub.sh`, which applies the house stylesheet
+`docs/_posts/epub.css`. See [BUILDING_EPUBS.md](BUILDING_EPUBS.md) for the
+full steps.
