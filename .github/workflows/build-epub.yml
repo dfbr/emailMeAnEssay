@@ -1,0 +1,53 @@
+name: Build EPUB
+
+# Run by hand from the Actions tab: builds the EPUB for one or more posts with
+# every image embedded, then pushes the result to a new branch
+# (epub-build/<run number>) so it can be reviewed and merged in a pull request.
+
+on:
+  workflow_dispatch:
+    inputs:
+      posts:
+        description: "Post file names in docs/_posts, separated by spaces"
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install pandoc
+        run: sudo apt-get update -q && sudo apt-get install -y -q pandoc
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Build EPUBs
+        env:
+          POSTS: ${{ inputs.posts }}
+        run: python .github/scripts/build_epub.py $POSTS
+
+      - name: Push to a review branch
+        env:
+          POSTS: ${{ inputs.posts }}
+        run: |
+          branch="epub-build/${{ github.run_number }}"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -b "$branch"
+          git add docs/assets/essays
+          if git diff --cached --quiet; then
+            echo "No EPUB changed."
+            exit 0
+          fi
+          git commit -m "Rebuild EPUB with all images embedded: $POSTS"
+          git push origin "$branch"
+          echo "Pushed $branch" >> "$GITHUB_STEP_SUMMARY"
