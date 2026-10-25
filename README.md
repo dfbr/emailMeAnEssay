@@ -315,3 +315,21 @@ Operational note:
 
 * The trigger runner writes poller events to `output/logs/trigger_runs.jsonl`
   in the workflow workspace for diagnostics.
+
+---
+
+## Building EPUBs with pandoc
+
+Essays in `docs/_posts` are turned into EPUBs with pandoc, run from that
+folder (where `cover.jpg` and `epub.css` live). Always pass the house
+stylesheet:
+
+```bash
+pandoc <essay>.md -o <essay>.epub --css epub.css ...
+```
+
+`epub.css` is pandoc's default EPUB stylesheet without the page background
+colour. Some pandoc versions add `background-color: #fdfdfd` to `html`,
+which paints an off-white box behind all the text and overrides the reader's
+own theme. Using `--css` replaces pandoc's default stylesheet entirely, so
+the book looks the same whichever pandoc version builds it.
