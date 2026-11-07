@@ -2,8 +2,9 @@ name: Check links and images
 
 on:
   # Daily at 05:23 UTC (early morning in Norway and the UK).
-  schedule:
-    - cron: "23 5 * * *"
+  # Schedule disabled; re-enable by uncommenting.
+  # schedule:
+  #   - cron: "23 5 * * *"
   workflow_dispatch:
 
 permissions:
