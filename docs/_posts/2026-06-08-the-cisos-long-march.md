@@ -11,6 +11,7 @@ word_count: 7414
 run_id: "legacy-the-cisos-long-march"
 subtitle: "A reflective essay on The CISO’s Long March"
 preview_image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1400&q=80"
+lang: "en-GB"
 ---
 
 # The CISO’s Long March

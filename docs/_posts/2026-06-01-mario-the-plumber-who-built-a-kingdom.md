@@ -11,6 +11,7 @@ word_count: 1594
 run_id: "legacy-mario-the-plumber-who-built-a-kingdom"
 subtitle: "A reflective essay on Mario: The Plumber Who Built a Kingdom"
 preview_image: "https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=1400&q=80"
+lang: "en-GB"
 ---
 
 # Mario: The Plumber Who Built a Kingdom

@@ -11,6 +11,7 @@ generated_at: "2026-06-08"
 word_count: 7512
 run_id: "d545e296-f2c0-4b75-9a2a-f9cc000ffc64"
 subtitle: "A reflective essay on The Training Effect"
+lang: "en-GB"
 ---
 
 # The Training Effect

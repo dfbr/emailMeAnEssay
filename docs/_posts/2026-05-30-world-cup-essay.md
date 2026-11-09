@@ -11,6 +11,7 @@ word_count: 1994
 run_id: "legacy-world-cup-essay"
 subtitle: "A reflective essay on The Political and Social History of the FIFA World Cup: England’s Legacy and Global Contributions"
 preview_image: "https://images.unsplash.com/photo-1547347298-4074fc3086f0?auto=format&fit=crop&w=1400&q=80"
+lang: "en-GB"
 ---
 
 # The Political and Social History of the FIFA World Cup: England’s Legacy and Global Contributions

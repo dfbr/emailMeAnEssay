@@ -9,6 +9,7 @@ preview_slug: "The American Civil War: Slavery, Union, and the"
 preview_text: "The American Civil War: Slavery, Union, and the Unfinished Republic"
 preview_image: "/assets/essays/the-american-civil-war-slavery-union-and-the-unfinished-republic/cover.jpg"
 epub_download: "/assets/essays/the-american-civil-war-slavery-union-and-the-unfinished-republic/the-american-civil-war-slavery-union-and-the-unfinished-republic.epub"
+lang: "en-GB"
 ---
 
 # The American Civil War: Slavery, Union, and the Unfinished Republic

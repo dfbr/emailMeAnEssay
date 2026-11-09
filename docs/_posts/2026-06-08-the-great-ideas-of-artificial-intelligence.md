@@ -11,6 +11,7 @@ word_count: 7348
 run_id: "legacy-the-great-ideas-of-artificial-intelligence"
 subtitle: "A reflective essay on The Great Ideas of Artificial Intelligence"
 preview_image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=1400&q=80"
+lang: "en-GB"
 ---
 
 # The Great Ideas of Artificial Intelligence

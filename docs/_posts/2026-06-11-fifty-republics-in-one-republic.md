@@ -11,6 +11,7 @@ generated_at: "2026-06-11"
 word_count: 7184
 run_id: "07559c83-2bc9-48a7-9fbd-2a77af14779b"
 subtitle: "A reflective essay on Fifty Republics in One Republic"
+lang: "en-GB"
 ---
 
 # Fifty Republics in One Republic

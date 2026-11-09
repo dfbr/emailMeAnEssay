@@ -9,6 +9,7 @@ layout: "essay"
 word_count: 4819
 subtitle: "A reflective essay on The Architecture of Faith: Mapping the World’s Great Traditions"
 preview_image: "https://images.unsplash.com/photo-1511818966892-d7d671e672a2?auto=format&fit=crop&w=1400&q=80"
+lang: "en-GB"
 ---
 
 ## The Mosaic of Belief: An Overview of the Global Religious Landscape

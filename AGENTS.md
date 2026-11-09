@@ -2,19 +2,26 @@
 
 This repo publishes essays to dfbr.co.uk (Jekyll site in `docs/`).
 
-## Building an essay's EPUB
+## Adding or changing an essay
 
 Follow [BUILDING_EPUBS.md](BUILDING_EPUBS.md). In short:
 
-1. Essay in `docs/_posts/YYYY-MM-DD-<slug>.md`; images, `cover.jpg` and the
-   epub in `docs/assets/essays/<slug>/`.
-2. Make the cover with `make_cover.py`.
-3. Build with `./build_epub.sh docs/_posts/YYYY-MM-DD-<slug>.md`.
+1. Essay in `docs/_posts/YYYY-MM-DD-<slug>.md`; its images (and cover, if you
+   make one) in `docs/assets/essays/<slug>/`.
+2. Push to `main`. The **Build EPUB** Action builds the EPUB, fills in the
+   front matter (`epub_download`, `layout`, `word_count`...), makes a cover if
+   there is none, commits it all back to `main` and redeploys the site.
+3. Pull before editing the essay again.
+
+To build locally, use `./build_epub.sh docs/_posts/YYYY-MM-DD-<slug>.md`,
+which runs the same builder as the Action.
 
 Rules:
 
-- Always build with the house stylesheet `docs/_posts/epub.css` (the script
-  does this). Never let the epub set a page background colour.
-- Don't hand-edit epub files or call pandoc without `--css
-  docs/_posts/epub.css`. Fix the source or the stylesheet, then rebuild.
+- EPUBs are built only by `.github/scripts/build_epub.py` (directly, via
+  `build_epub.sh`, or via the Action). It always uses the house stylesheet
+  `docs/_posts/epub.css`. Never let an EPUB set a background colour behind
+  the text.
+- Don't hand-edit EPUB files or call pandoc yourself. Fix the source, the
+  stylesheet or the builder, then rebuild.
 - Images must be public domain or suitably licensed, with credits.

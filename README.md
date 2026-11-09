@@ -320,7 +320,9 @@ Operational note:
 
 ## Building EPUBs with pandoc
 
-Essays committed straight to `docs/_posts` are turned into EPUBs with pandoc
-via `./build_epub.sh`, which applies the house stylesheet
-`docs/_posts/epub.css`. See [BUILDING_EPUBS.md](BUILDING_EPUBS.md) for the
-full steps.
+Essays pushed straight to `docs/_posts` on `main` are turned into EPUBs
+automatically by the **Build EPUB** GitHub Action, which embeds every image,
+applies the house stylesheet `docs/_posts/epub.css`, fills in the front
+matter, makes a cover if needed, commits the results and redeploys the site.
+`./build_epub.sh` runs the same builder locally. See
+[BUILDING_EPUBS.md](BUILDING_EPUBS.md) for the details.

@@ -9,6 +9,7 @@ preview_slug: "The World’s Major Religions: Origins, Beliefs, Geography, and"
 preview_text: "The World’s Major Religions: Origins, Beliefs, Geography, and Future Trajectories"
 preview_image: "/assets/essays/the-worlds-major-religions-origins-beliefs-geography-and-future-trajectories/cover.jpg"
 epub_download: "/assets/essays/the-worlds-major-religions-origins-beliefs-geography-and-future-trajectories/the-worlds-major-religions-origins-beliefs-geography-and-future-trajectories.epub"
+lang: "en-GB"
 ---
 
 # The World’s Major Religions: Origins, Beliefs, Geography, and Future Trajectories

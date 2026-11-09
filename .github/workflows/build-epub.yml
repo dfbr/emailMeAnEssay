@@ -1,53 +1,136 @@
 name: Build EPUB
 
-# Run by hand from the Actions tab: builds the EPUB for one or more posts with
-# every image embedded, then pushes the result to a new branch
-# (epub-build/<run number>) so it can be reviewed and merged in a pull request.
+# Builds the EPUB for every essay added or changed in a push to main, with all
+# images embedded and the house stylesheet (docs/_posts/epub.css), fixes the
+# essay's front matter (epub_download, layout, word_count...), makes a cover if
+# there is none, commits the results straight to main and redeploys the site.
+#
+# Changing epub.css, the build script or make_cover.py rebuilds every essay.
+# Run it by hand from the Actions tab to rebuild particular essays, or "all".
+#
+# After this runs, `git pull` before editing an essay again: the bot will have
+# edited its front matter.
 
 on:
+  push:
+    branches: ["main"]
+    paths:
+      - "docs/_posts/**"
+      - "docs/assets/essays/**"
+      - "!docs/assets/essays/**/*.epub"
+      - ".github/scripts/build_epub.py"
+      - ".github/scripts/epub_ids.lua"
+      - "make_cover.py"
   workflow_dispatch:
     inputs:
       posts:
-        description: "Post file names in docs/_posts, separated by spaces"
+        description: 'Post file names in docs/_posts, separated by spaces, or "all"'
         required: true
 
 permissions:
-  contents: write
+  contents: write  # commit the EPUBs and front matter
+  actions: write   # start the Pages deployment afterwards
+
+concurrency:
+  group: build-epub
+  cancel-in-progress: false
+
+env:
+  PANDOC_VERSION: "3.13"
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 90
     steps:
       - name: Checkout
         uses: actions/checkout@v7
 
-      - name: Install pandoc
-        run: sudo apt-get update -q && sudo apt-get install -y -q pandoc
+      - name: Install pandoc ${{ env.PANDOC_VERSION }}
+        run: |
+          curl -sSLf -o "$RUNNER_TEMP/pandoc.deb" \
+            "https://github.com/jgm/pandoc/releases/download/${PANDOC_VERSION}/pandoc-${PANDOC_VERSION}-1-amd64.deb"
+          sudo dpkg -i "$RUNNER_TEMP/pandoc.deb"
+          pandoc --version | head -1
 
       - name: Set up Python
         uses: actions/setup-python@v7
         with:
           python-version: "3.12"
 
+      - name: Set up Java (for epubcheck)
+        uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: "21"
+
+      - name: Install Python packages
+        run: pip install --quiet pillow pyyaml epubcheck
+
       - name: Build EPUBs
         env:
           POSTS: ${{ inputs.posts }}
-        run: python .github/scripts/build_epub.py $POSTS
-
-      - name: Push to a review branch
-        env:
-          POSTS: ${{ inputs.posts }}
         run: |
-          branch="epub-build/${{ github.run_number }}"
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git checkout -b "$branch"
-          git add docs/assets/essays
-          if git diff --cached --quiet; then
-            echo "No EPUB changed."
+          args=(--require-epubcheck --written-list "$RUNNER_TEMP/written.txt")
+          if [ "${{ github.event_name }}" = "push" ]; then
+            args+=(--from-push-event)
+          elif [ "$POSTS" = "all" ]; then
+            args+=(--all)
+          else
+            read -ra names <<< "$POSTS"
+            args+=("${names[@]}")
+          fi
+          set +e
+          python .github/scripts/build_epub.py "${args[@]}" 2>&1 | tee "$RUNNER_TEMP/build.log"
+          status=${PIPESTATUS[0]}
+          {
+            echo "## EPUB build"
+            echo '```'
+            grep -E '^(==|    (ok|FAILED|cover: generated)|Built|Failed)' "$RUNNER_TEMP/build.log"
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+          echo "status=$status" >> "$GITHUB_ENV"
+
+      # Essays that built are committed even if another failed; the run is
+      # still marked as failed below so you get the failure email.
+      - name: Commit to main
+        id: commit
+        run: |
+          touch "$RUNNER_TEMP/written.txt"
+          if [ ! -s "$RUNNER_TEMP/written.txt" ]; then
+            echo "Nothing was built."
             exit 0
           fi
-          git commit -m "Rebuild EPUB with all images embedded: $POSTS"
-          git push origin "$branch"
-          echo "Pushed $branch" >> "$GITHUB_STEP_SUMMARY"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          xargs -d '\n' git add -- < "$RUNNER_TEMP/written.txt"
+          if git diff --cached --quiet; then
+            echo "Built files are identical to what is committed."
+            exit 0
+          fi
+          names=$(grep '^docs/_posts/' "$RUNNER_TEMP/written.txt" | xargs -r -n1 basename | sed 's/\.md$//' | paste -sd ', ')
+          git commit -q -m "Build EPUB${names:+: $names}" \
+            -m "Built by the Build EPUB workflow (run ${{ github.run_number }}) for ${{ github.sha }}."
+          for attempt in 1 2 3; do
+            git pull --rebase -q origin main && git push -q origin HEAD:main && break
+            echo "Push failed (attempt $attempt), retrying..."
+            sleep $((attempt * 10))
+            [ "$attempt" = 3 ] && exit 1
+          done
+          echo "pushed=true" >> "$GITHUB_OUTPUT"
+          echo "Committed: $(git rev-parse --short HEAD)" >> "$GITHUB_STEP_SUMMARY"
+
+      # Pushes made with GITHUB_TOKEN do not start other workflows, so start
+      # the site deployment explicitly; otherwise the download link would wait
+      # for the daily rebuild.
+      - name: Redeploy the site
+        if: steps.commit.outputs.pushed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run pages.yml --ref main
+
+      - name: Report failures
+        if: env.status != '0'
+        run: |
+          echo "::error::Some EPUBs failed to build; see the Build EPUBs step."
+          exit 1

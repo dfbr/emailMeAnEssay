@@ -9,6 +9,7 @@ preview_slug: "Why the American Revolution Happened: Causes, Characters, Consequ
 preview_text: "Why the American Revolution Happened: Causes, Characters, Consequences"
 preview_image: "/assets/essays/why-the-american-revolution-happened-causes-characters-consequences/cover.jpg"
 epub_download: "/assets/essays/why-the-american-revolution-happened-causes-characters-consequences/why-the-american-revolution-happened-causes-characters-consequences.epub"
+lang: "en-GB"
 ---
 
 # Why the American Revolution Happened: Causes, Characters, Consequences

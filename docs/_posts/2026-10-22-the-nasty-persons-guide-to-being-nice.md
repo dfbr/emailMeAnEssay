@@ -8,7 +8,7 @@ preview_text: "You do not have to be a saint, or even a pleasant person, to be c
 preview_image: "https://commons.wikimedia.org/wiki/Special:FilePath/Charles_Darwin_by_Julia_Margaret_Cameron_2.jpg?width=1200"
 lang: "en-GB"
 publisher: "dfbr.co.uk"
-date: "2026-10-21"
+date: "2026-10-22"
 word_count: 11932
 toc: true
 toc-depth: 2
