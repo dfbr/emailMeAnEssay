@@ -1,0 +1,129 @@
+{
+  "wall1961": {
+    "title": "Berlin Wall 1961-11-20.jpg",
+    "author": "National Archives",
+    "licence": "Public domain",
+    "source": "commons",
+    "page": "https://commons.wikimedia.org/wiki/File:Berlin_Wall_1961-11-20.jpg",
+    "file": "wall1961.jpg",
+    "credit": "National Archives, public domain",
+    "cover_credit": "Building the Berlin Wall, 1961: US National Archives, public domain"
+  },
+  "yalta": {
+    "title": "Yalta Conference 1945 Churchill, Stalin, Roosevelt (cropped 3-2).jpg",
+    "author": "Unknown",
+    "licence": "Public domain",
+    "source": "commons",
+    "page": "https://commons.wikimedia.org/wiki/File:Yalta_Conference_1945_Churchill,_Stalin,_Roosevelt_(cropped_3-2).jpg",
+    "file": "yalta.jpg",
+    "credit": "Unknown, public domain"
+  },
+  "airlift": {
+    "title": "C-47s at Tempelhof Airport Berlin 1948.jpg",
+    "author": "U.S. Air Force",
+    "licence": "Public domain",
+    "source": "commons",
+    "page": "https://commons.wikimedia.org/wiki/File:C-47s_at_Tempelhof_Airport_Berlin_1948.jpg",
+    "file": "airlift.jpg",
+    "credit": "U.S. Air Force, public domain"
+  },
+  "inchon": {
+    "title": "Lopez scaling seawall.jpg",
+    "author": "Unknown Marine",
+    "licence": "Public domain",
+    "source": "commons",
+    "page": "https://commons.wikimedia.org/wiki/File:Lopez_scaling_seawall.jpg",
+    "file": "inchon.jpg",
+    "credit": "Unknown Marine, public domain"
+  },
+  "bravo": {
+    "title": "Castle Bravo Blast.jpg",
+    "author": "United States Department of Energy",
+    "licence": "Public domain",
+    "source": "commons",
+    "page": "https://commons.wikimedia.org/wiki/File:Castle_Bravo_Blast.jpg",
+    "file": "bravo.jpg",
+    "credit": "United States Department of Energy, public domain"
+  },
+  "duckcover": {
+    "title": "Bert2.png",
+    "author": "Unknown",
+    "licence": "Public domain",
+    "source": "commons",
+    "page": "https://commons.wikimedia.org/wiki/File:Bert2.png",
+    "file": "duckcover.png",
+    "credit": "Unknown, public domain"
+  },
+  "budapest": {
+    "title": "1956, Budapest, Üllői út - Ferenc körút, Kilián laktanya.jpg",
+    "author": "Unknown authorUnknown author",
+    "licence": "Public domain",
+    "source": "commons",
+    "page": "https://commons.wikimedia.org/wiki/File:1956,_Budapest,_%C3%9Cll%C5%91i_%C3%BAt_-_Ferenc_k%C3%B6r%C3%BAt,_Kili%C3%A1n_laktanya.jpg",
+    "file": "budapest.jpg",
+    "credit": "Unknown author, public domain"
+  },
+  "sputnik": {
+    "title": "Sputnik 1 satellite replica.png",
+    "author": "Soyuz235",
+    "licence": "Public domain",
+    "source": "commons",
+    "page": "https://commons.wikimedia.org/wiki/File:Sputnik_1_satellite_replica.png",
+    "file": "sputnik.png",
+    "credit": "Soyuz235, public domain"
+  },
+  "kennedy": {
+    "title": "JFK speech Ich bin ein berliner 1.jpg",
+    "author": "Robert Knudsen, White House",
+    "licence": "Public domain",
+    "source": "commons",
+    "page": "https://commons.wikimedia.org/wiki/File:JFK_speech_Ich_bin_ein_berliner_1.jpg",
+    "file": "kennedy.jpg",
+    "credit": "Robert Knudsen, White House, public domain"
+  },
+  "huey": {
+    "title": "US soldier directs UH-1 to land Vietnam 1966.jpg",
+    "author": "U.S. Air Force",
+    "licence": "Public domain",
+    "source": "commons",
+    "page": "https://commons.wikimedia.org/wiki/File:US_soldier_directs_UH-1_to_land_Vietnam_1966.jpg",
+    "file": "huey.jpg",
+    "credit": "U.S. Air Force, public domain"
+  },
+  "nixonbrezhnev": {
+    "title": "Leonid Brezhnev and Richard Nixon talks in 1973.png",
+    "author": "Robert LeRoy Knudsen",
+    "licence": "Public domain",
+    "source": "commons",
+    "page": "https://commons.wikimedia.org/wiki/File:Leonid_Brezhnev_and_Richard_Nixon_talks_in_1973.png",
+    "file": "nixonbrezhnev.png",
+    "credit": "Robert LeRoy Knudsen, public domain"
+  },
+  "reykjavik": {
+    "title": "Reagan Gorbachev Island.jpg",
+    "author": "Ronald Reagan Library",
+    "licence": "Public domain",
+    "source": "commons",
+    "page": "https://commons.wikimedia.org/wiki/File:Reagan_Gorbachev_Island.jpg",
+    "file": "reykjavik.jpg",
+    "credit": "Ronald Reagan Library, public domain"
+  },
+  "potsdamer": {
+    "title": "A crowd of West German citizens gathers at the newly created opening in the Berlin Wall at Potsdamer Platz.jpg",
+    "author": "Series: Combined Military Service Digital Photographic Files, 1982 - 2007\n\nRecord Group 330: Records of the Office of the Secretary of Defense, 1921 - 2008",
+    "licence": "Public domain",
+    "source": "commons",
+    "page": "https://commons.wikimedia.org/wiki/File:A_crowd_of_West_German_citizens_gathers_at_the_newly_created_opening_in_the_Berlin_Wall_at_Potsdamer_Platz.jpg",
+    "file": "potsdamer.jpg",
+    "credit": "Series: Combined Military Service Digital Photographic Files, public domain"
+  },
+  "cuba": {
+    "title": "U-2 photo during Cuban Missile Crisis.jpg",
+    "author": "USAF",
+    "licence": "Public domain",
+    "source": "commons",
+    "page": "https://commons.wikimedia.org/wiki/File:U-2_photo_during_Cuban_Missile_Crisis.jpg",
+    "file": "cuba.jpg",
+    "credit": "USAF, public domain"
+  }
+}

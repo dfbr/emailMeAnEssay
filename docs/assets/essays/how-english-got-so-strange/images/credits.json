@@ -1,0 +1,111 @@
+{
+  "beowulf": {
+    "title": "Beowulf Cotton MS Vitellius A XV f. 132r (cropped).jpg",
+    "author": "anonymous Anglo-Saxon poet",
+    "licence": "Public domain",
+    "source": "commons",
+    "page": "https://commons.wikimedia.org/wiki/File:Beowulf_Cotton_MS_Vitellius_A_XV_f._132r_(cropped).jpg",
+    "file": "beowulf.jpg",
+    "credit": "anonymous Anglo-Saxon poet, public domain"
+  },
+  "lindisfarne": {
+    "title": "LindisfarneChiRiho (cropped).jpg",
+    "author": "Eadfrith",
+    "licence": "Public domain",
+    "source": "commons",
+    "page": "https://commons.wikimedia.org/wiki/File:LindisfarneChiRiho_(cropped).jpg",
+    "file": "lindisfarne.jpg",
+    "credit": "Eadfrith, public domain"
+  },
+  "bayeux": {
+    "title": "Bayeux Tapestry scene57 Harold death (cropped).jpg",
+    "author": "Myrabella",
+    "licence": "Public domain",
+    "source": "commons",
+    "page": "https://commons.wikimedia.org/wiki/File:Bayeux_Tapestry_scene57_Harold_death_(cropped).jpg",
+    "file": "bayeux.jpg",
+    "credit": "Myrabella, public domain"
+  },
+  "chaucer": {
+    "title": "Ellesmere Chaucer, mssEL 26 C 9, folio 153v color enhanced.jpg",
+    "author": "unknown artist, 1400-1410, England",
+    "licence": "Public domain",
+    "source": "commons",
+    "page": "https://commons.wikimedia.org/wiki/File:Ellesmere_Chaucer,_mssEL_26_C_9,_folio_153v_color_enhanced.jpg",
+    "file": "chaucer.jpg",
+    "credit": "unknown artist, 1400-1410, England, public domain"
+  },
+  "caxton": {
+    "title": "Daniel Maclise - Caxton Showing the First Specimen of His Printing to King Edward IV at the Almonry, Westminster.jpg",
+    "author": "Daniel Maclise",
+    "licence": "Public domain",
+    "source": "commons",
+    "page": "https://commons.wikimedia.org/wiki/File:Daniel_Maclise_-_Caxton_Showing_the_First_Specimen_of_His_Printing_to_King_Edward_IV_at_the_Almonry,_Westminster.jpg",
+    "file": "caxton.jpg",
+    "credit": "Daniel Maclise, public domain",
+    "cover_credit": "Daniel Maclise, Caxton and Edward IV (1851), public domain"
+  },
+  "tyndale": {
+    "title": "Tyndale Bible - Gospel of John.jpg",
+    "author": "Peter Schöffer (printer); William Tyndale",
+    "licence": "Public domain",
+    "source": "commons",
+    "page": "https://commons.wikimedia.org/wiki/File:Tyndale_Bible_-_Gospel_of_John.jpg",
+    "file": "tyndale.jpg",
+    "credit": "Peter Schöffer (printer); William Tyndale, public domain"
+  },
+  "kjv": {
+    "title": "KJV-King-James-Version-Bible-first-edition-title-page-1611.jpg",
+    "author": "Church of England",
+    "licence": "Public domain",
+    "source": "commons",
+    "page": "https://commons.wikimedia.org/wiki/File:KJV-King-James-Version-Bible-first-edition-title-page-1611.jpg",
+    "file": "kjv.jpg",
+    "credit": "Church of England, public domain"
+  },
+  "firstfolio": {
+    "title": "Title Page - Shakespeare First Folio (1623), title page - BL.jpg",
+    "author": "Creator:Droeshout",
+    "licence": "CC0",
+    "source": "commons",
+    "page": "https://commons.wikimedia.org/wiki/File:Title_Page_-_Shakespeare_First_Folio_(1623),_title_page_-_BL.jpg",
+    "file": "firstfolio.jpg",
+    "credit": "Creator:Droeshout, CC0"
+  },
+  "johnson": {
+    "title": "Samuel Johnson by Joshua Reynolds.jpg",
+    "author": "Joshua Reynolds",
+    "licence": "Public domain",
+    "source": "commons",
+    "page": "https://commons.wikimedia.org/wiki/File:Samuel_Johnson_by_Joshua_Reynolds.jpg",
+    "file": "johnson.jpg",
+    "credit": "Joshua Reynolds, public domain"
+  },
+  "johnsondict": {
+    "title": "JohnsonDictionary.png",
+    "author": "Samuel Johnson",
+    "licence": "Public domain",
+    "source": "commons",
+    "page": "https://commons.wikimedia.org/wiki/File:JohnsonDictionary.png",
+    "file": "johnsondict.png",
+    "credit": "Samuel Johnson, public domain"
+  },
+  "webster": {
+    "title": "Portrait of Noah Webster.jpg",
+    "author": "Samuel Finley Breese Morse",
+    "licence": "Public domain",
+    "source": "commons",
+    "page": "https://commons.wikimedia.org/wiki/File:Portrait_of_Noah_Webster.jpg",
+    "file": "webster.jpg",
+    "credit": "Samuel Finley Breese Morse, public domain"
+  },
+  "alfredpenny": {
+    "title": "Alfred the great silver offering penny 871 899.jpg",
+    "author": "PHGCOM",
+    "licence": "Public domain",
+    "source": "commons",
+    "page": "https://commons.wikimedia.org/wiki/File:Alfred_the_great_silver_offering_penny_871_899.jpg",
+    "file": "alfredpenny.jpg",
+    "credit": "PHGCOM, public domain"
+  }
+}

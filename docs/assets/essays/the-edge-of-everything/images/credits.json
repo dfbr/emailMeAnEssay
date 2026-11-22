@@ -1,0 +1,129 @@
+{
+  "flammarion": {
+    "title": "FlammarionWoodcut.jpg",
+    "author": "AnonymousUnknown author",
+    "licence": "Public domain",
+    "source": "commons",
+    "page": "https://commons.wikimedia.org/wiki/File:FlammarionWoodcut.jpg",
+    "file": "flammarion.jpg",
+    "credit": "Anonymous, public domain"
+  },
+  "ptolemaic": {
+    "title": "Cellarius Harmonia Macrocosmica - Hypothesis Ptolemaica.jpg",
+    "author": "Andreas Cellarius",
+    "licence": "Public domain",
+    "source": "commons",
+    "page": "https://commons.wikimedia.org/wiki/File:Cellarius_Harmonia_Macrocosmica_-_Hypothesis_Ptolemaica.jpg",
+    "file": "ptolemaic.jpg",
+    "credit": "Andreas Cellarius, public domain"
+  },
+  "copernicus": {
+    "title": "Nikolaus Kopernikus.jpg",
+    "author": "Unknown authorUnknown author",
+    "licence": "Public domain",
+    "source": "commons",
+    "page": "https://commons.wikimedia.org/wiki/File:Nikolaus_Kopernikus.jpg",
+    "file": "copernicus.jpg",
+    "credit": "Unknown author, public domain"
+  },
+  "galileomoon": {
+    "title": "Galileo Galilei, Disegni originali delle Lune, 1609, Biblioteca Nazionale Centrale, Firenze.jpg",
+    "author": "Galileo Galilei",
+    "licence": "Public domain",
+    "source": "commons",
+    "page": "https://commons.wikimedia.org/wiki/File:Galileo_Galilei,_Disegni_originali_delle_Lune,_1609,_Biblioteca_Nazionale_Centrale,_Firenze.jpg",
+    "file": "galileomoon.jpg",
+    "credit": "Galileo Galilei, public domain"
+  },
+  "kepler": {
+    "title": "Mysterium Cosmographicum solar system model.jpg",
+    "author": "Johannes Kepler",
+    "licence": "Public domain",
+    "source": "commons",
+    "page": "https://commons.wikimedia.org/wiki/File:Mysterium_Cosmographicum_solar_system_model.jpg",
+    "file": "kepler.jpg",
+    "credit": "Johannes Kepler, public domain"
+  },
+  "newton": {
+    "title": "Portrait of Sir Isaac Newton, 1689.jpg",
+    "author": "Godfrey Kneller",
+    "licence": "Public domain",
+    "source": "commons",
+    "page": "https://commons.wikimedia.org/wiki/File:Portrait_of_Sir_Isaac_Newton,_1689.jpg",
+    "file": "newton.jpg",
+    "credit": "Godfrey Kneller, public domain"
+  },
+  "herschel": {
+    "title": "PSM V09 D079 Herschel 40 foot telescope at slough.jpg",
+    "author": "Unknown authorUnknown author",
+    "licence": "Public domain",
+    "source": "commons",
+    "page": "https://commons.wikimedia.org/wiki/File:PSM_V09_D079_Herschel_40_foot_telescope_at_slough.jpg",
+    "file": "herschel.jpg",
+    "credit": "Unknown author, public domain"
+  },
+  "harvardcomputers": {
+    "title": "Astronomer Edward Charles Pickering's Harvard computers.jpg",
+    "author": "Harvard College Observatory",
+    "licence": "Public domain",
+    "source": "commons",
+    "page": "https://commons.wikimedia.org/wiki/File:Astronomer_Edward_Charles_Pickering%27s_Harvard_computers.jpg",
+    "file": "harvardcomputers.jpg",
+    "credit": "Harvard College Observatory, public domain"
+  },
+  "andromeda": {
+    "title": "Andromeda galaxy Ssc2005-20a1.jpg",
+    "author": "NASA/JPL-Caltech/K. Gordon (University of Arizona)",
+    "licence": "Public domain",
+    "source": "commons",
+    "page": "https://commons.wikimedia.org/wiki/File:Andromeda_galaxy_Ssc2005-20a1.jpg",
+    "file": "andromeda.jpg",
+    "credit": "NASA/JPL-Caltech/K. Gordon (University of Arizona), public domain"
+  },
+  "holmdel": {
+    "title": "Horn Antenna-in Holmdel, New Jersey - restoration1.jpg",
+    "author": "NASA, restored by Bammesk",
+    "licence": "Public domain",
+    "source": "commons",
+    "page": "https://commons.wikimedia.org/wiki/File:Horn_Antenna-in_Holmdel,_New_Jersey_-_restoration1.jpg",
+    "file": "holmdel.jpg",
+    "credit": "NASA, restored by Bammesk, public domain"
+  },
+  "wmap": {
+    "title": "WMAP 2012.png",
+    "author": "NASA / WMAP Science Team",
+    "licence": "Public domain",
+    "source": "commons",
+    "page": "https://commons.wikimedia.org/wiki/File:WMAP_2012.png",
+    "file": "wmap.png",
+    "credit": "NASA / WMAP Science Team, public domain"
+  },
+  "hudf": {
+    "title": "Hubble ultra deep field.jpg",
+    "author": "NASA and the European Space Agency.",
+    "licence": "Public domain",
+    "source": "commons",
+    "page": "https://commons.wikimedia.org/wiki/File:Hubble_ultra_deep_field.jpg",
+    "file": "hudf.jpg",
+    "credit": "NASA and the European Space Agency., public domain"
+  },
+  "webb": {
+    "title": "Webb's First Deep Field.jpg",
+    "author": "NASA, ESA, CSA, and STScI",
+    "licence": "Public domain",
+    "source": "commons",
+    "page": "https://commons.wikimedia.org/wiki/File:Webb%27s_First_Deep_Field.jpg",
+    "file": "webb.jpg",
+    "credit": "NASA, ESA, CSA, and STScI, public domain",
+    "cover_credit": "Webb's First Deep Field: NASA, ESA, CSA, STScI, public domain"
+  },
+  "paleblue": {
+    "title": "Pale Blue Dot.png",
+    "author": "Voyager 1",
+    "licence": "Public domain",
+    "source": "commons",
+    "page": "https://commons.wikimedia.org/wiki/File:Pale_Blue_Dot.png",
+    "file": "paleblue.png",
+    "credit": "Voyager 1, public domain"
+  }
+}
